@@ -4,19 +4,11 @@
 ## Overview
 Template auto layout cell for **automatically** UITableViewCell height calculating.
 
+![Demo Overview](https://github.com/forkingdog/UITableView-FDTemplateLayoutCell/blob/master/Sceenshots/screenshot2.gif)
+
 ## Usage
 
-First, a fully **self-satisfied** cell, constrainted by auto layout.  
-
-a self-satisfied view has at least one subview's layout constraint against its "top", "left", "bottom", "right" edges.  
-
-Here's a good one :)
-https://github.com/forkingdog/UITableView-FDTemplateLayoutCell/blob/master/Sceenshots/screenshot1.png   
-
-And a bad one :(
-https://github.com/forkingdog/UITableView-FDTemplateLayoutCell/blob/master/Sceenshots/screenshot0.png  
-
-Then all you have to do is: 
+If you have a **self-satisfied** cell, then all you have to do is: 
 
 ``` objc
 #import "UITableView+FDTemplateLayoutCell.h"
@@ -30,6 +22,17 @@ Then all you have to do is:
     }];
 }
 ```
+
+## About self-satisfied cell
+
+a fully **self-satisfied** cell is constrainted by auto layout and each edge("top", "left", "bottom", "right") has at least one layout constraint against it.  
+
+A bad one :( - missing right and bottom
+![non-self-satisfied](https://github.com/forkingdog/UITableView-FDTemplateLayoutCell/blob/master/Sceenshots/screenshot0.png)   
+
+A good one :)  
+![self-satisfied](https://github.com/forkingdog/UITableView-FDTemplateLayoutCell/blob/master/Sceenshots/screenshot1.png)   
+
 
 ## Installation
 
