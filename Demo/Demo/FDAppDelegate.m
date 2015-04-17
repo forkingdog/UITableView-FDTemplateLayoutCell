@@ -1,13 +1,17 @@
 //
-//  FDTextFeedCell.h
+//  AppDelegate.m
 //  Demo
 //
 //  Created by sunnyxx on 15/4/16.
 //  Copyright (c) 2015年 forkingdog. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "FDAppDelegate.h"
 
-@interface FDTextFeedCell : UITableViewCell
+@interface FDAppDelegate ()
+
+@end
+
+@implementation FDAppDelegate
 
 @end
