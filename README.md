@@ -9,9 +9,12 @@ Template auto layout cell for **automatically** UITableViewCell height calculati
 First, a fully **self-satisfied** cell, constrainted by auto layout.  
 
 a self-satisfied view has at least one subview's layout constraint against its "top", "left", "bottom", "right" edges.  
-Here's a good one :)
 
-Rather than this bad one :(
+Here's a good one :)
+https://github.com/forkingdog/UITableView-FDTemplateLayoutCell/blob/master/Sceenshots/screenshot1.png   
+
+And a bad one :(
+https://github.com/forkingdog/UITableView-FDTemplateLayoutCell/blob/master/Sceenshots/screenshot0.png  
 
 Then all you have to do is: 
 
@@ -33,3 +36,6 @@ Then all you have to do is:
 ```
 pod search UITableView+FDTemplateLayoutCell 
 ```
+
+## License
+MIT
