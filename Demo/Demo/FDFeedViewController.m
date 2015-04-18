@@ -33,13 +33,13 @@
     // Simulate an async request
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
-        // Data from "data.json"
+        // Data from `data.json`
         NSString *dataFilePath = [[NSBundle mainBundle] pathForResource:@"data" ofType:@"json"];
         NSData *data = [NSData dataWithContentsOfFile:dataFilePath];
         NSDictionary *rootDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
         NSArray *feedDicts = rootDict[@"feed"];
         
-        // Convert to "FDFeedEntity"
+        // Convert to `FDFeedEntity`
         NSMutableArray *entities = @[].mutableCopy;
         [feedDicts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             [entities addObject:[[FDFeedEntity alloc] initWithDictionary:obj]];

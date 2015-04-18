@@ -8,10 +8,6 @@
 
 #import "FDAppDelegate.h"
 
-@interface FDAppDelegate ()
-
-@end
-
 @implementation FDAppDelegate
 
 @end

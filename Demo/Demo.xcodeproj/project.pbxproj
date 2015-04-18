@@ -28,8 +28,6 @@
 		488EECBF1ADFEDC6004EAA71 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		488EECC11ADFEDC6004EAA71 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		488EECC41ADFEDC6004EAA71 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		488EECCF1ADFEDC6004EAA71 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		488EECD01ADFEDC6004EAA71 /* DemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DemoTests.m; sourceTree = "<group>"; };
 		488EECDB1ADFEEE1004EAA71 /* UITableView+FDTemplateLayoutCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+FDTemplateLayoutCell.h"; sourceTree = "<group>"; };
 		488EECDC1ADFEEE1004EAA71 /* UITableView+FDTemplateLayoutCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+FDTemplateLayoutCell.m"; sourceTree = "<group>"; };
 		488EECDE1ADFF7A5004EAA71 /* FDFeedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDFeedViewController.h; sourceTree = "<group>"; };
@@ -56,7 +54,6 @@
 			isa = PBXGroup;
 			children = (
 				488EECB31ADFEDC6004EAA71 /* Demo */,
-				488EECCD1ADFEDC6004EAA71 /* DemoTests */,
 				488EECB21ADFEDC6004EAA71 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -72,7 +69,7 @@
 		488EECB31ADFEDC6004EAA71 /* Demo */ = {
 			isa = PBXGroup;
 			children = (
-				488EECEA1ADFF905004EAA71 /* Feed Page */,
+				488EECEA1ADFF905004EAA71 /* Feed */,
 				488EECDA1ADFEEE0004EAA71 /* FDTemplateLayoutCell */,
 				488EECC11ADFEDC6004EAA71 /* Images.xcassets */,
 				488EECC31ADFEDC6004EAA71 /* LaunchScreen.xib */,
@@ -90,23 +87,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		488EECCD1ADFEDC6004EAA71 /* DemoTests */ = {
-			isa = PBXGroup;
-			children = (
-				488EECD01ADFEDC6004EAA71 /* DemoTests.m */,
-				488EECCE1ADFEDC6004EAA71 /* Supporting Files */,
-			);
-			path = DemoTests;
-			sourceTree = "<group>";
-		};
-		488EECCE1ADFEDC6004EAA71 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				488EECCF1ADFEDC6004EAA71 /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 		488EECDA1ADFEEE0004EAA71 /* FDTemplateLayoutCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -117,7 +97,7 @@
 			path = ../../Classes;
 			sourceTree = "<group>";
 		};
-		488EECEA1ADFF905004EAA71 /* Feed Page */ = {
+		488EECEA1ADFF905004EAA71 /* Feed */ = {
 			isa = PBXGroup;
 			children = (
 				488EECE11ADFF884004EAA71 /* FDFeedEntity.h */,
@@ -131,7 +111,7 @@
 				488EECBE1ADFEDC6004EAA71 /* Main.storyboard */,
 				4897E5DC1ADFFBBD00E87B5F /* data.json */,
 			);
-			name = "Feed Page";
+			name = Feed;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
