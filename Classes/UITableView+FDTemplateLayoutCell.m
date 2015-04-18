@@ -27,7 +27,7 @@
 
 - (id)fd_templateCellForReuseIdentifier:(NSString *)identifier;
 {
-    NSAssert(identifier.length > 0, @"Expect a valid identifier - %@", identifier);
+    NSAssert(identifier.length > 0, @"Expects a valid identifier - %@", identifier);
     
     NSMutableDictionary *templateCellsByIdentifiers = objc_getAssociatedObject(self, _cmd);
     if (!templateCellsByIdentifiers) {
@@ -46,21 +46,23 @@
 
 - (CGFloat)fd_heightForCellWithIdentifier:(NSString *)identifier configuration:(void (^)(id))configuration
 {
-    // Fetch a cached template cell for indentifier
+    // Fetch a cached template cell for `identifier`.
     UITableViewCell *cell = [self fd_templateCellForReuseIdentifier:identifier];
     
-    // Reset to default
+    // Reset to initial height as first created, otherwise the cell's height wouldn't retract if it
+    // had larger height before it gets reused.
     cell.contentView.bounds = CGRectMake(0, 0, CGRectGetWidth(self.frame), self.rowHeight);
     
-    // Keep what real cells do
+    // Manually calls to ensure consistent behavior with actual cells (that are displayed on screen).
     [cell prepareForReuse];
     
-    // Configure our template cell
+    // Customize and provide content for our template cell.
     if (configuration) {
         configuration(cell);
     }
     
-    // TODO: What's this fucking temp constraint?
+    // Add a hard width constraint to make dynamic content views (like labels) expand vertically instead
+    // of growing horizontally, in a flow-layout manner.
     NSLayoutConstraint *tempWidthConstraint =
     [NSLayoutConstraint constraintWithItem:cell.contentView
                                  attribute:NSLayoutAttributeWidth
@@ -71,12 +73,12 @@
                                   constant:CGRectGetWidth(self.frame)];
     [cell.contentView addConstraint:tempWidthConstraint];
     
-    // Auto layout system does its math
+    // Auto layout does its math
     CGSize fittingSize = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
     
     [cell.contentView removeConstraint:tempWidthConstraint];
     
-    // Add 1px for separator line if needed, screen scale respected
+    // Add 1px extra space for separator line if needed, simulating default UITableViewCell.
     if (self.separatorStyle != UITableViewCellSeparatorStyleNone) {
         fittingSize.height += 1.0 / [UIScreen mainScreen].scale;
     }
