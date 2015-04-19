@@ -3,7 +3,7 @@ Pod::Spec.new do |s|
   s.name         = "UITableView+FDTemplateLayoutCell"
   s.version      = "1.0"
   s.summary      = "Template auto layout cell for automatically UITableViewCell height calculating "
-  s.description  = ""
+  s.description  = "Template auto layout cell for automatically UITableViewCell height calculating, requires a `self-satisfied` UITableViewCell, using system's `- systemLayoutSizeFittingSize:`."
   s.homepage     = "https://github.com/forkingdog/UITableView-FDTemplateLayoutCell"
 
   # ―――  Spec License  ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
