@@ -25,7 +25,7 @@
 
 @implementation UITableView (FDTemplateLayoutCell)
 
-- (id)fd_templateCellForReuseIdentifier:(NSString *)identifier;
+- (UITableViewCell *)fd_templateCellForReuseIdentifier:(NSString *)identifier;
 {
     NSAssert(identifier.length > 0, @"Expects a valid identifier - %@", identifier);
     
