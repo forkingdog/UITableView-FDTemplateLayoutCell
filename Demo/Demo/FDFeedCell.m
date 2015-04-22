@@ -20,13 +20,21 @@
 
 @implementation FDFeedCell
 
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    // Fix the bug in iOS7 - initial constraints warning
+    self.contentView.bounds = [UIScreen mainScreen].bounds;
+}
+
 - (void)setEntity:(FDFeedEntity *)entity
 {
     _entity = entity;
     
     self.titleLabel.text = entity.title;
     self.contentLabel.text = entity.content;
-    self.contentImageView.image = [UIImage imageNamed:entity.imageName];
+    self.contentImageView.image = entity.imageName.length > 0 ? [UIImage imageNamed:entity.imageName] : nil;
     self.usernameLabel.text = entity.username;
     self.timeLabel.text = entity.time;
 }
