@@ -1,9 +1,9 @@
 
 Pod::Spec.new do |s|
   s.name         = "UITableView+FDTemplateLayoutCell"
-  s.version      = "1.0"
-  s.summary      = "Template auto layout cell for automatically UITableViewCell height calculating "
-  s.description  = "Template auto layout cell for automatically UITableViewCell height calculating, requires a `self-satisfied` UITableViewCell, using system's `- systemLayoutSizeFittingSize:`."
+  s.version      = "1.1-beta"
+  s.summary      = "Template auto layout cell for automatically UITableViewCell height calculating and caching"
+  s.description  = "Template auto layout cell for automatically UITableViewCell height calculating and caching, requires a `self-satisfied` UITableViewCell, using system's `- systemLayoutSizeFittingSize:`, provides heights caching."
   s.homepage     = "https://github.com/forkingdog/UITableView-FDTemplateLayoutCell"
 
   # ―――  Spec License  ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   # ――― Platform Specifics ――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   s.platform = :ios, "6.0"
   # ――― Source Location ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
-  s.source = { :git => "https://github.com/forkingdog/UITableView-FDTemplateLayoutCell.git", :tag => "1.0" }
+  s.source = { :git => "https://github.com/forkingdog/UITableView-FDTemplateLayoutCell.git", :tag => "1.1-beta" }
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   s.source_files  = "Classes/*.{h,m}"
   # ――― Project Settings ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
