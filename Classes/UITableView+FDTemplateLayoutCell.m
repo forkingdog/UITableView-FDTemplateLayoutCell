@@ -75,7 +75,7 @@
     
     // Auto layout does its math
     CGSize fittingSize = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
-    
+
     [cell.contentView removeConstraint:tempWidthConstraint];
     
     // Add 1px extra space for separator line if needed, simulating default UITableViewCell.
@@ -84,6 +84,70 @@
     }
     
     return fittingSize.height;
+}
+
+@end
+
+@implementation UITableView (FDTemplateLayoutCellHeightCaching)
+
+// The entry point where we could trigger automatically cache invalidation. This hacking
+// doesn't belong to UITableView itself, so it's better to use a c++ constructor instead of "+load".
+// It will be called after all classes have mapped and loaded into runtime.
+__attribute__((constructor)) static void FDTemplateLayoutCellHeightCacheInvalidationEntryPoint()
+{
+    // Swizzle a private method in a private class "UISectionRowData", we try to assemble this
+    // selector instead of using the whole literal string, which may be more safer when submit
+    // to App Store.
+    NSString *privateSelectorString = [@"refreshWithSection:" stringByAppendingString:@"tableView:tableViewRowData:"];
+    SEL originalSelector = NSSelectorFromString(privateSelectorString);
+    Method originalMethod = class_getInstanceMethod(NSClassFromString(@"UISectionRowData"), originalSelector);
+    if (!originalMethod) {
+        return;
+    }
+    void (*originalIMP)(id, SEL, NSUInteger, id, id) = (typeof(originalIMP))method_getImplementation(originalMethod);
+    void (^swizzledBlock)(id, NSUInteger, id, id) = ^(id self, NSUInteger section, UITableView *tableView, id rowData) {
+        
+        // Invalidate height caches first
+        [tableView fd_invalidateHeightCaches];
+        
+        // Call original implementation
+        originalIMP(self, originalSelector, section, tableView, rowData);
+    };
+    method_setImplementation(originalMethod, imp_implementationWithBlock(swizzledBlock));
+}
+
+- (NSMutableDictionary *)fd_cellHeightCachesByIndexPath
+{
+    NSMutableDictionary *cachesByIndexPath = objc_getAssociatedObject(self, _cmd);
+    if (!cachesByIndexPath) {
+        cachesByIndexPath = @{}.mutableCopy;
+        objc_setAssociatedObject(self, _cmd, cachesByIndexPath, OBJC_ASSOCIATION_RETAIN);
+    }
+    return cachesByIndexPath;
+}
+
+- (void)fd_invalidateHeightCaches
+{
+    if (self.fd_cellHeightCachesByIndexPath.count > 0) {
+        [self.fd_cellHeightCachesByIndexPath removeAllObjects];
+    }
+}
+
+- (CGFloat)fd_heightForCellWithIdentifier:(NSString *)identifier cacheByIndexPath:(NSIndexPath *)indexPath configuration:(void (^)(id))configuration
+{
+    NSString *keyForIndexPath = [NSString stringWithFormat:@"%@:%@", @(indexPath.section), @(indexPath.row)];
+    if (self.fd_cellHeightCachesByIndexPath[keyForIndexPath]) {
+#if CGFLOAT_IS_DOUBLE
+        return [self.fd_cellHeightCachesByIndexPath[keyForIndexPath] doubleValue];
+#else
+        return [self.fd_cellHeightCachesByIndexPath[keyForIndexPath] floatValue];
+#endif
+    }
+
+    CGFloat height = [self fd_heightForCellWithIdentifier:identifier configuration:configuration];
+    self.fd_cellHeightCachesByIndexPath[keyForIndexPath] = @(height);
+    
+    return height;
 }
 
 @end

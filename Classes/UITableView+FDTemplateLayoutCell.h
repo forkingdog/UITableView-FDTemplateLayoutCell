@@ -33,11 +33,25 @@
 /// its height given the width is equal to the tableview's.
 ///
 /// @param identifier A string identifier for retrieving and maintaining template
-///        cells with system's `dequeueReusableCellWithIdentifier:` call.
+///        cells with system's "-dequeueReusableCellWithIdentifier:" call.
 /// @param configuration An optional block for configuring and providing content
 ///        to the template cell. The configuration should be minimal for scrolling
 ///        performance yet sufficient for calculating cell's height.
 ///
 - (CGFloat)fd_heightForCellWithIdentifier:(NSString *)identifier configuration:(void (^)(id cell))configuration;
+
+@end
+
+@interface UITableView (FDTemplateLayoutCellHeightCaching)
+
+/// This method does what "-fd_heightForCellWithIdentifier:configuration" does, and
+/// calculated height will be cached by its index path, returns a cached height
+/// when needed. Therefore lots of extra height calculations could be saved.
+///
+/// No need to worry about invalidating cached heights when data source changes, it
+/// will be done automatically when you call "-reloadData" or any method that triggers
+/// UITableView's reloading.
+///
+- (CGFloat)fd_heightForCellWithIdentifier:(NSString *)identifier cacheByIndexPath:(NSIndexPath *)indexPath configuration:(void (^)(id cell))configuration;
 
 @end

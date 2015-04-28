@@ -12,9 +12,8 @@
 #import "FDFeedCell.h"
 
 @interface FDFeedViewController ()
-
 @property (nonatomic, copy) NSArray *feedEntities;
-
+@property (nonatomic, assign) BOOL cellHeightCacheEnabled;
 @end
 
 @implementation FDFeedViewController
@@ -23,6 +22,7 @@
 {
     [super viewDidLoad];
     
+    self.cellHeightCacheEnabled = YES;
     [self buildTestDataThen:^{
         [self.tableView reloadData];
     }];
@@ -71,10 +71,23 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [tableView fd_heightForCellWithIdentifier:@"FDFeedCell" configuration:^(FDFeedCell *cell) {
-        cell.entity = self.feedEntities[indexPath.row];
-    }];
+    if (self.cellHeightCacheEnabled) {
+        return [tableView fd_heightForCellWithIdentifier:@"FDFeedCell" cacheByIndexPath:indexPath configuration:^(FDFeedCell *cell) {
+            cell.entity = self.feedEntities[indexPath.row];
+        }];
+    } else {
+        return [tableView fd_heightForCellWithIdentifier:@"FDFeedCell" configuration:^(FDFeedCell *cell) {
+            cell.entity = self.feedEntities[indexPath.row];
+        }];
+    }
 }
 
+#pragma mark - IBActions
+
+- (IBAction)cacheItemAction:(id)sender
+{
+    self.cellHeightCacheEnabled ^= 1;
+    self.navigationItem.rightBarButtonItem.title = self.cellHeightCacheEnabled ? @"caching" : @"!caching";
+}
 
 @end
