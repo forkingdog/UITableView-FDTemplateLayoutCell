@@ -33,6 +33,20 @@ A bad one :( - missing right and bottom
 A good one :)  
 ![self-satisfied](https://github.com/forkingdog/UITableView-FDTemplateLayoutCell/blob/master/Sceenshots/screenshot1.png)   
 
+## Height caching
+
+Since iOS8, `-tableView:heightForRowAtIndexPath:` will be called more times than we expect, we can feel these extra calculations when scrolling. So we provide another extension with caches:   
+
+```
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [tableView fd_heightForCellWithIdentifier:@"identifer" cacheByIndexPath:indexPath configuration:^(id cell) {
+        // configurations
+    }];
+}
+```
+
+Extra calculations will be saved if a height at an index path has been cached, besides, **NO NEED** to worry about invalidating cached heights when data source changes, it will be done **automatically** when you call "-reloadData" or any method that triggers UITableView's reloading.
 
 ## Installation
 
