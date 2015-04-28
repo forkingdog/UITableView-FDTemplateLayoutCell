@@ -6,7 +6,7 @@ Template auto layout cell for **automatically** UITableViewCell height calculati
 
 ![Demo Overview](https://github.com/forkingdog/UITableView-FDTemplateLayoutCell/blob/master/Sceenshots/screenshot2.gif)
 
-## Usage
+## Basic usage
 
 If you have a **self-satisfied** cell, then all you have to do is: 
 
@@ -22,18 +22,7 @@ If you have a **self-satisfied** cell, then all you have to do is:
     }];
 }
 ```
-
-## About self-satisfied cell
-
-a fully **self-satisfied** cell is constrainted by auto layout and each edge("top", "left", "bottom", "right") has at least one layout constraint against it.  
-
-A bad one :( - missing right and bottom
-![non-self-satisfied](https://github.com/forkingdog/UITableView-FDTemplateLayoutCell/blob/master/Sceenshots/screenshot0.png)   
-
-A good one :)  
-![self-satisfied](https://github.com/forkingdog/UITableView-FDTemplateLayoutCell/blob/master/Sceenshots/screenshot1.png)   
-
-## Height caching
+## Advanced usage with height caching
 
 Since iOS8, `-tableView:heightForRowAtIndexPath:` will be called more times than we expect, we can feel these extra calculations when scrolling. So we provide another extension with caches:   
 
@@ -47,6 +36,16 @@ Since iOS8, `-tableView:heightForRowAtIndexPath:` will be called more times than
 ```
 
 Extra calculations will be saved if a height at an index path has been cached, besides, **NO NEED** to worry about invalidating cached heights when data source changes, it will be done **automatically** when you call "-reloadData" or any method that triggers UITableView's reloading.
+
+## About self-satisfied cell
+
+a fully **self-satisfied** cell is constrainted by auto layout and each edge("top", "left", "bottom", "right") has at least one layout constraint against it.  
+
+A bad one :( - missing right and bottom
+![non-self-satisfied](https://github.com/forkingdog/UITableView-FDTemplateLayoutCell/blob/master/Sceenshots/screenshot0.png)   
+
+A good one :)  
+![self-satisfied](https://github.com/forkingdog/UITableView-FDTemplateLayoutCell/blob/master/Sceenshots/screenshot1.png)   
 
 ## Installation
 
