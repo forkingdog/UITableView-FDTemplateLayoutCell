@@ -40,10 +40,6 @@
 ///
 - (CGFloat)fd_heightForCellWithIdentifier:(NSString *)identifier configuration:(void (^)(id cell))configuration;
 
-@end
-
-@interface UITableView (FDTemplateLayoutCellHeightCaching)
-
 /// This method does what "-fd_heightForCellWithIdentifier:configuration" does, and
 /// calculated height will be cached by its index path, returns a cached height
 /// when needed. Therefore lots of extra height calculations could be saved.
@@ -52,6 +48,28 @@
 /// will be done automatically when you call "-reloadData" or any method that triggers
 /// UITableView's reloading.
 ///
+/// @param indexPath where this cell's height caches.
+///
+/// Auto cache invalidation:
+///
 - (CGFloat)fd_heightForCellWithIdentifier:(NSString *)identifier cacheByIndexPath:(NSIndexPath *)indexPath configuration:(void (^)(id cell))configuration;
+
+/// It helps to improve scroll performance by "pre-cache" height of cells that have not
+/// been displayed on screen. These calculation tasks are collected and performed only
+/// when "RunLoop" is in "idle" time.
+///
+/// Default to "YES", it's really harmless.
+///
+@property (nonatomic, assign) BOOL fd_precacheEnabled;
+@end
+
+@interface UITableView (FDTemplateLayoutCellDebugLog)
+
+/// Helps to debug or inspect what is this "FDTemplateLayoutCell" extention doing,
+/// turning on to print logs when "calculating", "precaching" or "hitting cache".
+///
+/// Default to "NO", log by "NSLog".
+///
+@property (nonatomic, assign) BOOL fd_debugLogEnabled;
 
 @end
