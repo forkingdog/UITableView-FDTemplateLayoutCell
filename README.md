@@ -22,9 +22,9 @@ If you have a **self-satisfied** cell, then all you have to do is:
     }];
 }
 ```
-## Advanced usage with height caching
+## Height Caching API
 
-Since iOS8, `-tableView:heightForRowAtIndexPath:` will be called more times than we expect, we can feel these extra calculations when scrolling. So we provide another extension with caches:   
+Since iOS8, `-tableView:heightForRowAtIndexPath:` will be called more times than we expect, we can feel these extra calculations when scrolling. So we provide another API with caches:   
 
 ```
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -35,7 +35,38 @@ Since iOS8, `-tableView:heightForRowAtIndexPath:` will be called more times than
 }
 ```
 
+### Auto cache invalidation
+
 Extra calculations will be saved if a height at an index path has been cached, besides, **NO NEED** to worry about invalidating cached heights when data source changes, it will be done **automatically** when you call "-reloadData" or any method that triggers UITableView's reloading.
+
+## Precache
+
+Pre-cache is an advanced function which helps to cache the rest of offscreen UITableViewCells automatically, just in **"idle"** time. It helps to improve scroll performance, because no extra height calculating will be used when scrolls. It's enabled by default if you use "fd_heightForCellWithIdentifier:cacheByIndexPath:configuation:" API.
+
+## Debug log
+
+Debug log helps to debug or inspect what is this "FDTemplateLayoutCell" extention doing, turning on to print logs when "calculating", "precaching" or "hitting cache".Default to "NO", log by "NSLog".
+
+```
+tableView.fd_debugLogEnabled = YES;
+```
+
+It will print like this:  
+
+```
+** FDTemplateLayoutCell ** layout cell created - FDFeedCell
+** FDTemplateLayoutCell ** calculate - [0:0] 233.5
+** FDTemplateLayoutCell ** calculate - [0:1] 155.5
+** FDTemplateLayoutCell ** calculate - [0:2] 258
+** FDTemplateLayoutCell ** calculate - [0:3] 284
+** FDTemplateLayoutCell ** precached - [0:3] 284
+** FDTemplateLayoutCell ** calculate - [0:4] 278.5
+** FDTemplateLayoutCell ** precached - [0:4] 278.5
+** FDTemplateLayoutCell ** hit cache - [0:3] 284
+** FDTemplateLayoutCell ** hit cache - [0:4] 278.5
+** FDTemplateLayoutCell ** hit cache - [0:5] 156
+** FDTemplateLayoutCell ** hit cache - [0:6] 165
+```
 
 ## About self-satisfied cell
 
