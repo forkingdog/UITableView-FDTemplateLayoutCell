@@ -43,6 +43,12 @@ Extra calculations will be saved if a height at an index path has been cached, b
 
 Pre-cache is an advanced function which helps to cache the rest of offscreen UITableViewCells automatically, just in **"idle"** time. It helps to improve scroll performance, because no extra height calculating will be used when scrolls. It's enabled by default if you use "fd_heightForCellWithIdentifier:cacheByIndexPath:configuation:" API.
 
+## About estimatedRowHeight
+`estimatedRowHeight` helps to delay all cells' height calculation from load time to scroll time. Feel free to set it or not when you're using FDTemplateLayoutCell. If you use "cacheByIndexPath" API, setting this estimatedRowHeight property is a better practice for imporve load time, and it **DOES NO LONGER** affect scroll performance because of "precache".
+```
+self.tableView.estimatedRowHeight = 200;
+```
+
 ## Debug log
 
 Debug log helps to debug or inspect what is this "FDTemplateLayoutCell" extention doing, turning on to print logs when "calculating", "precaching" or "hitting cache".Default to "NO", log by "NSLog".
