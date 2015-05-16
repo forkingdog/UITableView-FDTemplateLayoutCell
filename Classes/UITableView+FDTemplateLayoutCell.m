@@ -177,27 +177,33 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
     }
     
     CFRunLoopRef runLoop = [[NSRunLoop currentRunLoop] getCFRunLoop];
+    
     // This is a idle mode of RunLoop, when UIScrollView scrolls, it jumps into "UITrackingRunLoopMode"
     // and won't perform any cache task to keep a smooth scroll.
     CFStringRef runLoopMode = kCFRunLoopDefaultMode;
+    
+    // Collect all index paths to be precached.
+    NSMutableArray *allIndexPathsToBePrecached = self.fd_allIndexPathsToBePrecached.mutableCopy;
     
     // Setup a observer to get a perfect moment for precaching tasks.
     // We use a "kCFRunLoopBeforeWaiting" state to keep RunLoop has done everything and about to sleep
     // (mach_msg_trap), when all tasks finish, it will remove itself.
     CFRunLoopObserverRef observer = CFRunLoopObserverCreateWithHandler
     (kCFAllocatorDefault, kCFRunLoopBeforeWaiting, true, 0, ^(CFRunLoopObserverRef observer, CFRunLoopActivity _) {
-        // Collect all index paths to be precached.
-        NSMutableArray *allIndexPathsToBePrecached = self.fd_allIndexPathsToBePrecached.mutableCopy;
+        // Remove observer when all precache tasks are done.
         if (allIndexPathsToBePrecached.count == 0) {
             CFRunLoopRemoveObserver(runLoop, observer, runLoopMode);
             return;
         }
+        // Pop first index path record as this RunLoop iteration's task.
+        NSIndexPath *indexPath = allIndexPathsToBePrecached.firstObject;
+        [allIndexPathsToBePrecached removeObject:indexPath];
         
         // This method creates a "source0" task in "idle" mode of RunLoop, and will be
         // performed in a future RunLoop iteration only when user is not scrolling.
-        [self performSelector:@selector(fd_precacheOneOfAllIndexPathsToBePrecached:)
+        [self performSelector:@selector(fd_precacheIndexPathIfNeeded:)
                      onThread:[NSThread mainThread]
-                   withObject:allIndexPathsToBePrecached
+                   withObject:indexPath
                 waitUntilDone:NO
                         modes:@[NSDefaultRunLoopMode]];
     });
@@ -205,9 +211,8 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
     CFRunLoopAddObserver(runLoop, observer, runLoopMode);
 }
 
-- (void)fd_precacheOneOfAllIndexPathsToBePrecached:(NSMutableArray *)allIndexPaths
+- (void)fd_precacheIndexPathIfNeeded:(NSIndexPath *)indexPath
 {
-    NSIndexPath *indexPath = allIndexPaths.firstObject;
     if (![self.fd_cellHeightCache hasCachedHeightAtIndexPath:indexPath]) {
         CGFloat height = [self.delegate tableView:self heightForRowAtIndexPath:indexPath];
         [self.fd_cellHeightCache cacheHeight:height byIndexPath:indexPath];
@@ -217,7 +222,6 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
                            @(indexPath.row),
                            @(height)]];
     }
-    [allIndexPaths removeObjectAtIndex:0];
 }
 
 - (NSArray *)fd_allIndexPathsToBePrecached
