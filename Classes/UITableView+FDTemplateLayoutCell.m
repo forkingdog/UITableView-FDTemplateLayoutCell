@@ -23,30 +23,6 @@
 #import "UITableView+FDTemplateLayoutCell.h"
 #import <objc/runtime.h>
 
-#pragma mark - UITableView + FDTemplateLayoutCellDebugLog
-
-@implementation UITableView (FDTemplateLayoutCellDebugLog)
-
-- (BOOL)fd_debugLogEnabled
-{
-    return [objc_getAssociatedObject(self, _cmd) boolValue];
-}
-
-- (void)setFd_debugLogEnabled:(BOOL)debugLogEnabled
-{
-    objc_setAssociatedObject(self, @selector(fd_debugLogEnabled), @(debugLogEnabled), OBJC_ASSOCIATION_RETAIN);
-}
-
-- (void)fd_debugLog:(NSString *)message
-{
-    if (!self.fd_debugLogEnabled) {
-        return;
-    }
-    NSLog(@"** FDTemplateLayoutCell ** %@", message);
-}
-
-@end
-
 #pragma mark - _FDTemplateLayoutCellHeightCache
 
 @interface _FDTemplateLayoutCellHeightCache : NSObject
@@ -110,17 +86,30 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
 
 @end
 
-#pragma mark - UITableView + FDTemplateLayoutCellPrivateAssociations
+#pragma mark - UITableView + FDTemplateLayoutCellPrivate
 
-@interface UITableView (FDTemplateLayoutCellPrivateAssociations)
+/// These methods are private for internal use, maybe public some day.
+@interface UITableView (FDTemplateLayoutCellPrivate)
+
+/// Returns a template cell created by reuse identifier, it has to be registered to table view.
+/// Lazy getter, and associated to table view.
+- (id)fd_templateCellForReuseIdentifier:(NSString *)identifier;
+
+/// A private height cache data structure.
+@property (nonatomic, strong, readonly) _FDTemplateLayoutCellHeightCache *fd_cellHeightCache;
+
 /// This is a private switch that I don't think caller should concern.
 /// Auto turn on when you use "-fd_heightForCellWithIdentifier:cacheByIndexPath:configuration".
 @property (nonatomic, assign) BOOL fd_autoCacheInvalidationEnabled;
+
+/// Debug log controlled by "fd_debugLogEnabled".
+- (void)fd_debugLog:(NSString *)message;
+
 @end
 
-@implementation UITableView (FDTemplateLayoutCellPrivateAssociations)
+@implementation UITableView (FDTemplateLayoutCellPrivate)
 
-- (id)fd_templateCellForReuseIdentifier:(NSString *)identifier;
+- (id)fd_templateCellForReuseIdentifier:(NSString *)identifier
 {
     NSAssert(identifier.length > 0, @"Expects a valid identifier - %@", identifier);
     
@@ -131,16 +120,19 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
     }
     
     UITableViewCell *templateCell = templateCellsByIdentifiers[identifier];
+    
     if (!templateCell) {
         templateCell = [self dequeueReusableCellWithIdentifier:identifier];
+        NSAssert(templateCell != nil, @"Cell must be registered to table view for identifier - %@", identifier);
+        templateCell.fd_isTemplateLayoutCell = YES;
         templateCellsByIdentifiers[identifier] = templateCell;
+        [self fd_debugLog:[NSString stringWithFormat:@"layout cell created - %@", identifier]];
     }
     
     return templateCell;
 }
 
-- (_FDTemplateLayoutCellHeightCache *)fd_cellHeightCache
-{
+- (_FDTemplateLayoutCellHeightCache *)fd_cellHeightCache {
     _FDTemplateLayoutCellHeightCache *cache = objc_getAssociatedObject(self, _cmd);
     if (!cache) {
         cache = [_FDTemplateLayoutCellHeightCache new];
@@ -159,11 +151,19 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
     objc_setAssociatedObject(self, @selector(fd_autoCacheInvalidationEnabled), @(enabled), OBJC_ASSOCIATION_RETAIN);
 }
 
+- (void)fd_debugLog:(NSString *)message
+{
+    if (!self.fd_debugLogEnabled) {
+        return;
+    }
+    NSLog(@"** FDTemplateLayoutCell ** %@", message);
+}
+
 @end
 
-#pragma mark - UITableView + FDTemplateLayoutCellHeightPrecaching
+#pragma mark - UITableView + FDTemplateLayoutCellPrecache
 
-@implementation UITableView (FDTemplateLayoutCellHeightPrecaching)
+@implementation UITableView (FDTemplateLayoutCellPrecache)
 
 - (void)fd_precacheIfNeeded
 {
@@ -299,7 +299,7 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
 - (void)fd_reloadSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation
 {
     if (self.fd_autoCacheInvalidationEnabled) {
-        [sections enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+        [sections enumerateIndexesUsingBlock: ^(NSUInteger idx, BOOL *stop) {
             NSMutableArray *rows = self.fd_cellHeightCache.sections[idx];
             for (NSInteger row = 0; row < rows.count; ++row) {
                 rows[row] = @(_FDTemplateLayoutCellHeightCacheAbsentValue);
@@ -313,7 +313,7 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
 - (void)fd_moveSection:(NSInteger)section toSection:(NSInteger)newSection
 {
     if (self.fd_autoCacheInvalidationEnabled) {
-    [self.fd_cellHeightCache.sections exchangeObjectAtIndex:section withObjectAtIndex:newSection];
+        [self.fd_cellHeightCache.sections exchangeObjectAtIndex:section withObjectAtIndex:newSection];
     }
     [self fd_moveSection:section toSection:newSection]; // Primary call
 }
@@ -441,7 +441,7 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
                        @(indexPath.section),
                        @(indexPath.row),
                        @(height)]];
-
+    
     // Cache it
     [self.fd_cellHeightCache cacheHeight:height byIndexPath:indexPath];
     
@@ -460,6 +460,32 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
 - (void)setFd_precacheEnabled:(BOOL)precacheEnabled
 {
     objc_setAssociatedObject(self, @selector(fd_precacheEnabled), @(precacheEnabled), OBJC_ASSOCIATION_RETAIN);
+}
+
+- (BOOL)fd_debugLogEnabled
+{
+    return [objc_getAssociatedObject(self, _cmd) boolValue];
+}
+
+- (void)setFd_debugLogEnabled:(BOOL)debugLogEnabled
+{
+    objc_setAssociatedObject(self, @selector(fd_debugLogEnabled), @(debugLogEnabled), OBJC_ASSOCIATION_RETAIN);
+}
+
+@end
+
+#pragma mark - [Public] UITableViewCell + FDTemplateLayoutCell
+
+@implementation UITableViewCell (FDTemplateLayoutCell)
+
+- (BOOL)fd_isTemplateLayoutCell
+{
+    return [objc_getAssociatedObject(self, _cmd) boolValue];
+}
+
+- (void)setFd_isTemplateLayoutCell:(BOOL)isTemplateLayoutCell
+{
+    objc_setAssociatedObject(self, @selector(fd_isTemplateLayoutCell), @(isTemplateLayoutCell), OBJC_ASSOCIATION_RETAIN);
 }
 
 @end

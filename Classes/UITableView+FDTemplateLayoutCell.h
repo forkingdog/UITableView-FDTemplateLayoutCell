@@ -48,9 +48,7 @@
 /// will be done automatically when you call "-reloadData" or any method that triggers
 /// UITableView's reloading.
 ///
-/// @param indexPath where this cell's height caches.
-///
-/// Auto cache invalidation:
+/// @param indexPath where this cell's height cache belongs.
 ///
 - (CGFloat)fd_heightForCellWithIdentifier:(NSString *)identifier cacheByIndexPath:(NSIndexPath *)indexPath configuration:(void (^)(id cell))configuration;
 
@@ -61,15 +59,28 @@
 /// Default to "YES", it's really harmless.
 ///
 @property (nonatomic, assign) BOOL fd_precacheEnabled;
-@end
-
-@interface UITableView (FDTemplateLayoutCellDebugLog)
 
 /// Helps to debug or inspect what is this "FDTemplateLayoutCell" extention doing,
-/// turning on to print logs when "calculating", "precaching" or "hitting cache".
+/// turning on to print logs when "creating", "calculating", "precaching" or "hitting cache".
 ///
 /// Default to "NO", log by "NSLog".
 ///
 @property (nonatomic, assign) BOOL fd_debugLogEnabled;
+
+@end
+
+@interface UITableViewCell (FDTemplateLayoutCell)
+
+/// Indicate this is a template layout cell for calculation only.
+/// You may need this when there are non-UI side effects when configure a cell.
+/// Like:
+///   - (void)configureCell:(FooCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+///       cell.entity = [self entityAtIndexPath:indexPath];
+///       if (!cell.fd_isTemplateLayoutCell) {
+///           [self notifySomething]; // non-UI side effects
+///       }
+///   }
+///
+@property (nonatomic, assign) BOOL fd_isTemplateLayoutCell;
 
 @end
