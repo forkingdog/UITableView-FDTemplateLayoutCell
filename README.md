@@ -54,7 +54,7 @@ self.tableView.estimatedRowHeight = 200;
 Debug log helps to debug or inspect what is this "FDTemplateLayoutCell" extention doing, turning on to print logs when "calculating", "precaching" or "hitting cache".Default to "NO", log by "NSLog".
 
 ```
-tableView.fd_debugLogEnabled = YES;
+self.tableView.fd_debugLogEnabled = YES;
 ```
 
 It will print like this:  
