@@ -1,5 +1,5 @@
 # UITableView-FDTemplateLayoutCell
-![forkingdog](https://cloud.githubusercontent.com/assets/219689/7244961/4209de32-e816-11e4-87bc-b161c442d348.png)
+<img src="https://cloud.githubusercontent.com/assets/219689/7244961/4209de32-e816-11e4-87bc-b161c442d348.png" width="640">
 
 ## Overview
 Template auto layout cell for **automatically** UITableViewCell height calculating.
