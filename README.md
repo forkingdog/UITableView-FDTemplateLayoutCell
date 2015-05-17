@@ -26,7 +26,7 @@ If you have a **self-satisfied** cell, then all you have to do is:
 
 Since iOS8, `-tableView:heightForRowAtIndexPath:` will be called more times than we expect, we can feel these extra calculations when scrolling. So we provide another API with caches:   
 
-```
+``` objc
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return [tableView fd_heightForCellWithIdentifier:@"identifer" cacheByIndexPath:indexPath configuration:^(id cell) {
@@ -45,7 +45,7 @@ Pre-cache is an advanced function which helps to cache the rest of offscreen UIT
 
 ## About estimatedRowHeight
 `estimatedRowHeight` helps to delay all cells' height calculation from load time to scroll time. Feel free to set it or not when you're using FDTemplateLayoutCell. If you use "cacheByIndexPath" API, setting this estimatedRowHeight property is a better practice for imporve load time, and it **DOES NO LONGER** affect scroll performance because of "precache".
-```
+``` objc
 self.tableView.estimatedRowHeight = 200;
 ```
 
@@ -53,13 +53,13 @@ self.tableView.estimatedRowHeight = 200;
 
 Debug log helps to debug or inspect what is this "FDTemplateLayoutCell" extention doing, turning on to print logs when "calculating", "precaching" or "hitting cache".Default to "NO", log by "NSLog".
 
-```
+``` objc
 self.tableView.fd_debugLogEnabled = YES;
 ```
 
 It will print like this:  
 
-```
+``` objc
 ** FDTemplateLayoutCell ** layout cell created - FDFeedCell
 ** FDTemplateLayoutCell ** calculate - [0:0] 233.5
 ** FDTemplateLayoutCell ** calculate - [0:1] 155.5
