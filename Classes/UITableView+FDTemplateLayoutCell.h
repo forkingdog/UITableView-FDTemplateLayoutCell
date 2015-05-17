@@ -52,14 +52,6 @@
 ///
 - (CGFloat)fd_heightForCellWithIdentifier:(NSString *)identifier cacheByIndexPath:(NSIndexPath *)indexPath configuration:(void (^)(id cell))configuration;
 
-/// It helps to improve scroll performance by "pre-cache" height of cells that have not
-/// been displayed on screen. These calculation tasks are collected and performed only
-/// when "RunLoop" is in "idle" time.
-///
-/// Default to "YES", it's really harmless.
-///
-@property (nonatomic, assign) BOOL fd_precacheEnabled;
-
 /// Helps to debug or inspect what is this "FDTemplateLayoutCell" extention doing,
 /// turning on to print logs when "creating", "calculating", "precaching" or "hitting cache".
 ///

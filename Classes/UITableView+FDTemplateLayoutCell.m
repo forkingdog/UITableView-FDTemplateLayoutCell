@@ -102,6 +102,13 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
 /// Auto turn on when you use "-fd_heightForCellWithIdentifier:cacheByIndexPath:configuration".
 @property (nonatomic, assign) BOOL fd_autoCacheInvalidationEnabled;
 
+/// It helps to improve scroll performance by "pre-cache" height of cells that have not
+/// been displayed on screen. These calculation tasks are collected and performed only
+/// when "RunLoop" is in "idle" time.
+///
+/// Auto turn on when you use "-fd_heightForCellWithIdentifier:cacheByIndexPath:configuration".
+@property (nonatomic, assign) BOOL fd_precacheEnabled;
+
 /// Debug log controlled by "fd_debugLogEnabled".
 - (void)fd_debugLog:(NSString *)message;
 
@@ -151,6 +158,16 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
     objc_setAssociatedObject(self, @selector(fd_autoCacheInvalidationEnabled), @(enabled), OBJC_ASSOCIATION_RETAIN);
 }
 
+- (BOOL)fd_precacheEnabled
+{
+    return [objc_getAssociatedObject(self, _cmd) boolValue];
+}
+
+- (void)setFd_precacheEnabled:(BOOL)precacheEnabled
+{
+    objc_setAssociatedObject(self, @selector(fd_precacheEnabled), @(precacheEnabled), OBJC_ASSOCIATION_RETAIN);
+}
+
 - (void)fd_debugLog:(NSString *)message
 {
     if (!self.fd_debugLogEnabled) {
@@ -183,7 +200,7 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
     CFStringRef runLoopMode = kCFRunLoopDefaultMode;
     
     // Collect all index paths to be precached.
-    NSMutableArray *allIndexPathsToBePrecached = self.fd_allIndexPathsToBePrecached.mutableCopy;
+    NSMutableArray *mutableIndexPathsToBePrecached = self.fd_allIndexPathsToBePrecached.mutableCopy;
     
     // Setup a observer to get a perfect moment for precaching tasks.
     // We use a "kCFRunLoopBeforeWaiting" state to keep RunLoop has done everything and about to sleep
@@ -191,15 +208,15 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
     CFRunLoopObserverRef observer = CFRunLoopObserverCreateWithHandler
     (kCFAllocatorDefault, kCFRunLoopBeforeWaiting, true, 0, ^(CFRunLoopObserverRef observer, CFRunLoopActivity _) {
         // Remove observer when all precache tasks are done.
-        if (allIndexPathsToBePrecached.count == 0) {
+        if (mutableIndexPathsToBePrecached.count == 0) {
             CFRunLoopRemoveObserver(runLoop, observer, runLoopMode);
             return;
         }
         // Pop first index path record as this RunLoop iteration's task.
-        NSIndexPath *indexPath = allIndexPathsToBePrecached.firstObject;
-        [allIndexPathsToBePrecached removeObject:indexPath];
+        NSIndexPath *indexPath = mutableIndexPathsToBePrecached.firstObject;
+        [mutableIndexPathsToBePrecached removeObject:indexPath];
         
-        // This method creates a "source0" task in "idle" mode of RunLoop, and will be
+        // This method creates a "source 0" task in "idle" mode of RunLoop, and will be
         // performed in a future RunLoop iteration only when user is not scrolling.
         [self performSelector:@selector(fd_precacheIndexPathIfNeeded:)
                      onThread:[NSThread mainThread]
@@ -426,7 +443,15 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
     }
     
     // Enable auto cache invalidation if you use this "cacheByIndexPath" API.
-    self.fd_autoCacheInvalidationEnabled = YES;
+    if (!self.fd_autoCacheInvalidationEnabled) {
+        self.fd_autoCacheInvalidationEnabled = YES;
+    }
+    // Enable precache if you use this "cacheByIndexPath" API.
+    if (!self.fd_precacheEnabled) {
+        self.fd_precacheEnabled = YES;
+        // Manually trigger precache only for the first time.
+        [self fd_precacheIfNeeded];
+    }
     
     // Hit the cache
     if ([self.fd_cellHeightCache hasCachedHeightAtIndexPath:indexPath]) {
@@ -450,20 +475,6 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
     [self.fd_cellHeightCache cacheHeight:height byIndexPath:indexPath];
     
     return height;
-}
-
-- (BOOL)fd_precacheEnabled
-{
-    NSNumber *associatedNumber = objc_getAssociatedObject(self, _cmd);
-    if (!associatedNumber) {
-        objc_setAssociatedObject(self, _cmd, @YES, OBJC_ASSOCIATION_RETAIN);
-    }
-    return associatedNumber.boolValue;
-}
-
-- (void)setFd_precacheEnabled:(BOOL)precacheEnabled
-{
-    objc_setAssociatedObject(self, @selector(fd_precacheEnabled), @(precacheEnabled), OBJC_ASSOCIATION_RETAIN);
 }
 
 - (BOOL)fd_debugLogEnabled

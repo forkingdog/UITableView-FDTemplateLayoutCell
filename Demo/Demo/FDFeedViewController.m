@@ -25,7 +25,6 @@
     
     self.tableView.estimatedRowHeight = 200;
     self.tableView.fd_debugLogEnabled = YES;
-    self.tableView.fd_precacheEnabled = YES;
     
     self.cellHeightCacheEnabled = YES;
     
