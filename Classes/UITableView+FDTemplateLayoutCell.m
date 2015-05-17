@@ -193,7 +193,7 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
         return;
     }
     
-    CFRunLoopRef runLoop = [[NSRunLoop currentRunLoop] getCFRunLoop];
+    CFRunLoopRef runLoop = CFRunLoopGetCurrent();
     
     // This is a idle mode of RunLoop, when UIScrollView scrolls, it jumps into "UITrackingRunLoopMode"
     // and won't perform any cache task to keep a smooth scroll.
