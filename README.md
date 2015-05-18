@@ -84,6 +84,10 @@ A bad one :( - missing right and bottom
 A good one :)  
 ![self-satisfied](https://github.com/forkingdog/UITableView-FDTemplateLayoutCell/blob/master/Sceenshots/screenshot1.png)   
 
+## 如果你在天朝
+可以看这篇中文博客： 
+[http://blog.sunnyxx.com/2015/05/17/cell-height-calculation/](http://blog.sunnyxx.com/2015/05/17/cell-height-calculation/)
+
 ## Installation
 
 ```
