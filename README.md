@@ -22,6 +22,7 @@ If you have a **self-satisfied** cell, then all you have to do is:
     }];
 }
 ```
+
 ## Height Caching API
 
 Since iOS8, `-tableView:heightForRowAtIndexPath:` will be called more times than we expect, we can feel these extra calculations when scrolling. So we provide another API with caches:   
@@ -83,6 +84,14 @@ A bad one :( - missing right and bottom
 
 A good one :)  
 ![self-satisfied](https://github.com/forkingdog/UITableView-FDTemplateLayoutCell/blob/master/Sceenshots/screenshot1.png)   
+
+## Note
+
+A template layout cell is created by `-dequeueReusableCellWithIdentifier:` method, it means that you MUST have registered this cell reuse identifier by one of:  
+
+- A prototype cell of UITableView in storyboard.
+- Use `-registerNib:forCellReuseIdentifier:` 
+- Use `-registerClass:forCellReuseIdentifier:`
 
 ## 如果你在天朝
 可以看这篇中文博客： 
