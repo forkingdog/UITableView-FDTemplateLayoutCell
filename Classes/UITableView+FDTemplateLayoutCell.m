@@ -132,6 +132,7 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
         templateCell = [self dequeueReusableCellWithIdentifier:identifier];
         NSAssert(templateCell != nil, @"Cell must be registered to table view for identifier - %@", identifier);
         templateCell.fd_isTemplateLayoutCell = YES;
+        templateCell.contentView.translatesAutoresizingMaskIntoConstraints = NO;
         templateCellsByIdentifiers[identifier] = templateCell;
         [self fd_debugLog:[NSString stringWithFormat:@"layout cell created - %@", identifier]];
     }
@@ -139,7 +140,8 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
     return templateCell;
 }
 
-- (_FDTemplateLayoutCellHeightCache *)fd_cellHeightCache {
+- (_FDTemplateLayoutCellHeightCache *)fd_cellHeightCache
+{
     _FDTemplateLayoutCellHeightCache *cache = objc_getAssociatedObject(self, _cmd);
     if (!cache) {
         cache = [_FDTemplateLayoutCellHeightCache new];
@@ -230,15 +232,25 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
 
 - (void)fd_precacheIndexPathIfNeeded:(NSIndexPath *)indexPath
 {
-    if (![self.fd_cellHeightCache hasCachedHeightAtIndexPath:indexPath]) {
-        CGFloat height = [self.delegate tableView:self heightForRowAtIndexPath:indexPath];
-        [self.fd_cellHeightCache cacheHeight:height byIndexPath:indexPath];
-        [self fd_debugLog:[NSString stringWithFormat:
-                           @"precached - [%@:%@] %@",
-                           @(indexPath.section),
-                           @(indexPath.row),
-                           @(height)]];
+    // A cached indexPath
+    if ([self.fd_cellHeightCache hasCachedHeightAtIndexPath:indexPath]) {
+        return;
     }
+    
+    // This RunLoop source may have been invalid at this point when data source
+    // changes during precache's dispatching.
+    if (indexPath.section >= [self numberOfSections] ||
+        indexPath.row >= [self numberOfRowsInSection:indexPath.section]) {
+        return;
+    }
+    
+    CGFloat height = [self.delegate tableView:self heightForRowAtIndexPath:indexPath];
+    [self.fd_cellHeightCache cacheHeight:height byIndexPath:indexPath];
+    [self fd_debugLog:[NSString stringWithFormat:
+                       @"precached - [%@:%@] %@",
+                       @(indexPath.section),
+                       @(indexPath.row),
+                       @(height)]];
 }
 
 - (NSArray *)fd_allIndexPathsToBePrecached
@@ -342,6 +354,7 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
 - (void)fd_insertRowsAtIndexPaths:(NSArray *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation
 {
     if (self.fd_autoCacheInvalidationEnabled) {
+        [self.fd_cellHeightCache buildHeightCachesAtIndexPathsIfNeeded:indexPaths];
         [indexPaths enumerateObjectsUsingBlock:^(NSIndexPath *indexPath, NSUInteger idx, BOOL *stop) {
             NSMutableArray *rows = self.fd_cellHeightCache.sections[indexPath.section];
             [rows insertObject:@(_FDTemplateLayoutCellHeightCacheAbsentValue) atIndex:indexPath.row];
@@ -364,6 +377,7 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
 - (void)fd_reloadRowsAtIndexPaths:(NSArray *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation
 {
     if (self.fd_autoCacheInvalidationEnabled) {
+        [self.fd_cellHeightCache buildHeightCachesAtIndexPathsIfNeeded:indexPaths];
         [indexPaths enumerateObjectsUsingBlock:^(NSIndexPath *indexPath, NSUInteger idx, BOOL *stop) {
             NSMutableArray *rows = self.fd_cellHeightCache.sections[indexPath.section];
             rows[indexPath.row] = @(_FDTemplateLayoutCellHeightCacheAbsentValue);
@@ -376,6 +390,8 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
 - (void)fd_moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
 {
     if (self.fd_autoCacheInvalidationEnabled) {
+        [self.fd_cellHeightCache buildHeightCachesAtIndexPathsIfNeeded:@[sourceIndexPath, destinationIndexPath]];
+
         NSMutableArray *sourceRows = self.fd_cellHeightCache.sections[sourceIndexPath.section];
         NSMutableArray *destinationRows = self.fd_cellHeightCache.sections[destinationIndexPath.section];
         
