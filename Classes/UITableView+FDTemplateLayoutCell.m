@@ -247,7 +247,7 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
     CGFloat height = [self.delegate tableView:self heightForRowAtIndexPath:indexPath];
     [self.fd_cellHeightCache cacheHeight:height byIndexPath:indexPath];
     [self fd_debugLog:[NSString stringWithFormat:
-                       @"precached - [%@:%@] %@",
+                       @"finished precache - [%@:%@] %@",
                        @(indexPath.section),
                        @(indexPath.row),
                        @(height)]];
@@ -427,28 +427,50 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
         configuration(cell);
     }
     
-    // Add a hard width constraint to make dynamic content views (like labels) expand vertically instead
-    // of growing horizontally, in a flow-layout manner.
-    NSLayoutConstraint *tempWidthConstraint =
-    [NSLayoutConstraint constraintWithItem:cell.contentView
-                                 attribute:NSLayoutAttributeWidth
-                                 relatedBy:NSLayoutRelationEqual
-                                    toItem:nil
-                                 attribute:NSLayoutAttributeNotAnAttribute
-                                multiplier:1.0
-                                  constant:CGRectGetWidth(self.frame)];
-    [cell.contentView addConstraint:tempWidthConstraint];
+    CGSize fittingSize = CGSizeZero;
     
-    // Auto layout engine does its math
-    CGSize fittingSize = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+    // If auto layout enabled, cell's contentView must have some constraints.
+    BOOL autoLayoutEnabled = cell.contentView.constraints.count > 0 ? YES : NO;
     
-    [cell.contentView removeConstraint:tempWidthConstraint];
+    if (autoLayoutEnabled) {
+        
+        // Add a hard width constraint to make dynamic content views (like labels) expand vertically instead
+        // of growing horizontally, in a flow-layout manner.
+        NSLayoutConstraint *tempWidthConstraint =
+        [NSLayoutConstraint constraintWithItem:cell.contentView
+                                     attribute:NSLayoutAttributeWidth
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:nil
+                                     attribute:NSLayoutAttributeNotAnAttribute
+                                    multiplier:1.0
+                                      constant:CGRectGetWidth(self.frame)];
+        [cell.contentView addConstraint:tempWidthConstraint];
+        // Auto layout engine does its math
+        fittingSize = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+        [cell.contentView removeConstraint:tempWidthConstraint];
+        
+    } else {
+        
+        // If not using auto layout, you have to override "-sizeThatFits:" to provide a fitting size by yourself.
+        // This is the same method used in iOS8 self-sizing cell's implementation.
+        // Note: fitting height should not include separator view.
+        SEL selector = @selector(sizeThatFits:);
+        BOOL overrided = [cell.class instanceMethodForSelector:selector] != [UITableViewCell instanceMethodForSelector:selector];
+        NSAssert(overrided, @"Cell must override '-sizeThatFits:' method if not using auto layout.");
+        fittingSize = [cell sizeThatFits:self.frame.size];
+    }
     
     // Add 1px extra space for separator line if needed, simulating default UITableViewCell.
     if (self.separatorStyle != UITableViewCellSeparatorStyleNone) {
         fittingSize.height += 1.0 / [UIScreen mainScreen].scale;
     }
     
+    if (autoLayoutEnabled) {
+        [self fd_debugLog:[NSString stringWithFormat:@"calculate using auto layout - %@", @(fittingSize.height)]];
+    } else {
+        [self fd_debugLog:[NSString stringWithFormat:@"calculate using frame layout - %@", @(fittingSize.height)]];
+    }
+
     return fittingSize.height;
 }
 
@@ -479,10 +501,10 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
         return [self.fd_cellHeightCache cachedHeightAtIndexPath:indexPath];
     }
     
-    // Do calculations
+    // Call basic height calculation method.
     CGFloat height = [self fd_heightForCellWithIdentifier:identifier configuration:configuration];
     [self fd_debugLog:[NSString stringWithFormat:
-                       @"calculate - [%@:%@] %@",
+                       @"cached - [%@:%@] %@",
                        @(indexPath.section),
                        @(indexPath.row),
                        @(height)]];

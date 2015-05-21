@@ -39,4 +39,10 @@
     self.timeLabel.text = entity.time;
 }
 
+// If you are not using auto layout, override this method
+//- (CGSize)sizeThatFits:(CGSize)size
+//{
+//    return CGSizeMake(size.width, 150);
+//}
+
 @end
