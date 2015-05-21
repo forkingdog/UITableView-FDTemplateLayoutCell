@@ -77,7 +77,7 @@ It will print like this:
 
 ## About self-satisfied cell
 
-a fully **self-satisfied** cell is constrainted by auto layout and each edge("top", "left", "bottom", "right") has at least one layout constraint against it.  
+a fully **self-satisfied** cell is constrainted by auto layout and each edge("top", "left", "bottom", "right") has at least one layout constraint against it. It's the same concept introduced as "self-sizing cell" in iOS8 using auto layout.
 
 A bad one :( - missing right and bottom
 ![non-self-satisfied](https://github.com/forkingdog/UITableView-FDTemplateLayoutCell/blob/master/Sceenshots/screenshot0.png)   
@@ -99,8 +99,15 @@ A template layout cell is created by `-dequeueReusableCellWithIdentifier:` metho
 
 ## Installation
 
+Latest version: **1.2**
+
 ```
 pod search UITableView+FDTemplateLayoutCell 
+```
+If you cannot search out the latest version, try:  
+
+```
+pod setup
 ```
 
 ## License
