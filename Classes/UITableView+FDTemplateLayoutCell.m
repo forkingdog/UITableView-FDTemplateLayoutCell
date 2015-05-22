@@ -333,9 +333,11 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
 {
     if (self.fd_autoCacheInvalidationEnabled) {
         [sections enumerateIndexesUsingBlock: ^(NSUInteger idx, BOOL *stop) {
-            NSMutableArray *rows = self.fd_cellHeightCache.sections[idx];
-            for (NSInteger row = 0; row < rows.count; ++row) {
-                rows[row] = @(_FDTemplateLayoutCellHeightCacheAbsentValue);
+            if (idx < self.fd_cellHeightCache.sections.count) {
+                NSMutableArray *rows = self.fd_cellHeightCache.sections[idx];
+                for (NSInteger row = 0; row < rows.count; ++row) {
+                    rows[row] = @(_FDTemplateLayoutCellHeightCacheAbsentValue);
+                }
             }
         }];
     }
@@ -346,7 +348,10 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
 - (void)fd_moveSection:(NSInteger)section toSection:(NSInteger)newSection
 {
     if (self.fd_autoCacheInvalidationEnabled) {
-        [self.fd_cellHeightCache.sections exchangeObjectAtIndex:section withObjectAtIndex:newSection];
+        NSInteger sectionCount = self.fd_cellHeightCache.sections.count;
+        if (section < sectionCount && newSection < sectionCount) {
+            [self.fd_cellHeightCache.sections exchangeObjectAtIndex:section withObjectAtIndex:newSection];
+        }
     }
     [self fd_moveSection:section toSection:newSection]; // Primary call
 }
@@ -367,6 +372,7 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
 - (void)fd_deleteRowsAtIndexPaths:(NSArray *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation
 {
     if (self.fd_autoCacheInvalidationEnabled) {
+        [self.fd_cellHeightCache buildHeightCachesAtIndexPathsIfNeeded:indexPaths];
         [indexPaths enumerateObjectsUsingBlock:^(NSIndexPath *indexPath, NSUInteger idx, BOOL *stop) {
             [self.fd_cellHeightCache.sections[indexPath.section] removeObjectAtIndex:indexPath.row];
         }];
