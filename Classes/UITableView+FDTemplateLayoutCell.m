@@ -374,7 +374,8 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
     if (self.fd_autoCacheInvalidationEnabled) {
         [self.fd_cellHeightCache buildHeightCachesAtIndexPathsIfNeeded:indexPaths];
         [indexPaths enumerateObjectsUsingBlock:^(NSIndexPath *indexPath, NSUInteger idx, BOOL *stop) {
-            [self.fd_cellHeightCache.sections[indexPath.section] removeObjectAtIndex:indexPath.row];
+            NSMutableArray *rows = self.fd_cellHeightCache.sections[indexPath.section];
+            [rows removeObjectAtIndex:indexPath.row];
         }];
     }
     [self fd_deleteRowsAtIndexPaths:indexPaths withRowAnimation:animation]; // Primary call
