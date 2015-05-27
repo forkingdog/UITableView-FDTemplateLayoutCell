@@ -118,7 +118,7 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
 
 - (id)fd_templateCellForReuseIdentifier:(NSString *)identifier
 {
-    NSAssert(identifier.length > 0, @"Expects a valid identifier - %@", identifier);
+    NSAssert(identifier.length > 0, @"Expect a valid identifier - %@", identifier);
     
     NSMutableDictionary *templateCellsByIdentifiers = objc_getAssociatedObject(self, _cmd);
     if (!templateCellsByIdentifiers) {
@@ -212,6 +212,7 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
         // Remove observer when all precache tasks are done.
         if (mutableIndexPathsToBePrecached.count == 0) {
             CFRunLoopRemoveObserver(runLoop, observer, runLoopMode);
+            CFRelease(observer);
             return;
         }
         // Pop first index path record as this RunLoop iteration's task.
