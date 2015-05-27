@@ -81,6 +81,7 @@
 
 - (void)configureCell:(FDFeedCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
+    cell.fd_enforceFrameLayout = NO; // Enable to use "-sizeThatFits:"
     cell.entity = self.feedEntitySections[indexPath.section][indexPath.row];
 }
 
@@ -162,6 +163,9 @@
 
 - (void)insertRow
 {
+    if (self.feedEntitySections.count == 0) {
+        self.feedEntitySections[0] = @[].mutableCopy;
+    }
     [self.feedEntitySections[0] insertObject:self.randomEntity atIndex:0];
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
     [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
