@@ -437,8 +437,7 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
     CGSize fittingSize = CGSizeZero;
     
     // If auto layout enabled, cell's contentView must have some constraints.
-    BOOL autoLayoutEnabled = cell.contentView.constraints.count > 0 ? YES : NO;
-    
+    BOOL autoLayoutEnabled = cell.contentView.constraints.count > 0 && !cell.fd_enforceFrameLayout;
     if (autoLayoutEnabled) {
         
         // Add a hard width constraint to make dynamic content views (like labels) expand vertically instead
@@ -462,8 +461,11 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
         // This is the same method used in iOS8 self-sizing cell's implementation.
         // Note: fitting height should not include separator view.
         SEL selector = @selector(sizeThatFits:);
+        BOOL inherited = ![cell isMemberOfClass:UITableViewCell.class];
         BOOL overrided = [cell.class instanceMethodForSelector:selector] != [UITableViewCell instanceMethodForSelector:selector];
-        NSAssert(overrided, @"Cell must override '-sizeThatFits:' method if not using auto layout.");
+        if (inherited && !overrided) {
+            NSAssert(NO, @"Customized cell must override '-sizeThatFits:' method if not using auto layout.");
+        }
         fittingSize = [cell sizeThatFits:self.frame.size];
     }
     
@@ -546,6 +548,16 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
 - (void)setFd_isTemplateLayoutCell:(BOOL)isTemplateLayoutCell
 {
     objc_setAssociatedObject(self, @selector(fd_isTemplateLayoutCell), @(isTemplateLayoutCell), OBJC_ASSOCIATION_RETAIN);
+}
+
+- (BOOL)fd_enforceFrameLayout
+{
+    return [objc_getAssociatedObject(self, _cmd) boolValue];
+}
+
+- (void)setFd_enforceFrameLayout:(BOOL)enforceFrameLayout
+{
+    objc_setAssociatedObject(self, @selector(fd_enforceFrameLayout), @(enforceFrameLayout), OBJC_ASSOCIATION_RETAIN);
 }
 
 @end

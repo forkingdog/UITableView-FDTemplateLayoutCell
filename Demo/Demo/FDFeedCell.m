@@ -40,9 +40,15 @@
 }
 
 // If you are not using auto layout, override this method
-//- (CGSize)sizeThatFits:(CGSize)size
-//{
-//    return CGSizeMake(size.width, 150);
-//}
+- (CGSize)sizeThatFits:(CGSize)size
+{
+    CGFloat totalHeight = 0;
+    totalHeight += [self.titleLabel sizeThatFits:size].height;
+    totalHeight += [self.contentLabel sizeThatFits:size].height;
+    totalHeight += [self.contentImageView sizeThatFits:size].height;
+    totalHeight += [self.usernameLabel sizeThatFits:size].height;
+    totalHeight += 40; // margins
+    return CGSizeMake(size.width, totalHeight);
+}
 
 @end

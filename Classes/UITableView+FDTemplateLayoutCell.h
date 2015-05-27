@@ -75,4 +75,13 @@
 ///
 @property (nonatomic, assign) BOOL fd_isTemplateLayoutCell;
 
+/// Enable to enforce this template layout cell to use "frame layout" rather than "auto layout",
+/// and will ask cell's height by calling "-sizeThatFits:", so you must override this method.
+/// Note:
+///   If no layout constraints have been added to cell's content view, it will automatically
+///   switch to "frame layout" mode. Use this property only when you want to manually control
+///   this template layout cell's height calculation mode. Default to NO.
+///
+@property (nonatomic, assign) BOOL fd_enforceFrameLayout;
+
 @end
