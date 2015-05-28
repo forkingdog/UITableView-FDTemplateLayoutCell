@@ -49,6 +49,26 @@ Pre-cache is an advanced function which helps to cache the rest of offscreen UIT
 ``` objc
 self.tableView.estimatedRowHeight = 200;
 ```
+## Frame layout mode
+
+`FDTemplateLayoutCell` offers 2 modes for asking cell's height.  
+
+1. Auto layout mode using "-systemLayoutSizeFittingSize:"  
+2. Frame layout mode using "-sizeThatFits:"  
+
+Generally, no need to care about modes, it will **automatically** choose a proper mode by whether you have set auto layout constrants on cell's content view. If you want to enforce frame layout mode, enable this property in your cell's configuration block:  
+
+``` objc
+cell.fd_enforceFrameLayout = YES;
+```
+And if you're using frame layout mode, you must override `-sizeThatFits:` in your customized cell and return content view's height (separator excluded)
+
+```
+- (CGSize)sizeThatFits:(CGSize)size
+{
+    return CGSizeMake(size.width, A+B+C+D+E+....);
+}
+```
 
 ## Debug log
 
@@ -99,7 +119,7 @@ A template layout cell is created by `-dequeueReusableCellWithIdentifier:` metho
 
 ## Installation
 
-Latest version: **1.2**
+Latest version: **1.3**
 
 ```
 pod search UITableView+FDTemplateLayoutCell 
@@ -109,6 +129,22 @@ If you cannot search out the latest version, try:
 ```
 pod setup
 ```
+
+## Release Notes
+
+We recommend to use the latest release in cocoapods.
+
+- 1.3  
+Frame layout mode, handle cell's accessory view/type
+
+- 1.2  
+Precache and auto cache invalidation
+
+- 1.1  
+Height cache
+
+- 1.0  
+Basic automatically height calculation
 
 ## License
 MIT
