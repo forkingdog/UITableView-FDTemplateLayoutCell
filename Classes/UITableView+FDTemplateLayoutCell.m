@@ -435,11 +435,10 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
         configuration(cell);
     }
     
-    CGSize fittingSize = CGSizeZero;
-    
+    CGFloat contentViewWidth = CGRectGetWidth(self.frame);
+
     // If a cell has accessory view or system accessory type, its content view's width is smaller
     // than cell's by some fixed value.
-    CGFloat contentViewWidth = CGRectGetWidth(self.frame);
     if (cell.accessoryView) {
         contentViewWidth -= 16 + CGRectGetWidth(cell.accessoryView.frame);
     } else {
@@ -453,6 +452,8 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
         contentViewWidth -= systemAccessoryWidths[cell.accessoryType];
     }
     
+    CGSize fittingSize = CGSizeZero;
+
     // If auto layout enabled, cell's contentView must have some constraints.
     BOOL autoLayoutEnabled = cell.contentView.constraints.count > 0 && !cell.fd_enforceFrameLayout;
     if (autoLayoutEnabled) {
