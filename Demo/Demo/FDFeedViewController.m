@@ -82,6 +82,11 @@
 - (void)configureCell:(FDFeedCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     cell.fd_enforceFrameLayout = NO; // Enable to use "-sizeThatFits:"
+    if (indexPath.row % 2 == 0) {
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    } else {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    }
     cell.entity = self.feedEntitySections[indexPath.section][indexPath.row];
 }
 
