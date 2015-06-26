@@ -33,6 +33,8 @@
 // Tag a absent height cache value which will be set to a real value.
 static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
 
+#define IS_LANDSCAPE_ORIENTATION ((NSUInteger)UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation))
+
 @implementation _FDTemplateLayoutCellHeightCache
 
 - (void)buildHeightCachesAtIndexPathsIfNeeded:(NSArray *)indexPaths
@@ -44,7 +46,7 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
     if (!self.sections) {
         self.sections = @[].mutableCopy;
     }
-    
+
     // Build every section array or row array which is smaller than given index path.
     [indexPaths enumerateObjectsUsingBlock:^(NSIndexPath *indexPath, NSUInteger idx, BOOL *stop) {
         for (NSInteger section = 0; section <= indexPath.section; ++section) {
@@ -55,7 +57,7 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
         NSMutableArray *rows = self.sections[indexPath.section];
         for (NSInteger row = 0; row <= indexPath.row; ++row) {
             if (row >= rows.count) {
-                rows[row] = @(_FDTemplateLayoutCellHeightCacheAbsentValue);
+                rows[row] = @[@(_FDTemplateLayoutCellHeightCacheAbsentValue),@(_FDTemplateLayoutCellHeightCacheAbsentValue)].mutableCopy;
             }
         }
     }];
@@ -64,23 +66,23 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
 - (BOOL)hasCachedHeightAtIndexPath:(NSIndexPath *)indexPath
 {
     [self buildHeightCachesAtIndexPathsIfNeeded:@[indexPath]];
-    NSNumber *cachedNumber = self.sections[indexPath.section][indexPath.row];
+    NSNumber *cachedNumber = self.sections[indexPath.section][indexPath.row][IS_LANDSCAPE_ORIENTATION];
     return ![cachedNumber isEqualToNumber:@(_FDTemplateLayoutCellHeightCacheAbsentValue)];
 }
 
 - (void)cacheHeight:(CGFloat)height byIndexPath:(NSIndexPath *)indexPath
 {
     [self buildHeightCachesAtIndexPathsIfNeeded:@[indexPath]];
-    self.sections[indexPath.section][indexPath.row] = @(height);
+    self.sections[indexPath.section][indexPath.row][IS_LANDSCAPE_ORIENTATION] = @(height);
 }
 
 - (CGFloat)cachedHeightAtIndexPath:(NSIndexPath *)indexPath
 {
     [self buildHeightCachesAtIndexPathsIfNeeded:@[indexPath]];
 #if CGFLOAT_IS_DOUBLE
-    return [self.sections[indexPath.section][indexPath.row] doubleValue];
+    return [self.sections[indexPath.section][indexPath.row][IS_LANDSCAPE_ORIENTATION] doubleValue];
 #else
-    return [self.sections[indexPath.section][indexPath.row] floatValue];
+    return [self.sections[indexPath.section][indexPath.row][IS_LANDSCAPE_ORIENTATION] floatValue];
 #endif
 }
 
@@ -337,7 +339,7 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
             if (idx < self.fd_cellHeightCache.sections.count) {
                 NSMutableArray *rows = self.fd_cellHeightCache.sections[idx];
                 for (NSInteger row = 0; row < rows.count; ++row) {
-                    rows[row] = @(_FDTemplateLayoutCellHeightCacheAbsentValue);
+                    rows[row] = @[@(_FDTemplateLayoutCellHeightCacheAbsentValue),@(_FDTemplateLayoutCellHeightCacheAbsentValue)].mutableCopy;
                 }
             }
         }];
@@ -363,7 +365,7 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
         [self.fd_cellHeightCache buildHeightCachesAtIndexPathsIfNeeded:indexPaths];
         [indexPaths enumerateObjectsUsingBlock:^(NSIndexPath *indexPath, NSUInteger idx, BOOL *stop) {
             NSMutableArray *rows = self.fd_cellHeightCache.sections[indexPath.section];
-            [rows insertObject:@(_FDTemplateLayoutCellHeightCacheAbsentValue) atIndex:indexPath.row];
+            [rows insertObject:@[@(_FDTemplateLayoutCellHeightCacheAbsentValue),@(_FDTemplateLayoutCellHeightCacheAbsentValue)].mutableCopy atIndex:indexPath.row];
         }];
     }
     [self fd_insertRowsAtIndexPaths:indexPaths withRowAnimation:animation]; // Primary call
@@ -388,7 +390,7 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
         [self.fd_cellHeightCache buildHeightCachesAtIndexPathsIfNeeded:indexPaths];
         [indexPaths enumerateObjectsUsingBlock:^(NSIndexPath *indexPath, NSUInteger idx, BOOL *stop) {
             NSMutableArray *rows = self.fd_cellHeightCache.sections[indexPath.section];
-            rows[indexPath.row] = @(_FDTemplateLayoutCellHeightCacheAbsentValue);
+            rows[indexPath.row] = @[@(_FDTemplateLayoutCellHeightCacheAbsentValue),@(_FDTemplateLayoutCellHeightCacheAbsentValue)].mutableCopy;
         }];
     }
     [self fd_reloadRowsAtIndexPaths:indexPaths withRowAnimation:animation]; // Primary call
@@ -403,8 +405,8 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
         NSMutableArray *sourceRows = self.fd_cellHeightCache.sections[sourceIndexPath.section];
         NSMutableArray *destinationRows = self.fd_cellHeightCache.sections[destinationIndexPath.section];
         
-        NSNumber *sourceValue = sourceRows[sourceIndexPath.row];
-        NSNumber *destinationValue = destinationRows[destinationIndexPath.row];
+        id sourceValue = sourceRows[sourceIndexPath.row];
+        id destinationValue = destinationRows[destinationIndexPath.row];
         
         sourceRows[sourceIndexPath.row] = destinationValue;
         destinationRows[destinationIndexPath.row] = sourceValue;
@@ -536,7 +538,7 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
                        @(indexPath.section),
                        @(indexPath.row),
                        @(height)]];
-    
+
     // Cache it
     [self.fd_cellHeightCache cacheHeight:height byIndexPath:indexPath];
     
