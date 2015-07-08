@@ -47,6 +47,9 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
     
     // Build every section array or row array which is smaller than given index path.
     [indexPaths enumerateObjectsUsingBlock:^(NSIndexPath *indexPath, NSUInteger idx, BOOL *stop) {
+        
+        NSAssert(indexPath.section >= 0, @"Expect a positive section rather than '%@'.", @(indexPath.section));
+        
         for (NSInteger section = 0; section <= indexPath.section; ++section) {
             if (section >= self.sections.count) {
                 self.sections[section] = @[].mutableCopy;
@@ -374,9 +377,21 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
 {
     if (self.fd_autoCacheInvalidationEnabled) {
         [self.fd_cellHeightCache buildHeightCachesAtIndexPathsIfNeeded:indexPaths];
+        
+        NSMutableDictionary *mutableIndexSetsToRemove = @{}.mutableCopy;
         [indexPaths enumerateObjectsUsingBlock:^(NSIndexPath *indexPath, NSUInteger idx, BOOL *stop) {
-            NSMutableArray *rows = self.fd_cellHeightCache.sections[indexPath.section];
-            [rows removeObjectAtIndex:indexPath.row];
+            
+            NSMutableIndexSet *mutableIndexSet = mutableIndexSetsToRemove[@(indexPath.section)];
+            if (!mutableIndexSet) {
+                mutableIndexSetsToRemove[@(indexPath.section)] = [NSMutableIndexSet indexSet];
+            }
+            
+            [mutableIndexSet addIndex:indexPath.row];
+        }];
+        
+        [mutableIndexSetsToRemove enumerateKeysAndObjectsUsingBlock:^(NSNumber *key, NSIndexSet *indexSet, BOOL *stop) {
+            NSMutableArray *rows = self.fd_cellHeightCache.sections[key.integerValue];
+            [rows removeObjectsAtIndexes:indexSet];
         }];
     }
     [self fd_deleteRowsAtIndexPaths:indexPaths withRowAnimation:animation]; // Primary call
@@ -438,7 +453,7 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
     CGFloat contentViewWidth = CGRectGetWidth(self.frame);
 
     // If a cell has accessory view or system accessory type, its content view's width is smaller
-    // than cell's by some fixed value.
+    // than cell's by some fixed values.
     if (cell.accessoryView) {
         contentViewWidth -= 16 + CGRectGetWidth(cell.accessoryView.frame);
     } else {

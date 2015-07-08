@@ -39,6 +39,8 @@
     self.timeLabel.text = entity.time;
 }
 
+#if 0
+
 // If you are not using auto layout, override this method
 - (CGSize)sizeThatFits:(CGSize)size
 {
@@ -50,5 +52,7 @@
     totalHeight += 40; // margins
     return CGSizeMake(size.width, totalHeight);
 }
+
+#endif
 
 @end
