@@ -433,7 +433,7 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
 
 @implementation UITableView (FDTemplateLayoutCell)
 
-- (CGFloat)fd_heightForCellWithIdentifier:(NSString *)identifier configuration:(void (^)(id))configuration
+- (CGFloat)fd_heightForCellWithIdentifier:(NSString *)identifier configuration:(void (^)(UITableViewCell *))configuration
 {
     if (!identifier) {
         return 0;
@@ -516,7 +516,7 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
     return fittingSize.height;
 }
 
-- (CGFloat)fd_heightForCellWithIdentifier:(NSString *)identifier cacheByIndexPath:(NSIndexPath *)indexPath configuration:(void (^)(id))configuration
+- (CGFloat)fd_heightForCellWithIdentifier:(NSString *)identifier cacheByIndexPath:(NSIndexPath *)indexPath configuration:(void (^)(UITableViewCell *))configuration
 {
     if (!identifier || !indexPath) {
         return 0;
