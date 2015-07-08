@@ -277,6 +277,15 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
 
 @implementation UITableView (FDTemplateLayoutCellAutomaticallyCacheInvalidation)
 
+- (void)fd_reloadData:(BOOL)shouldRemoveCache
+{
+    if (self.fd_autoCacheInvalidationEnabled && shouldRemoveCache) {
+        [self.fd_cellHeightCache.sections removeAllObjects];
+    }
+    [self fd_reloadData]; // Primary call
+    [self fd_precacheIfNeeded];
+}
+
 + (void)load
 {
     // All methods that trigger height cache's invalidation
@@ -305,11 +314,7 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
 
 - (void)fd_reloadData
 {
-    if (self.fd_autoCacheInvalidationEnabled) {
-        [self.fd_cellHeightCache.sections removeAllObjects];
-    }
-    [self fd_reloadData]; // Primary call
-    [self fd_precacheIfNeeded];
+    [self fd_reloadData:YES];
 }
 
 - (void)fd_insertSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation
