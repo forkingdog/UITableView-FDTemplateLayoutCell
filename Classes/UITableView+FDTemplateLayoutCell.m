@@ -488,10 +488,12 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
                                      attribute:NSLayoutAttributeNotAnAttribute
                                     multiplier:1.0
                                       constant:contentViewWidth];
-        [cell.contentView addConstraint:tempWidthConstraint];
-        // Auto layout engine does its math
-        fittingSize = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
-        [cell.contentView removeConstraint:tempWidthConstraint];
+        @synchronized(cell.contentView) {
+            [cell.contentView addConstraint:tempWidthConstraint];
+            // Auto layout engine does its math
+            fittingSize = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+            [cell.contentView removeConstraint:tempWidthConstraint];
+        }
         
     } else {
         
