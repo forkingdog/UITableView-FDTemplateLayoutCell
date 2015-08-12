@@ -11,10 +11,16 @@
 #import "FDFeedEntity.h"
 #import "FDFeedCell.h"
 
+typedef NS_ENUM(NSInteger, FDSimulatedCacheMode) {
+    FDSimulatedCacheModeNone = 0,
+    FDSimulatedCacheModeCacheByIndexPath,
+    FDSimulatedCacheModeCacheByKey
+};
+
 @interface FDFeedViewController () <UIActionSheetDelegate>
 @property (nonatomic, copy) NSArray *prototypeEntitiesFromJSON;
 @property (nonatomic, strong) NSMutableArray *feedEntitySections; // 2d array
-@property (nonatomic, assign) BOOL cellHeightCacheEnabled;
+@property (nonatomic, weak) IBOutlet UISegmentedControl *cacheModeSegmentControl;
 @end
 
 @implementation FDFeedViewController
@@ -22,11 +28,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+   
     self.tableView.estimatedRowHeight = 200;
     self.tableView.fd_debugLogEnabled = YES;
     
-    self.cellHeightCacheEnabled = YES;
+    // Cache by index path initial
+    self.cacheModeSegmentControl.selectedSegmentIndex = 1;
     
     [self buildTestDataThen:^{
         self.feedEntitySections = @[].mutableCopy;
@@ -94,14 +101,25 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.cellHeightCacheEnabled) {
-        return [tableView fd_heightForCellWithIdentifier:@"FDFeedCell" cacheByIndexPath:indexPath configuration:^(FDFeedCell *cell) {
-            [self configureCell:cell atIndexPath:indexPath];
-        }];
-    } else {
-        return [tableView fd_heightForCellWithIdentifier:@"FDFeedCell" configuration:^(FDFeedCell *cell) {
-            [self configureCell:cell atIndexPath:indexPath];
-        }];
+    FDSimulatedCacheMode mode = self.cacheModeSegmentControl.selectedSegmentIndex;
+    NSString *reuseIdentifier = @"FDFeedCell";
+    switch (mode) {
+        case FDSimulatedCacheModeNone:
+            return [tableView fd_heightForCellWithIdentifier:reuseIdentifier configuration:^(FDFeedCell *cell) {
+                [self configureCell:cell atIndexPath:indexPath];
+            }];
+        case FDSimulatedCacheModeCacheByIndexPath:
+            return [tableView fd_heightForCellWithIdentifier:@"FDFeedCell" cacheByIndexPath:indexPath configuration:^(FDFeedCell *cell) {
+                [self configureCell:cell atIndexPath:indexPath];
+            }];
+        case FDSimulatedCacheModeCacheByKey: {
+            FDFeedEntity *entity = self.feedEntitySections[indexPath.section][indexPath.row];
+            return [tableView fd_heightForCellWithIdentifier:@"FDFeedCell" cacheByKey:entity.identifier configuration:^(FDFeedCell *cell) {
+                [self configureCell:cell atIndexPath:indexPath];
+            }];
+        };
+        default:
+            break;
     }
 }
 
@@ -124,11 +142,6 @@
         [self.tableView reloadData];
         [sender endRefreshing];
     });
-}
-
-- (IBAction)leftSwitchAction:(UISwitch *)sender
-{
-    self.cellHeightCacheEnabled = sender.isOn;
 }
 
 - (IBAction)rightNavigationItemAction:(id)sender

@@ -21,6 +21,11 @@
 // SOFTWARE.
 
 #import <UIKit/UIKit.h>
+#import "UITableView+FDTemplateLayoutCellDebug.h"
+
+NS_ASSUME_NONNULL_BEGIN
+
+typedef void (^__nullable FDTemplateLayoutCellConfigurationBlock)(id cell);
 
 @interface UITableView (FDTemplateLayoutCell)
 
@@ -38,7 +43,7 @@
 ///        to the template cell. The configuration should be minimal for scrolling
 ///        performance yet sufficient for calculating cell's height.
 ///
-- (CGFloat)fd_heightForCellWithIdentifier:(NSString *)identifier configuration:(void (^)(id cell))configuration;
+- (CGFloat)fd_heightForCellWithIdentifier:(NSString *)identifier configuration:(FDTemplateLayoutCellConfigurationBlock)configuration;
 
 /// This method does what "-fd_heightForCellWithIdentifier:configuration" does, and
 /// calculated height will be cached by its index path, returns a cached height
@@ -50,14 +55,11 @@
 ///
 /// @param indexPath where this cell's height cache belongs.
 ///
-- (CGFloat)fd_heightForCellWithIdentifier:(NSString *)identifier cacheByIndexPath:(NSIndexPath *)indexPath configuration:(void (^)(id cell))configuration;
+- (CGFloat)fd_heightForCellWithIdentifier:(NSString *)identifier cacheByIndexPath:(NSIndexPath *)indexPath configuration:(FDTemplateLayoutCellConfigurationBlock)configuration;
 
-/// Helps to debug or inspect what is this "FDTemplateLayoutCell" extention doing,
-/// turning on to print logs when "creating", "calculating", "precaching" or "hitting cache".
+/// TODO: +7
 ///
-/// Default to "NO", log by "NSLog".
-///
-@property (nonatomic, assign) BOOL fd_debugLogEnabled;
+- (CGFloat)fd_heightForCellWithIdentifier:(NSString *)identifier cacheByKey:(id<NSCopying>)key configuration:(FDTemplateLayoutCellConfigurationBlock)configuration;
 
 @end
 
@@ -85,3 +87,5 @@
 @property (nonatomic, assign) BOOL fd_enforceFrameLayout;
 
 @end
+
+NS_ASSUME_NONNULL_END
