@@ -59,6 +59,11 @@
 ///
 @property (nonatomic, assign) BOOL fd_debugLogEnabled;
 
+/**
+ *  Use this if you don't want to remove cache when reload tableView
+ */
+- (void)fd_reloadData:(BOOL)shouldRemoveCache;
+
 @end
 
 @interface UITableViewCell (FDTemplateLayoutCell)
