@@ -22,8 +22,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.tableView.estimatedRowHeight = 200;
+
+    // Cells changing its size with tables with `estimatedRowHeight` doesn't work well with rotations.
+    // self.tableView.estimatedRowHeight = 200;
     self.tableView.fd_debugLogEnabled = YES;
     
     self.cellHeightCacheEnabled = YES;
