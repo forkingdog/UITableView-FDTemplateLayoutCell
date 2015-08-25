@@ -280,29 +280,31 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
 + (void)load
 {
     // All methods that trigger height cache's invalidation
-    SEL selectors[] = {
-        @selector(reloadData),
-        @selector(insertSections:withRowAnimation:),
-        @selector(deleteSections:withRowAnimation:),
-        @selector(reloadSections:withRowAnimation:),
-        @selector(moveSection:toSection:),
-        @selector(insertRowsAtIndexPaths:withRowAnimation:),
-        @selector(deleteRowsAtIndexPaths:withRowAnimation:),
-        @selector(reloadRowsAtIndexPaths:withRowAnimation:),
-        @selector(moveRowAtIndexPath:toIndexPath:)
-    };
-    
-    for (NSUInteger index = 0; index < sizeof(selectors) / sizeof(SEL); ++index) {
-        SEL originalSelector = selectors[index];
-        SEL swizzledSelector = NSSelectorFromString([@"fd_" stringByAppendingString:NSStringFromSelector(originalSelector)]);
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        SEL selectors[] = {
+            @selector(reloadData),
+            @selector(insertSections:withRowAnimation:),
+            @selector(deleteSections:withRowAnimation:),
+            @selector(reloadSections:withRowAnimation:),
+            @selector(moveSection:toSection:),
+            @selector(insertRowsAtIndexPaths:withRowAnimation:),
+            @selector(deleteRowsAtIndexPaths:withRowAnimation:),
+            @selector(reloadRowsAtIndexPaths:withRowAnimation:),
+            @selector(moveRowAtIndexPath:toIndexPath:)
+        };
         
-        Method originalMethod = class_getInstanceMethod(self, originalSelector);
-        Method swizzledMethod = class_getInstanceMethod(self, swizzledSelector);
-        
-        method_exchangeImplementations(originalMethod, swizzledMethod);
-    }
+        for (NSUInteger index = 0; index < sizeof(selectors) / sizeof(SEL); ++index) {
+            SEL originalSelector = selectors[index];
+            SEL swizzledSelector = NSSelectorFromString([@"fd_" stringByAppendingString:NSStringFromSelector(originalSelector)]);
+            
+            Method originalMethod = class_getInstanceMethod(self, originalSelector);
+            Method swizzledMethod = class_getInstanceMethod(self, swizzledSelector);
+            
+            method_exchangeImplementations(originalMethod, swizzledMethod);
+        }
+    });
 }
-
 - (void)fd_reloadData
 {
     if (self.fd_autoCacheInvalidationEnabled) {
