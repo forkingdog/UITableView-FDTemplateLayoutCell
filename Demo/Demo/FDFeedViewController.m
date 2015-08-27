@@ -24,7 +24,6 @@
     [super viewDidLoad];
     
     self.tableView.estimatedRowHeight = 200;
-    self.tableView.fd_debugLogEnabled = YES;
     
     self.cellHeightCacheEnabled = YES;
     
@@ -81,7 +80,6 @@
 
 - (void)configureCell:(FDFeedCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    cell.fd_enforceFrameLayout = NO; // Enable to use "-sizeThatFits:"
     if (indexPath.row % 2 == 0) {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     } else {
@@ -95,12 +93,12 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (self.cellHeightCacheEnabled) {
-        return [tableView fd_heightForCellWithIdentifier:@"FDFeedCell" cacheByIndexPath:indexPath configuration:^(FDFeedCell *cell) {
-            [self configureCell:cell atIndexPath:indexPath];
-        }];
+        return [tableView fd_heightForCellWithIdentifier:@"FDFeedCell" cacheByIndexPath:indexPath configuration:^(UITableViewCell *cell) {
+            [self configureCell:(FDFeedCell *)cell atIndexPath:indexPath];
+        } enforceFrameLayout:NO];
     } else {
-        return [tableView fd_heightForCellWithIdentifier:@"FDFeedCell" configuration:^(FDFeedCell *cell) {
-            [self configureCell:cell atIndexPath:indexPath];
+        return [tableView fd_heightForCellWithIdentifier:@"FDFeedCell" configuration:^(UITableViewCell *cell) {
+            [self configureCell:(FDFeedCell *)cell atIndexPath:indexPath];
         }];
     }
 }
