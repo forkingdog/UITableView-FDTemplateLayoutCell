@@ -22,14 +22,12 @@
 
 #import <UIKit/UIKit.h>
 
-NS_ASSUME_NONNULL_BEGIN
-
 @interface FDTemplateLayoutCellIndexPathHeightCache : NSObject
 
 - (BOOL)existsHeightAtIndexPath:(NSIndexPath *)indexPath;
 - (void)cacheHeight:(CGFloat)height byIndexPath:(NSIndexPath *)indexPath;
 - (CGFloat)heightForIndexPath:(NSIndexPath *)indexPath;
-- (void)invalidateHeightAtIndexPath:(NSIndexPath *)indexPath;
+- (void)clearHeightAtIndexPath:(NSIndexPath *)indexPath;
 - (void)clearAllheightCaches;
 - (void)insertSection:(NSInteger)section;
 - (void)deleteSection:(NSInteger)section;
@@ -45,19 +43,18 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface FDTemplateLayoutCellKeyHeightCache : NSObject
 
-- (BOOL)existsHeightForKey:(id <NSCopying>)key;
-- (void)cacheHeight:(CGFloat)height byKey:(id <NSCopying>)key;
-- (CGFloat)heightForKey:(id <NSCopying>)key;
-- (void)invalidateHeightForKey:(id <NSCopying>)key;
+- (BOOL)existsHeightForKey:(id<NSCopying>)key;
+- (void)cacheHeight:(CGFloat)height byKey:(id<NSCopying>)key;
+- (CGFloat)heightForKey:(id<NSCopying>)key;
+- (void)clearHeightForKey:(id<NSCopying>)key;
 - (void)clearAllheightCaches;
 
 @end
 
+/// Do not use directly.
 @interface UITableView (FDTemplateLayoutCellHeightCache)
 
 @property (nonatomic, strong, readonly) FDTemplateLayoutCellIndexPathHeightCache *fd_indexPathHeightCache;
 @property (nonatomic, strong, readonly) FDTemplateLayoutCellKeyHeightCache *fd_keyHeightCache;
 
 @end
-
-NS_ASSUME_NONNULL_END

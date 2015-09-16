@@ -114,6 +114,7 @@ typedef NS_ENUM(NSInteger, FDSimulatedCacheMode) {
             }];
         case FDSimulatedCacheModeCacheByKey: {
             FDFeedEntity *entity = self.feedEntitySections[indexPath.section][indexPath.row];
+
             return [tableView fd_heightForCellWithIdentifier:@"FDFeedCell" cacheByKey:entity.identifier configuration:^(FDFeedCell *cell) {
                 [self configureCell:cell atIndexPath:indexPath];
             }];

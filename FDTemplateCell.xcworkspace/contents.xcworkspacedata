@@ -5,16 +5,16 @@
       location = "group:Classes"
       name = "Classes">
       <FileRef
+         location = "group:UITableView+FDTemplateLayoutCell.h">
+      </FileRef>
+      <FileRef
          location = "group:UITableView+FDTemplateLayoutCell.m">
       </FileRef>
       <FileRef
-         location = "group:UITableView+FDTemplateLayoutCellAutoInvalidate.h">
+         location = "group:UITableView+FDTemplateLayoutCellInvalidation.h">
       </FileRef>
       <FileRef
-         location = "group:UITableView+FDTemplateLayoutCellAutoInvalidate.m">
-      </FileRef>
-      <FileRef
-         location = "group:UITableView+FDTemplateLayoutCellDebug.m">
+         location = "group:UITableView+FDTemplateLayoutCellInvalidation.m">
       </FileRef>
       <FileRef
          location = "group:UITableView+FDTemplateLayoutCellHeightCache.h">
@@ -32,7 +32,7 @@
          location = "group:UITableView+FDTemplateLayoutCellDebug.h">
       </FileRef>
       <FileRef
-         location = "group:UITableView+FDTemplateLayoutCell.h">
+         location = "group:UITableView+FDTemplateLayoutCellDebug.m">
       </FileRef>
    </Group>
    <FileRef

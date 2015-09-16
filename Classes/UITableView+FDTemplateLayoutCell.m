@@ -22,14 +22,13 @@
 
 #import "UITableView+FDTemplateLayoutCell.h"
 #import "UITableView+FDTemplateLayoutCellHeightCache.h"
-#import "UITableView+FDTemplateLayoutCellAutoInvalidate.h"
+#import "UITableView+FDTemplateLayoutCellInvalidation.h"
 #import "UITableView+FDTemplateLayoutCellPrecache.h"
 #import <objc/runtime.h>
 
 @implementation UITableView (FDTemplateLayoutCell)
 
-- (id)fd_templateCellForReuseIdentifier:(NSString *)identifier
-{
+- (id)fd_templateCellForReuseIdentifier:(NSString *)identifier {
     NSAssert(identifier.length > 0, @"Expect a valid identifier - %@", identifier);
     
     NSMutableDictionary *templateCellsByIdentifiers = objc_getAssociatedObject(self, _cmd);
@@ -52,8 +51,7 @@
     return templateCell;
 }
 
-- (CGFloat)fd_heightForCellWithIdentifier:(NSString * __nonnull)identifier configuration:(FDTemplateLayoutCellConfigurationBlock)configuration
-{
+- (CGFloat)fd_heightForCellWithIdentifier:(NSString *)identifier configuration:(void (^)(id cell))configuration {
     if (!identifier) {
         return 0;
     }
@@ -134,8 +132,7 @@
     return fittingSize.height;
 }
 
-- (CGFloat)fd_heightForCellWithIdentifier:(NSString * __nonnull)identifier cacheByIndexPath:(NSIndexPath * __nonnull)indexPath configuration:(FDTemplateLayoutCellConfigurationBlock)configuration
-{
+- (CGFloat)fd_heightForCellWithIdentifier:(NSString *)identifier cacheByIndexPath:(NSIndexPath *)indexPath configuration:(void (^)(id cell))configuration {
     if (!identifier || !indexPath) {
         return 0;
     }
@@ -176,8 +173,7 @@
     return height;
 }
 
-- (CGFloat)fd_heightForCellWithIdentifier:(NSString * __nonnull)identifier cacheByKey:(id<NSCopying> __nonnull)key configuration:(FDTemplateLayoutCellConfigurationBlock)configuration
-{
+- (CGFloat)fd_heightForCellWithIdentifier:(NSString *)identifier cacheByKey:(id<NSCopying>)key configuration:(void (^)(id cell))configuration {
     if (!identifier || !key) {
         return 0;
     }
@@ -200,23 +196,19 @@
 
 @implementation UITableViewCell (FDTemplateLayoutCell)
 
-- (BOOL)fd_isTemplateLayoutCell
-{
+- (BOOL)fd_isTemplateLayoutCell {
     return [objc_getAssociatedObject(self, _cmd) boolValue];
 }
 
-- (void)setFd_isTemplateLayoutCell:(BOOL)isTemplateLayoutCell
-{
+- (void)setFd_isTemplateLayoutCell:(BOOL)isTemplateLayoutCell {
     objc_setAssociatedObject(self, @selector(fd_isTemplateLayoutCell), @(isTemplateLayoutCell), OBJC_ASSOCIATION_RETAIN);
 }
 
-- (BOOL)fd_enforceFrameLayout
-{
+- (BOOL)fd_enforceFrameLayout {
     return [objc_getAssociatedObject(self, _cmd) boolValue];
 }
 
-- (void)setFd_enforceFrameLayout:(BOOL)enforceFrameLayout
-{
+- (void)setFd_enforceFrameLayout:(BOOL)enforceFrameLayout {
     objc_setAssociatedObject(self, @selector(fd_enforceFrameLayout), @(enforceFrameLayout), OBJC_ASSOCIATION_RETAIN);
 }
 

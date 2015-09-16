@@ -22,9 +22,15 @@
 
 #import <UIKit/UIKit.h>
 
-@interface UITableView (FDTemplateLayoutCellAutoInvalidate)
+@interface UITableView (FDTemplateLayoutCellInvalidation)
 
 /// Default to YES.
 @property (nonatomic, assign) BOOL fd_autoInvalidateEnabled;
+
+/// Invalidate cache at indexPath in "cacheByIndexPath" mode.
+- (void)invalidateHeightAtIndexPath:(NSIndexPath *)indexPath;
+
+/// Invalidate cache for key in "cacheByKey" mode.
+- (void)invalidateHeightForKey:(id<NSCopying>)key;
 
 @end

@@ -20,14 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#import "UITableView+FDTemplateLayoutCellAutoInvalidate.h"
+#import "UITableView+FDTemplateLayoutCellInvalidation.h"
 #import "UITableView+FDTemplateLayoutCellHeightCache.h"
+#import "UITableView+FDTemplateLayoutCellPrecache.h"
 #import <objc/runtime.h>
 
-@implementation UITableView (FDTemplateLayoutCellAutoInvalidate)
+@implementation UITableView (FDTemplateLayoutCellInvalidation)
 
-+ (void)load
-{
++ (void)load {
     // All methods that trigger height cache's invalidation
     SEL selectors[] = {
         @selector(reloadData),
@@ -52,16 +52,14 @@
     }
 }
 
-- (void)fd_reloadData
-{
+- (void)fd_reloadData {
     if (self.fd_autoInvalidateEnabled) {
         [self.fd_indexPathHeightCache clearAllheightCaches];
     }
     [self fd_reloadData]; // Primary call
 }
 
-- (void)fd_insertSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation
-{
+- (void)fd_insertSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation {
     if (self.fd_autoInvalidateEnabled) {
         [sections enumerateIndexesUsingBlock:^(NSUInteger section, BOOL *stop) {
             [self.fd_indexPathHeightCache insertSection:section];
@@ -70,8 +68,7 @@
     [self fd_insertSections:sections withRowAnimation:animation]; // Primary call
 }
 
-- (void)fd_deleteSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation
-{
+- (void)fd_deleteSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation {
     if (self.fd_autoInvalidateEnabled) {
         [sections enumerateIndexesUsingBlock:^(NSUInteger section, BOOL *stop) {
             [self.fd_indexPathHeightCache deleteSection:section];
@@ -80,8 +77,7 @@
     [self fd_deleteSections:sections withRowAnimation:animation]; // Primary call
 }
 
-- (void)fd_reloadSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation
-{
+- (void)fd_reloadSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation {
     if (self.fd_autoInvalidateEnabled) {
         [sections enumerateIndexesUsingBlock: ^(NSUInteger section, BOOL *stop) {
             [self.fd_indexPathHeightCache reloadSection:section];
@@ -90,40 +86,35 @@
     [self fd_reloadSections:sections withRowAnimation:animation]; // Primary call
 }
 
-- (void)fd_moveSection:(NSInteger)section toSection:(NSInteger)newSection
-{
+- (void)fd_moveSection:(NSInteger)section toSection:(NSInteger)newSection {
     if (self.fd_autoInvalidateEnabled) {
         [self.fd_indexPathHeightCache exchangeHeightsFromSection:section toSection:newSection];
     }
     [self fd_moveSection:section toSection:newSection]; // Primary call
 }
 
-- (void)fd_insertRowsAtIndexPaths:(NSArray *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation
-{
+- (void)fd_insertRowsAtIndexPaths:(NSArray *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation {
     if (self.fd_autoInvalidateEnabled) {
         [self.fd_indexPathHeightCache insertRowsAtIndexPaths:indexPaths];
     }
     [self fd_insertRowsAtIndexPaths:indexPaths withRowAnimation:animation]; // Primary call
 }
 
-- (void)fd_deleteRowsAtIndexPaths:(NSArray *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation
-{
+- (void)fd_deleteRowsAtIndexPaths:(NSArray *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation {
     if (self.fd_autoInvalidateEnabled) {
         [self.fd_indexPathHeightCache deleteRowsAtIndexPaths:indexPaths];
     }
     [self fd_deleteRowsAtIndexPaths:indexPaths withRowAnimation:animation]; // Primary call
 }
 
-- (void)fd_reloadRowsAtIndexPaths:(NSArray *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation
-{
+- (void)fd_reloadRowsAtIndexPaths:(NSArray *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation {
     if (self.fd_autoInvalidateEnabled) {
         [self.fd_indexPathHeightCache reloadRowsAtIndexPaths:indexPaths];
     }
     [self fd_reloadRowsAtIndexPaths:indexPaths withRowAnimation:animation]; // Primary call
 }
 
-- (void)fd_moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
-{
+- (void)fd_moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
     if (self.fd_autoInvalidateEnabled) {
         [self.fd_indexPathHeightCache moveRowAtIndexPath:sourceIndexPath toIndexPath:destinationIndexPath];
     }
@@ -132,14 +123,22 @@
 
 #pragma mark - Public
 
-- (BOOL)fd_autoInvalidateEnabled
-{
+- (BOOL)fd_autoInvalidateEnabled {
     return [objc_getAssociatedObject(self, _cmd) boolValue];
 }
 
-- (void)setFd_autoInvalidateEnabled:(BOOL)enabled
-{
+- (void)setFd_autoInvalidateEnabled:(BOOL)enabled {
     objc_setAssociatedObject(self, @selector(fd_autoInvalidateEnabled), @(enabled), OBJC_ASSOCIATION_RETAIN);
+}
+
+- (void)invalidateHeightAtIndexPath:(NSIndexPath *)indexPath {
+    [self.fd_indexPathHeightCache clearHeightAtIndexPath:indexPath];
+    [self fd_precacheIfNeeded];
+}
+
+- (void)invalidateHeightForKey:(id<NSCopying>)key {
+    [self.fd_keyHeightCache clearHeightForKey:key];
+    [self fd_precacheIfNeeded];
 }
 
 @end

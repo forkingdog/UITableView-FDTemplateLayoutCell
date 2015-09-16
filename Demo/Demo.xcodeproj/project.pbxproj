@@ -14,13 +14,13 @@
 		488EECC51ADFEDC6004EAA71 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 488EECC31ADFEDC6004EAA71 /* LaunchScreen.xib */; };
 		488EECE01ADFF7A5004EAA71 /* FDFeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 488EECDF1ADFF7A5004EAA71 /* FDFeedViewController.m */; };
 		488EECE31ADFF884004EAA71 /* FDFeedEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 488EECE21ADFF884004EAA71 /* FDFeedEntity.m */; };
-		48954A241B5102E200EFD15D /* UITableView+FDTemplateLayoutCellAutoInvalidate.m in Sources */ = {isa = PBXBuildFile; fileRef = 48954A1B1B5102E200EFD15D /* UITableView+FDTemplateLayoutCellAutoInvalidate.m */; };
 		48954A251B5102E200EFD15D /* UITableView+FDTemplateLayoutCellPrecache.m in Sources */ = {isa = PBXBuildFile; fileRef = 48954A1D1B5102E200EFD15D /* UITableView+FDTemplateLayoutCellPrecache.m */; };
 		48954A261B5102E200EFD15D /* UITableView+FDTemplateLayoutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48954A1F1B5102E200EFD15D /* UITableView+FDTemplateLayoutCell.m */; };
 		48954A271B5102E200EFD15D /* UITableView+FDTemplateLayoutCellDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 48954A211B5102E200EFD15D /* UITableView+FDTemplateLayoutCellDebug.m */; };
 		48954A281B5102E200EFD15D /* UITableView+FDTemplateLayoutCellHeightCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 48954A231B5102E200EFD15D /* UITableView+FDTemplateLayoutCellHeightCache.m */; };
 		4897E5DD1ADFFBBD00E87B5F /* data.json in Resources */ = {isa = PBXBuildFile; fileRef = 4897E5DC1ADFFBBD00E87B5F /* data.json */; };
 		4897E5E01AE090B900E87B5F /* FDFeedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4897E5DF1AE090B900E87B5F /* FDFeedCell.m */; };
+		A33A166A1BA8F45500C91E12 /* UITableView+FDTemplateLayoutCellInvalidation.m in Sources */ = {isa = PBXBuildFile; fileRef = A33A16691BA8F45500C91E12 /* UITableView+FDTemplateLayoutCellInvalidation.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,8 +36,6 @@
 		488EECDF1ADFF7A5004EAA71 /* FDFeedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDFeedViewController.m; sourceTree = "<group>"; };
 		488EECE11ADFF884004EAA71 /* FDFeedEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDFeedEntity.h; sourceTree = "<group>"; };
 		488EECE21ADFF884004EAA71 /* FDFeedEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDFeedEntity.m; sourceTree = "<group>"; };
-		48954A1A1B5102E200EFD15D /* UITableView+FDTemplateLayoutCellAutoInvalidate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+FDTemplateLayoutCellAutoInvalidate.h"; sourceTree = "<group>"; };
-		48954A1B1B5102E200EFD15D /* UITableView+FDTemplateLayoutCellAutoInvalidate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+FDTemplateLayoutCellAutoInvalidate.m"; sourceTree = "<group>"; };
 		48954A1C1B5102E200EFD15D /* UITableView+FDTemplateLayoutCellPrecache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+FDTemplateLayoutCellPrecache.h"; sourceTree = "<group>"; };
 		48954A1D1B5102E200EFD15D /* UITableView+FDTemplateLayoutCellPrecache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+FDTemplateLayoutCellPrecache.m"; sourceTree = "<group>"; };
 		48954A1E1B5102E200EFD15D /* UITableView+FDTemplateLayoutCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+FDTemplateLayoutCell.h"; sourceTree = "<group>"; };
@@ -49,6 +47,8 @@
 		4897E5DC1ADFFBBD00E87B5F /* data.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = data.json; sourceTree = "<group>"; };
 		4897E5DE1AE090B900E87B5F /* FDFeedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDFeedCell.h; sourceTree = "<group>"; };
 		4897E5DF1AE090B900E87B5F /* FDFeedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDFeedCell.m; sourceTree = "<group>"; };
+		A33A16681BA8F45500C91E12 /* UITableView+FDTemplateLayoutCellInvalidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+FDTemplateLayoutCellInvalidation.h"; sourceTree = "<group>"; };
+		A33A16691BA8F45500C91E12 /* UITableView+FDTemplateLayoutCellInvalidation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+FDTemplateLayoutCellInvalidation.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,16 +119,16 @@
 		48954A191B5102E200EFD15D /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				48954A1A1B5102E200EFD15D /* UITableView+FDTemplateLayoutCellAutoInvalidate.h */,
-				48954A1B1B5102E200EFD15D /* UITableView+FDTemplateLayoutCellAutoInvalidate.m */,
-				48954A1C1B5102E200EFD15D /* UITableView+FDTemplateLayoutCellPrecache.h */,
-				48954A1D1B5102E200EFD15D /* UITableView+FDTemplateLayoutCellPrecache.m */,
 				48954A1E1B5102E200EFD15D /* UITableView+FDTemplateLayoutCell.h */,
 				48954A1F1B5102E200EFD15D /* UITableView+FDTemplateLayoutCell.m */,
-				48954A201B5102E200EFD15D /* UITableView+FDTemplateLayoutCellDebug.h */,
-				48954A211B5102E200EFD15D /* UITableView+FDTemplateLayoutCellDebug.m */,
 				48954A221B5102E200EFD15D /* UITableView+FDTemplateLayoutCellHeightCache.h */,
 				48954A231B5102E200EFD15D /* UITableView+FDTemplateLayoutCellHeightCache.m */,
+				A33A16681BA8F45500C91E12 /* UITableView+FDTemplateLayoutCellInvalidation.h */,
+				A33A16691BA8F45500C91E12 /* UITableView+FDTemplateLayoutCellInvalidation.m */,
+				48954A1C1B5102E200EFD15D /* UITableView+FDTemplateLayoutCellPrecache.h */,
+				48954A1D1B5102E200EFD15D /* UITableView+FDTemplateLayoutCellPrecache.m */,
+				48954A201B5102E200EFD15D /* UITableView+FDTemplateLayoutCellDebug.h */,
+				48954A211B5102E200EFD15D /* UITableView+FDTemplateLayoutCellDebug.m */,
 			);
 			name = Classes;
 			path = ../../Classes;
@@ -212,7 +212,7 @@
 				488EECE01ADFF7A5004EAA71 /* FDFeedViewController.m in Sources */,
 				4897E5E01AE090B900E87B5F /* FDFeedCell.m in Sources */,
 				488EECB71ADFEDC6004EAA71 /* main.m in Sources */,
-				48954A241B5102E200EFD15D /* UITableView+FDTemplateLayoutCellAutoInvalidate.m in Sources */,
+				A33A166A1BA8F45500C91E12 /* UITableView+FDTemplateLayoutCellInvalidation.m in Sources */,
 				488EECE31ADFF884004EAA71 /* FDFeedEntity.m in Sources */,
 				48954A251B5102E200EFD15D /* UITableView+FDTemplateLayoutCellPrecache.m in Sources */,
 			);

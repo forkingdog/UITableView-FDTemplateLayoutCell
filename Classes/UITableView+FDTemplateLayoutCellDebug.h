@@ -27,11 +27,11 @@
 /// Helps to debug or inspect what is this "FDTemplateLayoutCell" extention doing,
 /// turning on to print logs when "creating", "calculating", "precaching" or "hitting cache".
 ///
-/// Default to "NO", log by "NSLog".
+/// Default to NO, log by NSLog.
 ///
 @property (nonatomic, assign) BOOL fd_debugLogEnabled;
 
 /// Debug log controlled by "fd_debugLogEnabled".
-- (void)fd_debugLog:(nullable NSString *)message;
+- (void)fd_debugLog:(NSString *)message;
 
 @end

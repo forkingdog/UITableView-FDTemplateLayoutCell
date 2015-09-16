@@ -43,8 +43,7 @@ static inline CGFloat FDTemplateLayoutCellHeightCacheGetCGFloatValue(NSNumber *n
 
 @implementation FDTemplateLayoutCellIndexPathHeightCache
 
-- (instancetype)init
-{
+- (instancetype)init {
     self = [super init];
     if (self) {
         _heightsBySection = [NSMutableArray array];
@@ -52,64 +51,54 @@ static inline CGFloat FDTemplateLayoutCellHeightCacheGetCGFloatValue(NSNumber *n
     return self;
 }
 
-- (BOOL)existsHeightAtIndexPath:(NSIndexPath * __nonnull)indexPath
-{
+- (BOOL)existsHeightAtIndexPath:(NSIndexPath *)indexPath {
     [self buildCachesAtIndexPathsIfNeeded:@[indexPath]];
     NSNumber *number = self.heightsBySection[indexPath.section][indexPath.row];
     return ![number isEqualToNumber:FDTemplateLayoutCellHeightCacheGetAbsentNumber()];
 }
 
-- (void)cacheHeight:(CGFloat)height byIndexPath:(NSIndexPath * __nonnull)indexPath
-{
+- (void)cacheHeight:(CGFloat)height byIndexPath:(NSIndexPath *)indexPath {
     [self buildCachesAtIndexPathsIfNeeded:@[indexPath]];
     self.heightsBySection[indexPath.section][indexPath.row] = @(height);
 }
 
-- (CGFloat)heightForIndexPath:(NSIndexPath * __nonnull)indexPath
-{
+- (CGFloat)heightForIndexPath:(NSIndexPath *)indexPath {
     [self buildCachesAtIndexPathsIfNeeded:@[indexPath]];
     NSNumber *number = self.heightsBySection[indexPath.section][indexPath.row];
     return FDTemplateLayoutCellHeightCacheGetCGFloatValue(number);
 }
 
-- (void)invalidateHeightAtIndexPath:(NSIndexPath * __nonnull)indexPath
-{
+- (void)clearHeightAtIndexPath:(NSIndexPath *)indexPath {
     [self buildCachesAtIndexPathsIfNeeded:@[indexPath]];
     self.heightsBySection[indexPath.section][indexPath.row] = FDTemplateLayoutCellHeightCacheGetAbsentNumber();
 }
 
-- (void)clearAllheightCaches
-{
+- (void)clearAllheightCaches {
     [self.heightsBySection removeAllObjects];
 }
 
-- (void)insertSection:(NSInteger)section
-{
+- (void)insertSection:(NSInteger)section {
     [self buildSectionsIfNeeded:section];
     [self.heightsBySection insertObject:[NSMutableArray array] atIndex:section];
 }
 
-- (void)deleteSection:(NSInteger)section
-{
+- (void)deleteSection:(NSInteger)section {
     [self buildSectionsIfNeeded:section];
     [self.heightsBySection removeObjectAtIndex:section];
 }
 
-- (void)reloadSection:(NSInteger)section
-{
+- (void)reloadSection:(NSInteger)section {
     [self buildSectionsIfNeeded:section];
     [self.heightsBySection[section] removeAllObjects];
 }
 
-- (void)exchangeHeightsFromSection:(NSInteger)fromSection toSection:(NSInteger)toSection
-{
+- (void)exchangeHeightsFromSection:(NSInteger)fromSection toSection:(NSInteger)toSection {
     [self buildSectionsIfNeeded:fromSection];
     [self buildSectionsIfNeeded:toSection];
     [self.heightsBySection exchangeObjectAtIndex:fromSection withObjectAtIndex:toSection];
 }
 
-- (void)insertRowsAtIndexPaths:(NSArray * __nonnull)indexPaths
-{
+- (void)insertRowsAtIndexPaths:(NSArray *)indexPaths {
     [self buildCachesAtIndexPathsIfNeeded:indexPaths];
     [indexPaths enumerateObjectsUsingBlock:^(NSIndexPath *indexPath, NSUInteger idx, BOOL *stop) {
         NSMutableArray *rows = self.heightsBySection[indexPath.section];
@@ -117,8 +106,7 @@ static inline CGFloat FDTemplateLayoutCellHeightCacheGetCGFloatValue(NSNumber *n
     }];
 }
 
-- (void)deleteRowsAtIndexPaths:(NSArray * __nonnull)indexPaths
-{
+- (void)deleteRowsAtIndexPaths:(NSArray *)indexPaths {
     [self buildCachesAtIndexPathsIfNeeded:indexPaths];
     
     NSMutableDictionary *mutableIndexSetsToRemove = [NSMutableDictionary dictionary];
@@ -139,8 +127,7 @@ static inline CGFloat FDTemplateLayoutCellHeightCacheGetCGFloatValue(NSNumber *n
     }];
 }
 
-- (void)reloadRowsAtIndexPaths:(NSArray * __nonnull)indexPaths
-{
+- (void)reloadRowsAtIndexPaths:(NSArray *)indexPaths {
     [self buildCachesAtIndexPathsIfNeeded:indexPaths];
     [indexPaths enumerateObjectsUsingBlock:^(NSIndexPath *indexPath, NSUInteger idx, BOOL *stop) {
         NSMutableArray *rows = self.heightsBySection[indexPath.section];
@@ -148,8 +135,7 @@ static inline CGFloat FDTemplateLayoutCellHeightCacheGetCGFloatValue(NSNumber *n
     }];
 }
 
-- (void)moveRowAtIndexPath:(NSIndexPath * __nonnull)fromIndexPath toIndexPath:(NSIndexPath * __nonnull)toIndexPath
-{
+- (void)moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
     [self buildCachesAtIndexPathsIfNeeded:@[fromIndexPath, toIndexPath]];
     
     NSMutableArray *sourceRows = self.heightsBySection[fromIndexPath.section];
@@ -164,8 +150,7 @@ static inline CGFloat FDTemplateLayoutCellHeightCacheGetCGFloatValue(NSNumber *n
 
 #pragma mark - IndexPath Building
 
-- (void)buildCachesAtIndexPathsIfNeeded:(NSArray *)indexPaths
-{
+- (void)buildCachesAtIndexPathsIfNeeded:(NSArray *)indexPaths {
     // Build every section array or row array which is smaller than given index path.
     [indexPaths enumerateObjectsUsingBlock:^(NSIndexPath *indexPath, NSUInteger idx, BOOL *stop) {
         [self buildSectionsIfNeeded:indexPath.section];
@@ -173,8 +158,7 @@ static inline CGFloat FDTemplateLayoutCellHeightCacheGetCGFloatValue(NSNumber *n
     }];
 }
 
-- (void)buildSectionsIfNeeded:(NSInteger)targetSection
-{
+- (void)buildSectionsIfNeeded:(NSInteger)targetSection {
     for (NSInteger section = 0; section <= targetSection; ++section) {
         if (section >= self.heightsBySection.count) {
             self.heightsBySection[section] = [NSMutableArray array];
@@ -182,8 +166,7 @@ static inline CGFloat FDTemplateLayoutCellHeightCacheGetCGFloatValue(NSNumber *n
     }
 }
 
-- (void)buildRowsIfNeeded:(NSInteger)targetRow inExistSection:(NSInteger)section
-{
+- (void)buildRowsIfNeeded:(NSInteger)targetRow inExistSection:(NSInteger)section {
     NSMutableArray *heightsByRow = self.heightsBySection[section];
     for (NSInteger row = 0; row <= targetRow; ++row) {
         if (row >= heightsByRow.count) {
@@ -203,8 +186,7 @@ static inline CGFloat FDTemplateLayoutCellHeightCacheGetCGFloatValue(NSNumber *n
 
 @implementation FDTemplateLayoutCellKeyHeightCache
 
-- (instancetype)init
-{
+- (instancetype)init {
     self = [super init];
     if (self) {
         _heightsByKey = [NSMutableDictionary dictionary];
@@ -212,29 +194,24 @@ static inline CGFloat FDTemplateLayoutCellHeightCacheGetCGFloatValue(NSNumber *n
     return self;
 }
 
-- (BOOL)existsHeightForKey:(id<NSCopying> __nonnull)key
-{
+- (BOOL)existsHeightForKey:(id<NSCopying>)key {
     NSNumber *number = self.heightsByKey[key];
     return number && ![number isEqualToNumber:FDTemplateLayoutCellHeightCacheGetAbsentNumber()];
 }
 
-- (void)cacheHeight:(CGFloat)height byKey:(id<NSCopying> __nonnull)key
-{
+- (void)cacheHeight:(CGFloat)height byKey:(id<NSCopying>)key {
     self.heightsByKey[key] = @(height);
 }
 
-- (CGFloat)heightForKey:(id<NSCopying> __nonnull)key
-{
+- (CGFloat)heightForKey:(id<NSCopying>)key {
     return FDTemplateLayoutCellHeightCacheGetCGFloatValue(self.heightsByKey[key]);
 }
 
-- (void)invalidateHeightForKey:(id<NSCopying> __nonnull)key
-{
+- (void)clearHeightForKey:(id<NSCopying>)key {
     [self.heightsByKey removeObjectForKey:key];
 }
 
-- (void)clearAllheightCaches
-{
+- (void)clearAllheightCaches {
     [self.heightsByKey removeAllObjects];
 }
 
@@ -244,8 +221,7 @@ static inline CGFloat FDTemplateLayoutCellHeightCacheGetCGFloatValue(NSNumber *n
 
 @implementation UITableView (FDTemplateLayoutCellHeightCache)
 
-- (FDTemplateLayoutCellIndexPathHeightCache * __nonnull)fd_indexPathHeightCache
-{
+- (FDTemplateLayoutCellIndexPathHeightCache *)fd_indexPathHeightCache {
     FDTemplateLayoutCellIndexPathHeightCache *cache = objc_getAssociatedObject(self, _cmd);
     if (!cache) {
         cache = [FDTemplateLayoutCellIndexPathHeightCache new];
@@ -254,8 +230,7 @@ static inline CGFloat FDTemplateLayoutCellHeightCacheGetCGFloatValue(NSNumber *n
     return cache;
 }
 
-- (FDTemplateLayoutCellKeyHeightCache * __nonnull)fd_keyHeightCache
-{
+- (FDTemplateLayoutCellKeyHeightCache *)fd_keyHeightCache {
     FDTemplateLayoutCellKeyHeightCache *cache = objc_getAssociatedObject(self, _cmd);
     if (!cache) {
         cache = [FDTemplateLayoutCellKeyHeightCache new];

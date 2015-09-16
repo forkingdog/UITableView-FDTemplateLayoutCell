@@ -27,10 +27,10 @@
 /// It helps to improve scroll performance by "pre-cache" height of cells that have not
 /// been displayed on screen. These calculation tasks are collected and performed only
 /// when "RunLoop" is in "idle" time.
-///
-/// Auto turn on when you use "-fd_heightForCellWithIdentifier:cacheByIndexPath:configuration".
 @property (nonatomic, assign) BOOL fd_precacheEnabled;
 
+/// Do not call this method directly, set "fd_precacheEnabled" to YES will automatically
+/// handle precaching if necessery at a proper time.
 - (void)fd_precacheIfNeeded;
 
 @end

@@ -21,19 +21,17 @@
 // SOFTWARE.
 
 #import "UITableView+FDTemplateLayoutCellPrecache.h"
-#import "UITableView+FDTemplateLayoutCellDebug.h"
 #import "UITableView+FDTemplateLayoutCellHeightCache.h"
+#import "UITableView+FDTemplateLayoutCellDebug.h"
 #import <objc/runtime.h>
 
 @implementation UITableView (FDTemplateLayoutCellPrecache)
 
-- (BOOL)fd_precacheEnabled
-{
+- (BOOL)fd_precacheEnabled {
     return [objc_getAssociatedObject(self, _cmd) boolValue];
 }
 
-- (void)setFd_precacheEnabled:(BOOL)precacheEnabled
-{
+- (void)setFd_precacheEnabled:(BOOL)precacheEnabled {
     objc_setAssociatedObject(self, @selector(fd_precacheEnabled), @(precacheEnabled), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
@@ -63,8 +61,7 @@
 //    CFRunLoopAddTimer(runLoop, singleTaskTimer, workingRunLoopMode);
 //}
 
-- (void)fd_precacheIfNeeded
-{
+- (void)fd_precacheIfNeeded {
     if (!self.fd_precacheEnabled) {
         return;
     }
@@ -131,8 +128,7 @@
     CFRunLoopAddObserver(runLoop, observer, workingRunLoopMode);
 }
 
-- (void)fd_precacheHeightAtIndexPathIfNeeded:(NSIndexPath *)indexPath
-{
+- (void)fd_precacheHeightAtIndexPathIfNeeded:(NSIndexPath *)indexPath {
     // A cached indexPath
     if ([self.fd_indexPathHeightCache existsHeightAtIndexPath:indexPath]) {
         return;
@@ -153,8 +149,7 @@
                        @(height)]];
 }
 
-- (NSArray *)fd_allIndexPathsToBePrecached
-{
+- (NSArray *)fd_allIndexPathsToBePrecached {
     NSMutableArray *allIndexPaths = @[].mutableCopy;
     for (NSInteger section = 0; section < [self numberOfSections]; ++section) {
         for (NSInteger row = 0; row < [self numberOfRowsInSection:section]; ++row) {

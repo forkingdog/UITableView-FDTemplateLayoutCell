@@ -23,10 +23,6 @@
 #import <UIKit/UIKit.h>
 #import "UITableView+FDTemplateLayoutCellDebug.h"
 
-NS_ASSUME_NONNULL_BEGIN
-
-typedef void (^__nullable FDTemplateLayoutCellConfigurationBlock)(id cell);
-
 @interface UITableView (FDTemplateLayoutCell)
 
 /// Returns height of cell of type specifed by a reuse identifier and configured
@@ -43,7 +39,7 @@ typedef void (^__nullable FDTemplateLayoutCellConfigurationBlock)(id cell);
 ///        to the template cell. The configuration should be minimal for scrolling
 ///        performance yet sufficient for calculating cell's height.
 ///
-- (CGFloat)fd_heightForCellWithIdentifier:(NSString *)identifier configuration:(FDTemplateLayoutCellConfigurationBlock)configuration;
+- (CGFloat)fd_heightForCellWithIdentifier:(NSString *)identifier configuration:(void (^)(id cell))configuration;
 
 /// This method does what "-fd_heightForCellWithIdentifier:configuration" does, and
 /// calculated height will be cached by its index path, returns a cached height
@@ -55,11 +51,16 @@ typedef void (^__nullable FDTemplateLayoutCellConfigurationBlock)(id cell);
 ///
 /// @param indexPath where this cell's height cache belongs.
 ///
-- (CGFloat)fd_heightForCellWithIdentifier:(NSString *)identifier cacheByIndexPath:(NSIndexPath *)indexPath configuration:(FDTemplateLayoutCellConfigurationBlock)configuration;
+- (CGFloat)fd_heightForCellWithIdentifier:(NSString *)identifier cacheByIndexPath:(NSIndexPath *)indexPath configuration:(void (^)(id cell))configuration;
 
-/// TODO: +7
+/// This method caches height by your model entity's identifier.
+/// If your model's changed, call "- invalidateHeightForKey:(id <NSCopying>)key" to
+/// invalidate cache and re-calculate, it's much cheaper and effective than
+/// "cacheByIndexPath" version.
 ///
-- (CGFloat)fd_heightForCellWithIdentifier:(NSString *)identifier cacheByKey:(id<NSCopying>)key configuration:(FDTemplateLayoutCellConfigurationBlock)configuration;
+/// @param key model entity's identifier whose data configures a cell.
+///
+- (CGFloat)fd_heightForCellWithIdentifier:(NSString *)identifier cacheByKey:(id<NSCopying>)key configuration:(void (^)(id cell))configuration;
 
 @end
 
@@ -79,13 +80,9 @@ typedef void (^__nullable FDTemplateLayoutCellConfigurationBlock)(id cell);
 
 /// Enable to enforce this template layout cell to use "frame layout" rather than "auto layout",
 /// and will ask cell's height by calling "-sizeThatFits:", so you must override this method.
-/// Note:
-///   If no layout constraints have been added to cell's content view, it will automatically
-///   switch to "frame layout" mode. Use this property only when you want to manually control
-///   this template layout cell's height calculation mode. Default to NO.
+/// Use this property only when you want to manually control this template layout cell's height
+/// calculation mode, default to NO.
 ///
 @property (nonatomic, assign) BOOL fd_enforceFrameLayout;
 
 @end
-
-NS_ASSUME_NONNULL_END
