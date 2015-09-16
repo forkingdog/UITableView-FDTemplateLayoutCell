@@ -222,6 +222,24 @@ static inline CGFloat FDTemplateLayoutCellHeightCacheGetCGFloatValue(NSNumber *n
 @implementation UITableView (FDTemplateLayoutCellHeightCache)
 
 - (FDTemplateLayoutCellIndexPathHeightCache *)fd_indexPathHeightCache {
+    return UIDeviceOrientationIsPortrait([UIDevice currentDevice].orientation) ? self.fd_indexPathHeightCacheForPortrait: self.fd_indexPathHeightCacheForLandscape;
+}
+
+- (FDTemplateLayoutCellKeyHeightCache *)fd_keyHeightCache {
+    return UIDeviceOrientationIsPortrait([UIDevice currentDevice].orientation) ? self.fd_keyHeightCacheForPortrait: self.fd_keyHeightCacheForLandscape;
+}
+
+#pragma mark - Orientation
+
+- (FDTemplateLayoutCellIndexPathHeightCache *)fd_indexPathHeightCacheForPortrait {
+    FDTemplateLayoutCellIndexPathHeightCache *cache = objc_getAssociatedObject(self, _cmd);
+    if (!cache) {
+        cache = [FDTemplateLayoutCellIndexPathHeightCache new];
+        objc_setAssociatedObject(self, _cmd, cache, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    }
+    return cache;
+}
+- (FDTemplateLayoutCellIndexPathHeightCache *)fd_indexPathHeightCacheForLandscape {
     FDTemplateLayoutCellIndexPathHeightCache *cache = objc_getAssociatedObject(self, _cmd);
     if (!cache) {
         cache = [FDTemplateLayoutCellIndexPathHeightCache new];
@@ -230,7 +248,16 @@ static inline CGFloat FDTemplateLayoutCellHeightCacheGetCGFloatValue(NSNumber *n
     return cache;
 }
 
-- (FDTemplateLayoutCellKeyHeightCache *)fd_keyHeightCache {
+- (FDTemplateLayoutCellKeyHeightCache *)fd_keyHeightCacheForPortrait {
+    FDTemplateLayoutCellKeyHeightCache *cache = objc_getAssociatedObject(self, _cmd);
+    if (!cache) {
+        cache = [FDTemplateLayoutCellKeyHeightCache new];
+        objc_setAssociatedObject(self, _cmd, cache, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    }
+    return cache;
+}
+- (FDTemplateLayoutCellKeyHeightCache *)fd_keyHeightCacheForLandscape {
+    
     FDTemplateLayoutCellKeyHeightCache *cache = objc_getAssociatedObject(self, _cmd);
     if (!cache) {
         cache = [FDTemplateLayoutCellKeyHeightCache new];

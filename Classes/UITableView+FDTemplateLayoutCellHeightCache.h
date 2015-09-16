@@ -51,7 +51,7 @@
 
 @end
 
-/// Do not use directly.
+/// Do not use directly, height cache objects are orientation determined.
 @interface UITableView (FDTemplateLayoutCellHeightCache)
 
 @property (nonatomic, strong, readonly) FDTemplateLayoutCellIndexPathHeightCache *fd_indexPathHeightCache;

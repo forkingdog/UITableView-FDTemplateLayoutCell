@@ -29,7 +29,6 @@ typedef NS_ENUM(NSInteger, FDSimulatedCacheMode) {
 {
     [super viewDidLoad];
    
-    self.tableView.estimatedRowHeight = 200;
     self.tableView.fd_debugLogEnabled = YES;
     
     // Cache by index path initial
