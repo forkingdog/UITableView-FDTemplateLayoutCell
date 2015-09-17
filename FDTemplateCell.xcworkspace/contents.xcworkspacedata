@@ -1,16 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Workspace
    version = "1.0">
-   <Group
-      location = "group:Classes"
-      name = "Classes">
-      <FileRef
-         location = "group:UITableView+FDTemplateLayoutCell.h">
-      </FileRef>
-      <FileRef
-         location = "group:UITableView+FDTemplateLayoutCell.m">
-      </FileRef>
-   </Group>
+   <FileRef
+      location = "group:FDTemplateLayoutCell/FDTemplateLayoutcell/FDTemplateLayoutcell.xcodeproj">
+   </FileRef>
    <FileRef
       location = "group:Demo/Demo.xcodeproj">
    </FileRef>
