@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E196088D1BAAAB6900BDCBBE"
-               BuildableName = "FDTemplateLayoutcell.framework"
-               BlueprintName = "FDTemplateLayoutcell"
-               ReferencedContainer = "container:FDTemplateLayoutcell.xcodeproj">
+               BlueprintIdentifier = "E19608CC1BAD53AF00BDCBBE"
+               BuildableName = "FDTemplateLayoutCell.framework"
+               BlueprintName = "FDTemplateLayoutCell"
+               ReferencedContainer = "container:FDTemplateLayoutCell.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -45,10 +45,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E196088D1BAAAB6900BDCBBE"
-            BuildableName = "FDTemplateLayoutcell.framework"
-            BlueprintName = "FDTemplateLayoutcell"
-            ReferencedContainer = "container:FDTemplateLayoutcell.xcodeproj">
+            BlueprintIdentifier = "E19608CC1BAD53AF00BDCBBE"
+            BuildableName = "FDTemplateLayoutCell.framework"
+            BlueprintName = "FDTemplateLayoutCell"
+            ReferencedContainer = "container:FDTemplateLayoutCell.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -63,10 +63,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E196088D1BAAAB6900BDCBBE"
-            BuildableName = "FDTemplateLayoutcell.framework"
-            BlueprintName = "FDTemplateLayoutcell"
-            ReferencedContainer = "container:FDTemplateLayoutcell.xcodeproj">
+            BlueprintIdentifier = "E19608CC1BAD53AF00BDCBBE"
+            BuildableName = "FDTemplateLayoutCell.framework"
+            BlueprintName = "FDTemplateLayoutCell"
+            ReferencedContainer = "container:FDTemplateLayoutCell.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

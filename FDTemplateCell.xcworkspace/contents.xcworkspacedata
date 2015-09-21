@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:FDTemplateLayoutCell/FDTemplateLayoutcell/FDTemplateLayoutcell.xcodeproj">
+      location = "group:FDTemplateLayoutCell/FDTemplateLayoutCell.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Demo/Demo.xcodeproj">

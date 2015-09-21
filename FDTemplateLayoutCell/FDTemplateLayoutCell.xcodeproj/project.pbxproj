@@ -7,21 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E19608921BAAAB6900BDCBBE /* FDTemplateLayoutcell.h in Headers */ = {isa = PBXBuildFile; fileRef = E19608911BAAAB6900BDCBBE /* FDTemplateLayoutcell.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E196089C1BAAABA900BDCBBE /* UITableView+FDTemplateLayoutCell.h in Headers */ = {isa = PBXBuildFile; fileRef = E19608991BAAABA900BDCBBE /* UITableView+FDTemplateLayoutCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E196089D1BAAABA900BDCBBE /* UITableView+FDTemplateLayoutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E196089A1BAAABA900BDCBBE /* UITableView+FDTemplateLayoutCell.m */; settings = {ASSET_TAGS = (); }; };
+		E19608D11BAD53AF00BDCBBE /* FDTemplateLayoutCell.h in Headers */ = {isa = PBXBuildFile; fileRef = E19608D01BAD53AF00BDCBBE /* FDTemplateLayoutCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E19608E01BAD54EB00BDCBBE /* UITableView+FDTemplateLayoutCell.h in Headers */ = {isa = PBXBuildFile; fileRef = E19608DE1BAD54EB00BDCBBE /* UITableView+FDTemplateLayoutCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E19608E11BAD54EB00BDCBBE /* UITableView+FDTemplateLayoutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E19608DF1BAD54EB00BDCBBE /* UITableView+FDTemplateLayoutCell.m */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		E196088E1BAAAB6900BDCBBE /* FDTemplateLayoutcell.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FDTemplateLayoutcell.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E19608911BAAAB6900BDCBBE /* FDTemplateLayoutcell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FDTemplateLayoutcell.h; sourceTree = "<group>"; };
-		E19608931BAAAB6900BDCBBE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E19608991BAAABA900BDCBBE /* UITableView+FDTemplateLayoutCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+FDTemplateLayoutCell.h"; sourceTree = "<group>"; };
-		E196089A1BAAABA900BDCBBE /* UITableView+FDTemplateLayoutCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+FDTemplateLayoutCell.m"; sourceTree = "<group>"; };
+		E19608CD1BAD53AF00BDCBBE /* FDTemplateLayoutCell.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FDTemplateLayoutCell.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E19608D01BAD53AF00BDCBBE /* FDTemplateLayoutCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FDTemplateLayoutCell.h; sourceTree = "<group>"; };
+		E19608D21BAD53AF00BDCBBE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E19608DE1BAD54EB00BDCBBE /* UITableView+FDTemplateLayoutCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+FDTemplateLayoutCell.h"; sourceTree = "<group>"; };
+		E19608DF1BAD54EB00BDCBBE /* UITableView+FDTemplateLayoutCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+FDTemplateLayoutCell.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		E196088A1BAAAB6900BDCBBE /* Frameworks */ = {
+		E19608C91BAD53AF00BDCBBE /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -31,107 +31,107 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		E19608841BAAAB6900BDCBBE = {
+		E19608C31BAD53AE00BDCBBE = {
 			isa = PBXGroup;
 			children = (
-				E196089B1BAAABA900BDCBBE /* Classes */,
-				E19608901BAAAB6900BDCBBE /* FDTemplateLayoutcell */,
-				E196088F1BAAAB6900BDCBBE /* Products */,
+				E19608DD1BAD54EB00BDCBBE /* Classes */,
+				E19608CF1BAD53AF00BDCBBE /* FDTemplateLayoutCell */,
+				E19608CE1BAD53AF00BDCBBE /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		E196088F1BAAAB6900BDCBBE /* Products */ = {
+		E19608CE1BAD53AF00BDCBBE /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				E196088E1BAAAB6900BDCBBE /* FDTemplateLayoutcell.framework */,
+				E19608CD1BAD53AF00BDCBBE /* FDTemplateLayoutCell.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		E19608901BAAAB6900BDCBBE /* FDTemplateLayoutcell */ = {
+		E19608CF1BAD53AF00BDCBBE /* FDTemplateLayoutCell */ = {
 			isa = PBXGroup;
 			children = (
-				E19608911BAAAB6900BDCBBE /* FDTemplateLayoutcell.h */,
-				E19608931BAAAB6900BDCBBE /* Info.plist */,
+				E19608D01BAD53AF00BDCBBE /* FDTemplateLayoutCell.h */,
+				E19608D21BAD53AF00BDCBBE /* Info.plist */,
 			);
-			path = FDTemplateLayoutcell;
+			path = FDTemplateLayoutCell;
 			sourceTree = "<group>";
 		};
-		E196089B1BAAABA900BDCBBE /* Classes */ = {
+		E19608DD1BAD54EB00BDCBBE /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				E19608991BAAABA900BDCBBE /* UITableView+FDTemplateLayoutCell.h */,
-				E196089A1BAAABA900BDCBBE /* UITableView+FDTemplateLayoutCell.m */,
+				E19608DE1BAD54EB00BDCBBE /* UITableView+FDTemplateLayoutCell.h */,
+				E19608DF1BAD54EB00BDCBBE /* UITableView+FDTemplateLayoutCell.m */,
 			);
 			name = Classes;
-			path = ../../Classes;
+			path = ../Classes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		E196088B1BAAAB6900BDCBBE /* Headers */ = {
+		E19608CA1BAD53AF00BDCBBE /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E196089C1BAAABA900BDCBBE /* UITableView+FDTemplateLayoutCell.h in Headers */,
-				E19608921BAAAB6900BDCBBE /* FDTemplateLayoutcell.h in Headers */,
+				E19608E01BAD54EB00BDCBBE /* UITableView+FDTemplateLayoutCell.h in Headers */,
+				E19608D11BAD53AF00BDCBBE /* FDTemplateLayoutCell.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		E196088D1BAAAB6900BDCBBE /* FDTemplateLayoutcell */ = {
+		E19608CC1BAD53AF00BDCBBE /* FDTemplateLayoutCell */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E19608961BAAAB6900BDCBBE /* Build configuration list for PBXNativeTarget "FDTemplateLayoutcell" */;
+			buildConfigurationList = E19608D51BAD53AF00BDCBBE /* Build configuration list for PBXNativeTarget "FDTemplateLayoutCell" */;
 			buildPhases = (
-				E19608891BAAAB6900BDCBBE /* Sources */,
-				E196088A1BAAAB6900BDCBBE /* Frameworks */,
-				E196088B1BAAAB6900BDCBBE /* Headers */,
-				E196088C1BAAAB6900BDCBBE /* Resources */,
+				E19608C81BAD53AF00BDCBBE /* Sources */,
+				E19608C91BAD53AF00BDCBBE /* Frameworks */,
+				E19608CA1BAD53AF00BDCBBE /* Headers */,
+				E19608CB1BAD53AF00BDCBBE /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = FDTemplateLayoutcell;
-			productName = FDTemplateLayoutcell;
-			productReference = E196088E1BAAAB6900BDCBBE /* FDTemplateLayoutcell.framework */;
+			name = FDTemplateLayoutCell;
+			productName = FDTemplateLayoutCell;
+			productReference = E19608CD1BAD53AF00BDCBBE /* FDTemplateLayoutCell.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		E19608851BAAAB6900BDCBBE /* Project object */ = {
+		E19608C41BAD53AE00BDCBBE /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0700;
 				TargetAttributes = {
-					E196088D1BAAAB6900BDCBBE = {
+					E19608CC1BAD53AF00BDCBBE = {
 						CreatedOnToolsVersion = 7.0;
 					};
 				};
 			};
-			buildConfigurationList = E19608881BAAAB6900BDCBBE /* Build configuration list for PBXProject "FDTemplateLayoutcell" */;
+			buildConfigurationList = E19608C71BAD53AE00BDCBBE /* Build configuration list for PBXProject "FDTemplateLayoutCell" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
-			mainGroup = E19608841BAAAB6900BDCBBE;
-			productRefGroup = E196088F1BAAAB6900BDCBBE /* Products */;
+			mainGroup = E19608C31BAD53AE00BDCBBE;
+			productRefGroup = E19608CE1BAD53AF00BDCBBE /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				E196088D1BAAAB6900BDCBBE /* FDTemplateLayoutcell */,
+				E19608CC1BAD53AF00BDCBBE /* FDTemplateLayoutCell */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		E196088C1BAAAB6900BDCBBE /* Resources */ = {
+		E19608CB1BAD53AF00BDCBBE /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -141,18 +141,18 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		E19608891BAAAB6900BDCBBE /* Sources */ = {
+		E19608C81BAD53AF00BDCBBE /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E196089D1BAAABA900BDCBBE /* UITableView+FDTemplateLayoutCell.m in Sources */,
+				E19608E11BAD54EB00BDCBBE /* UITableView+FDTemplateLayoutCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		E19608941BAAAB6900BDCBBE /* Debug */ = {
+		E19608D31BAD53AF00BDCBBE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -199,7 +199,7 @@
 			};
 			name = Debug;
 		};
-		E19608951BAAAB6900BDCBBE /* Release */ = {
+		E19608D41BAD53AF00BDCBBE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -240,33 +240,33 @@
 			};
 			name = Release;
 		};
-		E19608971BAAAB6900BDCBBE /* Debug */ = {
+		E19608D61BAD53AF00BDCBBE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = FDTemplateLayoutcell/Info.plist;
+				INFOPLIST_FILE = FDTemplateLayoutCell/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.forkingdog.templatelayoutcell.FDTemplateLayoutcell;
+				PRODUCT_BUNDLE_IDENTIFIER = com.forkingdog.templatelayoutcell.FDTemplateLayoutCell;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
 		};
-		E19608981BAAAB6900BDCBBE /* Release */ = {
+		E19608D71BAD53AF00BDCBBE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = FDTemplateLayoutcell/Info.plist;
+				INFOPLIST_FILE = FDTemplateLayoutCell/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.forkingdog.templatelayoutcell.FDTemplateLayoutcell;
+				PRODUCT_BUNDLE_IDENTIFIER = com.forkingdog.templatelayoutcell.FDTemplateLayoutCell;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -275,25 +275,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		E19608881BAAAB6900BDCBBE /* Build configuration list for PBXProject "FDTemplateLayoutcell" */ = {
+		E19608C71BAD53AE00BDCBBE /* Build configuration list for PBXProject "FDTemplateLayoutCell" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				E19608941BAAAB6900BDCBBE /* Debug */,
-				E19608951BAAAB6900BDCBBE /* Release */,
+				E19608D31BAD53AF00BDCBBE /* Debug */,
+				E19608D41BAD53AF00BDCBBE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E19608961BAAAB6900BDCBBE /* Build configuration list for PBXNativeTarget "FDTemplateLayoutcell" */ = {
+		E19608D51BAD53AF00BDCBBE /* Build configuration list for PBXNativeTarget "FDTemplateLayoutCell" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				E19608971BAAAB6900BDCBBE /* Debug */,
-				E19608981BAAAB6900BDCBBE /* Release */,
+				E19608D61BAD53AF00BDCBBE /* Debug */,
+				E19608D71BAD53AF00BDCBBE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = E19608851BAAAB6900BDCBBE /* Project object */;
+	rootObject = E19608C41BAD53AE00BDCBBE /* Project object */;
 }
