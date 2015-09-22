@@ -118,12 +118,12 @@
 			children = (
 				48954A1E1B5102E200EFD15D /* UITableView+FDTemplateLayoutCell.h */,
 				48954A1F1B5102E200EFD15D /* UITableView+FDTemplateLayoutCell.m */,
-				48954A201B5102E200EFD15D /* UITableView+FDTemplateLayoutCellDebug.h */,
-				48954A211B5102E200EFD15D /* UITableView+FDTemplateLayoutCellDebug.m */,
 				485DB8991BAFFF8900CEAE33 /* UITableView+FDKeyedHeightCache.h */,
 				485DB89A1BAFFF8900CEAE33 /* UITableView+FDKeyedHeightCache.m */,
 				485DB89C1BB0004300CEAE33 /* UITableView+FDIndexPathHeightCache.h */,
 				485DB89D1BB0004300CEAE33 /* UITableView+FDIndexPathHeightCache.m */,
+				48954A201B5102E200EFD15D /* UITableView+FDTemplateLayoutCellDebug.h */,
+				48954A211B5102E200EFD15D /* UITableView+FDTemplateLayoutCellDebug.m */,
 			);
 			name = Classes;
 			path = ../../Classes;
