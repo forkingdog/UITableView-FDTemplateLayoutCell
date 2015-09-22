@@ -11,22 +11,16 @@
          location = "group:UITableView+FDTemplateLayoutCell.m">
       </FileRef>
       <FileRef
-         location = "group:UITableView+FDTemplateLayoutCellInvalidation.h">
+         location = "group:UITableView+FDKeyedHeightCache.h">
       </FileRef>
       <FileRef
-         location = "group:UITableView+FDTemplateLayoutCellInvalidation.m">
+         location = "group:UITableView+FDKeyedHeightCache.m">
       </FileRef>
       <FileRef
-         location = "group:UITableView+FDTemplateLayoutCellHeightCache.h">
+         location = "group:UITableView+FDIndexPathHeightCache.h">
       </FileRef>
       <FileRef
-         location = "group:UITableView+FDTemplateLayoutCellHeightCache.m">
-      </FileRef>
-      <FileRef
-         location = "group:UITableView+FDTemplateLayoutCellPrecache.h">
-      </FileRef>
-      <FileRef
-         location = "group:UITableView+FDTemplateLayoutCellPrecache.m">
+         location = "group:UITableView+FDIndexPathHeightCache.m">
       </FileRef>
       <FileRef
          location = "group:UITableView+FDTemplateLayoutCellDebug.h">

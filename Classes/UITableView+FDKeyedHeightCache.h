@@ -22,39 +22,19 @@
 
 #import <UIKit/UIKit.h>
 
-@interface FDTemplateLayoutCellIndexPathHeightCache : NSObject
-
-- (BOOL)existsHeightAtIndexPath:(NSIndexPath *)indexPath;
-- (void)cacheHeight:(CGFloat)height byIndexPath:(NSIndexPath *)indexPath;
-- (CGFloat)heightForIndexPath:(NSIndexPath *)indexPath;
-- (void)clearHeightAtIndexPath:(NSIndexPath *)indexPath;
-- (void)clearAllheightCaches;
-- (void)insertSection:(NSInteger)section;
-- (void)deleteSection:(NSInteger)section;
-- (void)reloadSection:(NSInteger)section;
-
-- (void)exchangeHeightsFromSection:(NSInteger)fromSection toSection:(NSInteger)toSection;
-- (void)insertRowsAtIndexPaths:(NSArray *)indexPaths;
-- (void)deleteRowsAtIndexPaths:(NSArray *)indexPaths;
-- (void)reloadRowsAtIndexPaths:(NSArray *)indexPaths;
-- (void)moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath;
-
-@end
-
-@interface FDTemplateLayoutCellKeyHeightCache : NSObject
+@interface FDKeyedHeightCache : NSObject
 
 - (BOOL)existsHeightForKey:(id<NSCopying>)key;
 - (void)cacheHeight:(CGFloat)height byKey:(id<NSCopying>)key;
 - (CGFloat)heightForKey:(id<NSCopying>)key;
-- (void)clearHeightForKey:(id<NSCopying>)key;
-- (void)clearAllheightCaches;
 
+// Invalidation
+- (void)invalidateHeightForKey:(id<NSCopying>)key;
+- (void)invalidateAllHeightCache;
 @end
 
-/// Do not use directly, height cache objects are orientation determined.
-@interface UITableView (FDTemplateLayoutCellHeightCache)
+@interface UITableView (FDKeyedHeightCache)
 
-@property (nonatomic, strong, readonly) FDTemplateLayoutCellIndexPathHeightCache *fd_indexPathHeightCache;
-@property (nonatomic, strong, readonly) FDTemplateLayoutCellKeyHeightCache *fd_keyHeightCache;
-
+/// Height cache by key. Generally, you don't need to use it directly.
+@property (nonatomic, strong, readonly) FDKeyedHeightCache *fd_keyedHeightCache;
 @end

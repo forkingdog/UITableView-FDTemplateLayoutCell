@@ -25,8 +25,7 @@ typedef NS_ENUM(NSInteger, FDSimulatedCacheMode) {
 
 @implementation FDFeedViewController
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
    
     self.tableView.fd_debugLogEnabled = YES;
@@ -41,8 +40,7 @@ typedef NS_ENUM(NSInteger, FDSimulatedCacheMode) {
     }];
 }
 
-- (void)buildTestDataThen:(void (^)(void))then
-{
+- (void)buildTestDataThen:(void (^)(void))then {
     // Simulate an async request
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
@@ -68,25 +66,21 @@ typedef NS_ENUM(NSInteger, FDSimulatedCacheMode) {
 
 #pragma mark - UITableViewDataSource
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return self.feedEntitySections.count;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [self.feedEntitySections[section] count];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     FDFeedCell *cell = [tableView dequeueReusableCellWithIdentifier:@"FDFeedCell" forIndexPath:indexPath];
     [self configureCell:cell atIndexPath:indexPath];
     return cell;
 }
 
-- (void)configureCell:(FDFeedCell *)cell atIndexPath:(NSIndexPath *)indexPath
-{
+- (void)configureCell:(FDFeedCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     cell.fd_enforceFrameLayout = NO; // Enable to use "-sizeThatFits:"
     if (indexPath.row % 2 == 0) {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -98,8 +92,7 @@ typedef NS_ENUM(NSInteger, FDSimulatedCacheMode) {
 
 #pragma mark - UITableViewDelegate
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     FDSimulatedCacheMode mode = self.cacheModeSegmentControl.selectedSegmentIndex;
     NSString *reuseIdentifier = @"FDFeedCell";
     switch (mode) {
@@ -123,8 +116,7 @@ typedef NS_ENUM(NSInteger, FDSimulatedCacheMode) {
     }
 }
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         NSMutableArray *mutableEntities = self.feedEntitySections[indexPath.section];
         [mutableEntities removeObjectAtIndex:indexPath.row];
@@ -134,8 +126,7 @@ typedef NS_ENUM(NSInteger, FDSimulatedCacheMode) {
 
 #pragma mark - Actions
 
-- (IBAction)refreshControlAction:(UIRefreshControl *)sender
-{
+- (IBAction)refreshControlAction:(UIRefreshControl *)sender {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.feedEntitySections removeAllObjects];
         [self.feedEntitySections addObject:self.prototypeEntitiesFromJSON.mutableCopy];
@@ -144,8 +135,7 @@ typedef NS_ENUM(NSInteger, FDSimulatedCacheMode) {
     });
 }
 
-- (IBAction)rightNavigationItemAction:(id)sender
-{
+- (IBAction)rightNavigationItemAction:(id)sender {
     [[[UIActionSheet alloc]
       initWithTitle:@"Actions"
       delegate:self
@@ -158,8 +148,7 @@ typedef NS_ENUM(NSInteger, FDSimulatedCacheMode) {
      showInView:self.view];
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     SEL selectors[] = {
         @selector(insertRow),
         @selector(insertSection),
@@ -172,15 +161,13 @@ typedef NS_ENUM(NSInteger, FDSimulatedCacheMode) {
     }
 }
 
-- (FDFeedEntity *)randomEntity
-{
+- (FDFeedEntity *)randomEntity {
     NSUInteger randomNumber = arc4random_uniform((int32_t)self.prototypeEntitiesFromJSON.count);
     FDFeedEntity *randomEntity = self.prototypeEntitiesFromJSON[randomNumber];
     return randomEntity;
 }
 
-- (void)insertRow
-{
+- (void)insertRow {
     if (self.feedEntitySections.count == 0) {
         self.feedEntitySections[0] = @[].mutableCopy;
     }
@@ -189,14 +176,12 @@ typedef NS_ENUM(NSInteger, FDSimulatedCacheMode) {
     [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
-- (void)insertSection
-{
+- (void)insertSection {
     [self.feedEntitySections insertObject:@[self.randomEntity].mutableCopy atIndex:0];
     [self.tableView insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
-- (void)deleteSection
-{
+- (void)deleteSection {
     if (self.feedEntitySections.count > 0) {
         [self.feedEntitySections removeObjectAtIndex:0];
         [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];

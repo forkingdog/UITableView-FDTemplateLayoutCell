@@ -34,10 +34,9 @@
 }
 
 - (void)fd_debugLog:(NSString *)message {
-    if (!self.fd_debugLogEnabled) {
-        return;
+    if (self.fd_debugLogEnabled) {
+        NSLog(@"** FDTemplateLayoutCell ** %@", message);
     }
-    NSLog(@"** FDTemplateLayoutCell ** %@", message);
 }
 
 @end

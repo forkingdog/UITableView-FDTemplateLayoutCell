@@ -21,9 +21,6 @@
 // SOFTWARE.
 
 #import "UITableView+FDTemplateLayoutCell.h"
-#import "UITableView+FDTemplateLayoutCellHeightCache.h"
-#import "UITableView+FDTemplateLayoutCellInvalidation.h"
-#import "UITableView+FDTemplateLayoutCellPrecache.h"
 #import <objc/runtime.h>
 
 @implementation UITableView (FDTemplateLayoutCell)
@@ -56,7 +53,6 @@
         return 0;
     }
     
-    // Fetch a cached template cell for `identifier`.
     UITableViewCell *cell = [self fd_templateCellForReuseIdentifier:identifier];
     
     // Manually calls to ensure consistent behavior with actual cells (that are displayed on screen).
@@ -86,26 +82,7 @@
     
     CGSize fittingSize = CGSizeZero;
 
-    BOOL autoLayoutEnabled = !cell.fd_enforceFrameLayout;
-    if (autoLayoutEnabled) {
-        
-        // Add a hard width constraint to make dynamic content views (like labels) expand vertically instead
-        // of growing horizontally, in a flow-layout manner.
-        NSLayoutConstraint *tempWidthConstraint =
-        [NSLayoutConstraint constraintWithItem:cell.contentView
-                                     attribute:NSLayoutAttributeWidth
-                                     relatedBy:NSLayoutRelationEqual
-                                        toItem:nil
-                                     attribute:NSLayoutAttributeNotAnAttribute
-                                    multiplier:1.0
-                                      constant:contentViewWidth];
-        [cell.contentView addConstraint:tempWidthConstraint];
-        // Auto layout engine does its math
-        fittingSize = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
-        [cell.contentView removeConstraint:tempWidthConstraint];
-        
-    } else {
-        
+    if (cell.fd_enforceFrameLayout) {
         // If not using auto layout, you have to override "-sizeThatFits:" to provide a fitting size by yourself.
         // This is the same method used in iOS8 self-sizing cell's implementation.
         // Note: fitting height should not include separator view.
@@ -116,6 +93,14 @@
             NSAssert(NO, @"Customized cell must override '-sizeThatFits:' method if not using auto layout.");
         }
         fittingSize = [cell sizeThatFits:CGSizeMake(contentViewWidth, 0)];
+    } else {
+        // Add a hard width constraint to make dynamic content views (like labels) expand vertically instead
+        // of growing horizontally, in a flow-layout manner.
+        NSLayoutConstraint *tempWidthConstraint = [NSLayoutConstraint constraintWithItem:cell.contentView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:contentViewWidth];
+        [cell.contentView addConstraint:tempWidthConstraint];
+        // Auto layout engine does its math
+        fittingSize = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+        [cell.contentView removeConstraint:tempWidthConstraint];
     }
     
     // Add 1px extra space for separator line if needed, simulating default UITableViewCell.
@@ -123,10 +108,10 @@
         fittingSize.height += 1.0 / [UIScreen mainScreen].scale;
     }
     
-    if (autoLayoutEnabled) {
-        [self fd_debugLog:[NSString stringWithFormat:@"calculate using auto layout - %@", @(fittingSize.height)]];
-    } else {
+    if (cell.fd_enforceFrameLayout) {
         [self fd_debugLog:[NSString stringWithFormat:@"calculate using frame layout - %@", @(fittingSize.height)]];
+    } else {
+        [self fd_debugLog:[NSString stringWithFormat:@"calculate using auto layout - %@", @(fittingSize.height)]];
     }
 
     return fittingSize.height;
@@ -136,39 +121,16 @@
     if (!identifier || !indexPath) {
         return 0;
     }
-    
-    // Enable auto cache invalidation if you use this "cacheByIndexPath" API.
-    if (!self.fd_autoInvalidateEnabled) {
-        self.fd_autoInvalidateEnabled = YES;
-    }
-    
-    // Enable precache if you use this "cacheByIndexPath" API.
-    if (!self.fd_precacheEnabled) {
-        self.fd_precacheEnabled = YES;
-        // Manually trigger precache only for the first time.
-        [self fd_precacheIfNeeded];
-    }
-    
-    // Hit the cache
+
+    // Hit cache
     if ([self.fd_indexPathHeightCache existsHeightAtIndexPath:indexPath]) {
-        [self fd_debugLog:[NSString stringWithFormat:
-                           @"hit cache by index path[%@:%@] - %@",
-                           @(indexPath.section),
-                           @(indexPath.row),
-                           @([self.fd_indexPathHeightCache heightForIndexPath:indexPath])]];
+        [self fd_debugLog:[NSString stringWithFormat:@"hit cache by index path[%@:%@] - %@", @(indexPath.section), @(indexPath.row), @([self.fd_indexPathHeightCache heightForIndexPath:indexPath])]];
         return [self.fd_indexPathHeightCache heightForIndexPath:indexPath];
     }
     
-    // Call basic height calculation method.
     CGFloat height = [self fd_heightForCellWithIdentifier:identifier configuration:configuration];
-    [self fd_debugLog:[NSString stringWithFormat:
-                       @"cached by index path[%@:%@] - %@",
-                       @(indexPath.section),
-                       @(indexPath.row),
-                       @(height)]];
-    
-    // Cache it
     [self.fd_indexPathHeightCache cacheHeight:height byIndexPath:indexPath];
+    [self fd_debugLog:[NSString stringWithFormat: @"cached by index path[%@:%@] - %@", @(indexPath.section), @(indexPath.row), @(height)]];
     
     return height;
 }
@@ -178,15 +140,15 @@
         return 0;
     }
     
-    // Hit
-    if ([self.fd_keyHeightCache existsHeightForKey:key]) {
-        CGFloat cachedHeight = [self.fd_keyHeightCache heightForKey:key];
+    // Hit cache
+    if ([self.fd_keyedHeightCache existsHeightForKey:key]) {
+        CGFloat cachedHeight = [self.fd_keyedHeightCache heightForKey:key];
         [self fd_debugLog:[NSString stringWithFormat:@"hit cache by key[%@] - %@", key, @(cachedHeight)]];
         return cachedHeight;
     }
     
     CGFloat height = [self fd_heightForCellWithIdentifier:identifier configuration:configuration];
-    [self.fd_keyHeightCache cacheHeight:height byKey:key];
+    [self.fd_keyedHeightCache cacheHeight:height byKey:key];
     [self fd_debugLog:[NSString stringWithFormat:@"cached by key[%@] - %@", key, @(height)]];
 
     return height;

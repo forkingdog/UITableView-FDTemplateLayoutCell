@@ -22,15 +22,30 @@
 
 #import <UIKit/UIKit.h>
 
-@interface UITableView (FDTemplateLayoutCellInvalidation)
+@interface FDIndexPathHeightCache : NSObject
 
-/// Default to YES.
-@property (nonatomic, assign) BOOL fd_autoInvalidateEnabled;
+// Enable automatically if you're using index path driven height cache
+@property (nonatomic, assign) BOOL automaticallyInvalidateEnabled;
 
-/// Invalidate cache at indexPath in "cacheByIndexPath" mode.
+// Height cache
+- (BOOL)existsHeightAtIndexPath:(NSIndexPath *)indexPath;
+- (void)cacheHeight:(CGFloat)height byIndexPath:(NSIndexPath *)indexPath;
+- (CGFloat)heightForIndexPath:(NSIndexPath *)indexPath;
 - (void)invalidateHeightAtIndexPath:(NSIndexPath *)indexPath;
+- (void)invalidateAllHeightCache;
 
-/// Invalidate cache for key in "cacheByKey" mode.
-- (void)invalidateHeightForKey:(id<NSCopying>)key;
+@end
 
+@interface UITableView (FDIndexPathHeightCache)
+
+/// Height cache by index path. Generally, you don't need to use it directly.
+@property (nonatomic, strong, readonly) FDIndexPathHeightCache *fd_indexPathHeightCache;
+@end
+
+@interface UITableView (FDIndexPathHeightCacheInvalidation)
+
+/// Call this method when you want to reload data but don't want to invalidate
+/// all height cache by index path, for example, load more data at the bottom of
+/// table view.
+- (void)fd_reloadDataWithoutInvalidateIndexPathHeightCache;
 @end

@@ -21,6 +21,8 @@
 // SOFTWARE.
 
 #import <UIKit/UIKit.h>
+#import "UITableView+FDKeyedHeightCache.h"
+#import "UITableView+FDIndexPathHeightCache.h"
 #import "UITableView+FDTemplateLayoutCellDebug.h"
 
 @interface UITableView (FDTemplateLayoutCell)
@@ -54,9 +56,8 @@
 - (CGFloat)fd_heightForCellWithIdentifier:(NSString *)identifier cacheByIndexPath:(NSIndexPath *)indexPath configuration:(void (^)(id cell))configuration;
 
 /// This method caches height by your model entity's identifier.
-/// If your model's changed, call "- invalidateHeightForKey:(id <NSCopying>)key" to
-/// invalidate cache and re-calculate, it's much cheaper and effective than
-/// "cacheByIndexPath" version.
+/// If your model's changed, call "-invalidateHeightForKey:(id <NSCopying>)key" to
+/// invalidate cache and re-calculate, it's much cheaper and effective than "cacheByIndexPath".
 ///
 /// @param key model entity's identifier whose data configures a cell.
 ///
