@@ -21,6 +21,9 @@
 // SOFTWARE.
 
 #import <UIKit/UIKit.h>
+#import "UITableView+FDKeyedHeightCache.h"
+#import "UITableView+FDIndexPathHeightCache.h"
+#import "UITableView+FDTemplateLayoutCellDebug.h"
 
 @interface UITableView (FDTemplateLayoutCell)
 
@@ -52,12 +55,13 @@
 ///
 - (CGFloat)fd_heightForCellWithIdentifier:(NSString *)identifier cacheByIndexPath:(NSIndexPath *)indexPath configuration:(void (^)(id cell))configuration;
 
-/// Helps to debug or inspect what is this "FDTemplateLayoutCell" extention doing,
-/// turning on to print logs when "creating", "calculating", "precaching" or "hitting cache".
+/// This method caches height by your model entity's identifier.
+/// If your model's changed, call "-invalidateHeightForKey:(id <NSCopying>)key" to
+/// invalidate cache and re-calculate, it's much cheaper and effective than "cacheByIndexPath".
 ///
-/// Default to "NO", log by "NSLog".
+/// @param key model entity's identifier whose data configures a cell.
 ///
-@property (nonatomic, assign) BOOL fd_debugLogEnabled;
+- (CGFloat)fd_heightForCellWithIdentifier:(NSString *)identifier cacheByKey:(id<NSCopying>)key configuration:(void (^)(id cell))configuration;
 
 @end
 
@@ -77,10 +81,8 @@
 
 /// Enable to enforce this template layout cell to use "frame layout" rather than "auto layout",
 /// and will ask cell's height by calling "-sizeThatFits:", so you must override this method.
-/// Note:
-///   If no layout constraints have been added to cell's content view, it will automatically
-///   switch to "frame layout" mode. Use this property only when you want to manually control
-///   this template layout cell's height calculation mode. Default to NO.
+/// Use this property only when you want to manually control this template layout cell's height
+/// calculation mode, default to NO.
 ///
 @property (nonatomic, assign) BOOL fd_enforceFrameLayout;
 
