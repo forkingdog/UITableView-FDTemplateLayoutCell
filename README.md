@@ -101,7 +101,7 @@ A bad one :( - missing right and bottom
 A good one :)  
 ![self-satisfied](https://github.com/forkingdog/UITableView-FDTemplateLayoutCell/blob/master/Sceenshots/screenshot1.png)   
 
-## Note
+## Notes
 
 A template layout cell is created by `-dequeueReusableCellWithIdentifier:` method, it means that you MUST have registered this cell reuse identifier by one of:  
 
@@ -130,7 +130,7 @@ pod setup
 
 We recommend to use the latest release in cocoapods.
 
-- 1.4
+- 1.4  
 Refactor, add "cacheByKey" mode, bug fixed
 
 - 1.3  
