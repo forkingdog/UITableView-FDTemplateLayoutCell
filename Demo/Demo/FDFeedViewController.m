@@ -94,10 +94,9 @@ typedef NS_ENUM(NSInteger, FDSimulatedCacheMode) {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     FDSimulatedCacheMode mode = self.cacheModeSegmentControl.selectedSegmentIndex;
-    NSString *reuseIdentifier = @"FDFeedCell";
     switch (mode) {
         case FDSimulatedCacheModeNone:
-            return [tableView fd_heightForCellWithIdentifier:reuseIdentifier configuration:^(FDFeedCell *cell) {
+            return [tableView fd_heightForCellWithIdentifier:@"FDFeedCell" configuration:^(FDFeedCell *cell) {
                 [self configureCell:cell atIndexPath:indexPath];
             }];
         case FDSimulatedCacheModeCacheByIndexPath:
@@ -169,11 +168,12 @@ typedef NS_ENUM(NSInteger, FDSimulatedCacheMode) {
 
 - (void)insertRow {
     if (self.feedEntitySections.count == 0) {
-        self.feedEntitySections[0] = @[].mutableCopy;
+        [self insertSection];
+    } else {
+        [self.feedEntitySections[0] insertObject:self.randomEntity atIndex:0];
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+        [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
-    [self.feedEntitySections[0] insertObject:self.randomEntity atIndex:0];
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-    [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 - (void)insertSection {
