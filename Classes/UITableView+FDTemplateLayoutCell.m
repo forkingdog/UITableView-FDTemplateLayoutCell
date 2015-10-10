@@ -96,11 +96,22 @@
     } else {
         // Add a hard width constraint to make dynamic content views (like labels) expand vertically instead
         // of growing horizontally, in a flow-layout manner.
-        NSLayoutConstraint *tempWidthConstraint = [NSLayoutConstraint constraintWithItem:cell.contentView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:contentViewWidth];
-        [cell.contentView addConstraint:tempWidthConstraint];
-        // Auto layout engine does its math
-        fittingSize = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
-        [cell.contentView removeConstraint:tempWidthConstraint];
+        
+        /* 修复1.3版本存在的一个bug:给contentView添加宽度为0的约束,会与已有子视图约束冲突. */
+        if (0 != contentViewWidth) {
+            NSLayoutConstraint *tempWidthConstraint =
+            [NSLayoutConstraint constraintWithItem:cell.contentView
+                                         attribute:NSLayoutAttributeWidth
+                                         relatedBy:NSLayoutRelationEqual
+                                            toItem:nil
+                                         attribute:NSLayoutAttributeNotAnAttribute
+                                        multiplier:1.0
+                                          constant:contentViewWidth];
+            [cell.contentView addConstraint:tempWidthConstraint];
+            // Auto layout engine does its math
+            fittingSize = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+            [cell.contentView removeConstraint:tempWidthConstraint];
+        }
     }
     
     // Add 1px extra space for separator line if needed, simulating default UITableViewCell.
