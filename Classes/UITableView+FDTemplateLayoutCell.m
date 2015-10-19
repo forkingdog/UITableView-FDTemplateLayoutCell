@@ -105,7 +105,7 @@
     
     // Add 1px extra space for separator line if needed, simulating default UITableViewCell.
     if (self.separatorStyle != UITableViewCellSeparatorStyleNone) {
-        fittingSize.height += 1.0 / [UIScreen mainScreen].scale;
+        fittingSize.height += 1.0;
     }
     
     if (cell.fd_enforceFrameLayout) {
