@@ -7,19 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		485DB89B1BAFFF8900CEAE33 /* UITableView+FDKeyedHeightCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 485DB89A1BAFFF8900CEAE33 /* UITableView+FDKeyedHeightCache.m */; };
+		485DB89E1BB0004300CEAE33 /* UITableView+FDIndexPathHeightCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 485DB89D1BB0004300CEAE33 /* UITableView+FDIndexPathHeightCache.m */; };
 		488EECB71ADFEDC6004EAA71 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 488EECB61ADFEDC6004EAA71 /* main.m */; };
 		488EECBA1ADFEDC6004EAA71 /* FDAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 488EECB91ADFEDC6004EAA71 /* FDAppDelegate.m */; };
 		488EECC01ADFEDC6004EAA71 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 488EECBE1ADFEDC6004EAA71 /* Main.storyboard */; };
 		488EECC21ADFEDC6004EAA71 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 488EECC11ADFEDC6004EAA71 /* Images.xcassets */; };
 		488EECC51ADFEDC6004EAA71 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 488EECC31ADFEDC6004EAA71 /* LaunchScreen.xib */; };
-		488EECDD1ADFEEE1004EAA71 /* UITableView+FDTemplateLayoutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 488EECDC1ADFEEE1004EAA71 /* UITableView+FDTemplateLayoutCell.m */; };
 		488EECE01ADFF7A5004EAA71 /* FDFeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 488EECDF1ADFF7A5004EAA71 /* FDFeedViewController.m */; };
 		488EECE31ADFF884004EAA71 /* FDFeedEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 488EECE21ADFF884004EAA71 /* FDFeedEntity.m */; };
+		48954A261B5102E200EFD15D /* UITableView+FDTemplateLayoutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48954A1F1B5102E200EFD15D /* UITableView+FDTemplateLayoutCell.m */; };
 		4897E5DD1ADFFBBD00E87B5F /* data.json in Resources */ = {isa = PBXBuildFile; fileRef = 4897E5DC1ADFFBBD00E87B5F /* data.json */; };
 		4897E5E01AE090B900E87B5F /* FDFeedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4897E5DF1AE090B900E87B5F /* FDFeedCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		485DB8991BAFFF8900CEAE33 /* UITableView+FDKeyedHeightCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+FDKeyedHeightCache.h"; sourceTree = "<group>"; };
+		485DB89A1BAFFF8900CEAE33 /* UITableView+FDKeyedHeightCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+FDKeyedHeightCache.m"; sourceTree = "<group>"; };
+		485DB89C1BB0004300CEAE33 /* UITableView+FDIndexPathHeightCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+FDIndexPathHeightCache.h"; sourceTree = "<group>"; };
+		485DB89D1BB0004300CEAE33 /* UITableView+FDIndexPathHeightCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+FDIndexPathHeightCache.m"; sourceTree = "<group>"; };
 		488EECB11ADFEDC6004EAA71 /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		488EECB51ADFEDC6004EAA71 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		488EECB61ADFEDC6004EAA71 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -28,12 +34,12 @@
 		488EECBF1ADFEDC6004EAA71 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		488EECC11ADFEDC6004EAA71 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		488EECC41ADFEDC6004EAA71 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		488EECDB1ADFEEE1004EAA71 /* UITableView+FDTemplateLayoutCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+FDTemplateLayoutCell.h"; sourceTree = "<group>"; };
-		488EECDC1ADFEEE1004EAA71 /* UITableView+FDTemplateLayoutCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+FDTemplateLayoutCell.m"; sourceTree = "<group>"; };
 		488EECDE1ADFF7A5004EAA71 /* FDFeedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDFeedViewController.h; sourceTree = "<group>"; };
 		488EECDF1ADFF7A5004EAA71 /* FDFeedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDFeedViewController.m; sourceTree = "<group>"; };
 		488EECE11ADFF884004EAA71 /* FDFeedEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDFeedEntity.h; sourceTree = "<group>"; };
 		488EECE21ADFF884004EAA71 /* FDFeedEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDFeedEntity.m; sourceTree = "<group>"; };
+		48954A1E1B5102E200EFD15D /* UITableView+FDTemplateLayoutCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+FDTemplateLayoutCell.h"; sourceTree = "<group>"; };
+		48954A1F1B5102E200EFD15D /* UITableView+FDTemplateLayoutCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+FDTemplateLayoutCell.m"; sourceTree = "<group>"; };
 		4897E5DC1ADFFBBD00E87B5F /* data.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = data.json; sourceTree = "<group>"; };
 		4897E5DE1AE090B900E87B5F /* FDFeedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDFeedCell.h; sourceTree = "<group>"; };
 		4897E5DF1AE090B900E87B5F /* FDFeedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDFeedCell.m; sourceTree = "<group>"; };
@@ -69,8 +75,8 @@
 		488EECB31ADFEDC6004EAA71 /* Demo */ = {
 			isa = PBXGroup;
 			children = (
+				48954A191B5102E200EFD15D /* Classes */,
 				488EECEA1ADFF905004EAA71 /* Feed */,
-				488EECDA1ADFEEE0004EAA71 /* FDTemplateLayoutCell */,
 				488EECC11ADFEDC6004EAA71 /* Images.xcassets */,
 				488EECC31ADFEDC6004EAA71 /* LaunchScreen.xib */,
 				488EECB41ADFEDC6004EAA71 /* Supporting Files */,
@@ -85,16 +91,6 @@
 				488EECB61ADFEDC6004EAA71 /* main.m */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		488EECDA1ADFEEE0004EAA71 /* FDTemplateLayoutCell */ = {
-			isa = PBXGroup;
-			children = (
-				488EECDB1ADFEEE1004EAA71 /* UITableView+FDTemplateLayoutCell.h */,
-				488EECDC1ADFEEE1004EAA71 /* UITableView+FDTemplateLayoutCell.m */,
-			);
-			name = FDTemplateLayoutCell;
-			path = ../../Classes;
 			sourceTree = "<group>";
 		};
 		488EECEA1ADFF905004EAA71 /* Feed */ = {
@@ -112,6 +108,20 @@
 				4897E5DC1ADFFBBD00E87B5F /* data.json */,
 			);
 			name = Feed;
+			sourceTree = "<group>";
+		};
+		48954A191B5102E200EFD15D /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				48954A1E1B5102E200EFD15D /* UITableView+FDTemplateLayoutCell.h */,
+				48954A1F1B5102E200EFD15D /* UITableView+FDTemplateLayoutCell.m */,
+				485DB8991BAFFF8900CEAE33 /* UITableView+FDKeyedHeightCache.h */,
+				485DB89A1BAFFF8900CEAE33 /* UITableView+FDKeyedHeightCache.m */,
+				485DB89C1BB0004300CEAE33 /* UITableView+FDIndexPathHeightCache.h */,
+				485DB89D1BB0004300CEAE33 /* UITableView+FDIndexPathHeightCache.m */,
+			);
+			name = Classes;
+			path = ../../Classes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -185,11 +195,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				488EECDD1ADFEEE1004EAA71 /* UITableView+FDTemplateLayoutCell.m in Sources */,
 				488EECBA1ADFEDC6004EAA71 /* FDAppDelegate.m in Sources */,
+				48954A261B5102E200EFD15D /* UITableView+FDTemplateLayoutCell.m in Sources */,
 				488EECE01ADFF7A5004EAA71 /* FDFeedViewController.m in Sources */,
 				4897E5E01AE090B900E87B5F /* FDFeedCell.m in Sources */,
 				488EECB71ADFEDC6004EAA71 /* main.m in Sources */,
+				485DB89B1BAFFF8900CEAE33 /* UITableView+FDKeyedHeightCache.m in Sources */,
+				485DB89E1BB0004300CEAE33 /* UITableView+FDIndexPathHeightCache.m in Sources */,
 				488EECE31ADFF884004EAA71 /* FDFeedEntity.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

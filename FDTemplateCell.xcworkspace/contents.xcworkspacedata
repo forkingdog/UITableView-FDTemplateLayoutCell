@@ -10,6 +10,18 @@
       <FileRef
          location = "group:UITableView+FDTemplateLayoutCell.m">
       </FileRef>
+      <FileRef
+         location = "group:UITableView+FDKeyedHeightCache.h">
+      </FileRef>
+      <FileRef
+         location = "group:UITableView+FDKeyedHeightCache.m">
+      </FileRef>
+      <FileRef
+         location = "group:UITableView+FDIndexPathHeightCache.h">
+      </FileRef>
+      <FileRef
+         location = "group:UITableView+FDIndexPathHeightCache.m">
+      </FileRef>
    </Group>
    <FileRef
       location = "group:Demo/Demo.xcodeproj">
