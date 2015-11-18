@@ -63,24 +63,11 @@ __PRETTY_FUNCTION__,## __VA_ARGS__)
     return templateCell;
 }
 
-- (CGFloat)fd_heightForCellWithIdentifier:(NSString *)identifier configuration:(void (^)(id cell))configuration {
-    if (!identifier) {
-        return 0;
-    }
-    
-    UITableViewCell *cell = [self fd_templateCellForReuseIdentifier:identifier];
-    
-    // Manually calls to ensure consistent behavior with actual cells (that are displayed on screen).
-    [cell prepareForReuse];
-    
-    // Customize and provide content for our template cell.
-    if (configuration) {
-        configuration(cell);
-    }
-    
-    CGFloat contentViewWidth = CGRectGetWidth(cell.contentView.frame);
+- (CGFloat)fd_heightForCell:(UITableViewCell *)cell
+{
     CGSize fittingSize = CGSizeZero;
-
+    CGFloat contentViewWidth = CGRectGetWidth(cell.contentView.frame);
+    
     if (cell.fd_enforceFrameLayout) {
         // If not using auto layout, you have to override "-sizeThatFits:" to provide a fitting size by yourself.
         // This is the same method used in iOS8 self-sizing cell's implementation.
@@ -107,13 +94,25 @@ __PRETTY_FUNCTION__,## __VA_ARGS__)
         fittingSize.height += 1.0 / [UIScreen mainScreen].scale;
     }
     
-    if (cell.fd_enforceFrameLayout) {
-        DLog(@"%@", [NSString stringWithFormat:@"calculate using frame layout - %@", @(fittingSize.height)]);
-    } else {
-        DLog(@"%@", [NSString stringWithFormat:@"calculate using auto layout - %@", @(fittingSize.height)]);
+    return fittingSize.height;
+}
+
+- (CGFloat)fd_heightForCellWithIdentifier:(NSString *)identifier configuration:(void (^)(id cell))configuration {
+    if (!identifier) {
+        return 0;
+    }
+    
+    UITableViewCell *cell = [self fd_templateCellForReuseIdentifier:identifier];
+    
+    // Manually calls to ensure consistent behavior with actual cells (that are displayed on screen).
+    [cell prepareForReuse];
+    
+    // Customize and provide content for our template cell.
+    if (configuration) {
+        configuration(cell);
     }
 
-    return fittingSize.height;
+    return [self fd_heightForCell:cell];
 }
 
 - (CGFloat)fd_heightForCellWithIdentifier:(NSString *)identifier cacheByIndexPath:(NSIndexPath *)indexPath configuration:(void (^)(id cell))configuration {

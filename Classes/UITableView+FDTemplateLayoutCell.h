@@ -26,6 +26,8 @@
 
 @interface UITableView (FDTemplateLayoutCell)
 
+- (CGFloat)fd_heightForCell:(UITableViewCell *)cell;
+
 /// Returns height of cell of type specifed by a reuse identifier and configured
 /// by the configuration block.
 ///
