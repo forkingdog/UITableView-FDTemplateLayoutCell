@@ -66,7 +66,22 @@ __PRETTY_FUNCTION__,## __VA_ARGS__)
 - (CGFloat)fd_heightForCell:(UITableViewCell *)cell
 {
     CGSize fittingSize = CGSizeZero;
-    CGFloat contentViewWidth = CGRectGetWidth(cell.contentView.frame);
+    
+    CGFloat contentViewWidth = CGRectGetWidth(self.frame);
+    // If a cell has accessory view or system accessory type, its content view's width is smaller
+    // than cell's by some fixed values.
+    if (cell.accessoryView) {
+        contentViewWidth -= 16 + CGRectGetWidth(cell.accessoryView.frame);
+    } else {
+        static const CGFloat systemAccessoryWidths[] = {
+            [UITableViewCellAccessoryNone] = 0,
+            [UITableViewCellAccessoryDisclosureIndicator] = 34,
+            [UITableViewCellAccessoryDetailDisclosureButton] = 68,
+            [UITableViewCellAccessoryCheckmark] = 40,
+            [UITableViewCellAccessoryDetailButton] = 48
+        };
+        contentViewWidth -= systemAccessoryWidths[cell.accessoryType];
+    }
     
     if (cell.fd_enforceFrameLayout) {
         // If not using auto layout, you have to override "-sizeThatFits:" to provide a fitting size by yourself.
