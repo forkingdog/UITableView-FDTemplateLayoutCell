@@ -96,11 +96,13 @@
     } else {
         // Add a hard width constraint to make dynamic content views (like labels) expand vertically instead
         // of growing horizontally, in a flow-layout manner.
-        NSLayoutConstraint *tempWidthConstraint = [NSLayoutConstraint constraintWithItem:templateLayoutCell.contentView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:contentViewWidth];
-        [templateLayoutCell.contentView addConstraint:tempWidthConstraint];
-        // Auto layout engine does its math
-        fittingSize = [templateLayoutCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
-        [templateLayoutCell.contentView removeConstraint:tempWidthConstraint];
+        if (contentViewWidth > 0) {
+            NSLayoutConstraint *widthFenceConstraint = [NSLayoutConstraint constraintWithItem:templateLayoutCell.contentView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:contentViewWidth];
+            [templateLayoutCell.contentView addConstraint:widthFenceConstraint];
+            // Auto layout engine does its math
+            fittingSize = [templateLayoutCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+            [templateLayoutCell.contentView removeConstraint:widthFenceConstraint];
+        }
     }
     
     // Add separator's height, using a private property in UITableViewCell.
