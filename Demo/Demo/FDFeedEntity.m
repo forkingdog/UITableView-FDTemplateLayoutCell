@@ -14,13 +14,20 @@
 {
     self = super.init;
     if (self) {
-        self.title = dictionary[@"title"];
-        self.content = dictionary[@"content"];
-        self.username = dictionary[@"username"];
-        self.time = dictionary[@"time"];
-        self.imageName = dictionary[@"imageName"];
+        _identifier = [self uniqueIdentifier];
+        _title = dictionary[@"title"];
+        _content = dictionary[@"content"];
+        _username = dictionary[@"username"];
+        _time = dictionary[@"time"];
+        _imageName = dictionary[@"imageName"];
     }
     return self;
+}
+
+- (NSString *)uniqueIdentifier
+{
+    static NSInteger counter = 0;
+    return [NSString stringWithFormat:@"unique-id-%@", @(counter++)];
 }
 
 @end

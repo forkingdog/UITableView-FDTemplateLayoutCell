@@ -7,12 +7,24 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		485022131C3A86EC00BD389E /* UITableView+FDIndexPathHeightCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 4850220D1C3A86EC00BD389E /* UITableView+FDIndexPathHeightCache.h */; };
+		485022141C3A86EC00BD389E /* UITableView+FDIndexPathHeightCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 4850220E1C3A86EC00BD389E /* UITableView+FDIndexPathHeightCache.m */; };
+		485022151C3A86EC00BD389E /* UITableView+FDKeyedHeightCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 4850220F1C3A86EC00BD389E /* UITableView+FDKeyedHeightCache.h */; };
+		485022161C3A86EC00BD389E /* UITableView+FDKeyedHeightCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 485022101C3A86EC00BD389E /* UITableView+FDKeyedHeightCache.m */; };
+		485022171C3A86EC00BD389E /* UITableView+FDTemplateLayoutCellDebug.h in Headers */ = {isa = PBXBuildFile; fileRef = 485022111C3A86EC00BD389E /* UITableView+FDTemplateLayoutCellDebug.h */; };
+		485022181C3A86EC00BD389E /* UITableView+FDTemplateLayoutCellDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 485022121C3A86EC00BD389E /* UITableView+FDTemplateLayoutCellDebug.m */; };
 		E19608D11BAD53AF00BDCBBE /* FDTemplateLayoutCell.h in Headers */ = {isa = PBXBuildFile; fileRef = E19608D01BAD53AF00BDCBBE /* FDTemplateLayoutCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E19608E01BAD54EB00BDCBBE /* UITableView+FDTemplateLayoutCell.h in Headers */ = {isa = PBXBuildFile; fileRef = E19608DE1BAD54EB00BDCBBE /* UITableView+FDTemplateLayoutCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E19608E11BAD54EB00BDCBBE /* UITableView+FDTemplateLayoutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E19608DF1BAD54EB00BDCBBE /* UITableView+FDTemplateLayoutCell.m */; settings = {ASSET_TAGS = (); }; };
+		E19608E11BAD54EB00BDCBBE /* UITableView+FDTemplateLayoutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E19608DF1BAD54EB00BDCBBE /* UITableView+FDTemplateLayoutCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4850220D1C3A86EC00BD389E /* UITableView+FDIndexPathHeightCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+FDIndexPathHeightCache.h"; sourceTree = "<group>"; };
+		4850220E1C3A86EC00BD389E /* UITableView+FDIndexPathHeightCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+FDIndexPathHeightCache.m"; sourceTree = "<group>"; };
+		4850220F1C3A86EC00BD389E /* UITableView+FDKeyedHeightCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+FDKeyedHeightCache.h"; sourceTree = "<group>"; };
+		485022101C3A86EC00BD389E /* UITableView+FDKeyedHeightCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+FDKeyedHeightCache.m"; sourceTree = "<group>"; };
+		485022111C3A86EC00BD389E /* UITableView+FDTemplateLayoutCellDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+FDTemplateLayoutCellDebug.h"; sourceTree = "<group>"; };
+		485022121C3A86EC00BD389E /* UITableView+FDTemplateLayoutCellDebug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+FDTemplateLayoutCellDebug.m"; sourceTree = "<group>"; };
 		E19608CD1BAD53AF00BDCBBE /* FDTemplateLayoutCell.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FDTemplateLayoutCell.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E19608D01BAD53AF00BDCBBE /* FDTemplateLayoutCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FDTemplateLayoutCell.h; sourceTree = "<group>"; };
 		E19608D21BAD53AF00BDCBBE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -60,6 +72,12 @@
 		E19608DD1BAD54EB00BDCBBE /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				4850220D1C3A86EC00BD389E /* UITableView+FDIndexPathHeightCache.h */,
+				4850220E1C3A86EC00BD389E /* UITableView+FDIndexPathHeightCache.m */,
+				4850220F1C3A86EC00BD389E /* UITableView+FDKeyedHeightCache.h */,
+				485022101C3A86EC00BD389E /* UITableView+FDKeyedHeightCache.m */,
+				485022111C3A86EC00BD389E /* UITableView+FDTemplateLayoutCellDebug.h */,
+				485022121C3A86EC00BD389E /* UITableView+FDTemplateLayoutCellDebug.m */,
 				E19608DE1BAD54EB00BDCBBE /* UITableView+FDTemplateLayoutCell.h */,
 				E19608DF1BAD54EB00BDCBBE /* UITableView+FDTemplateLayoutCell.m */,
 			);
@@ -76,6 +94,9 @@
 			files = (
 				E19608E01BAD54EB00BDCBBE /* UITableView+FDTemplateLayoutCell.h in Headers */,
 				E19608D11BAD53AF00BDCBBE /* FDTemplateLayoutCell.h in Headers */,
+				485022171C3A86EC00BD389E /* UITableView+FDTemplateLayoutCellDebug.h in Headers */,
+				485022151C3A86EC00BD389E /* UITableView+FDKeyedHeightCache.h in Headers */,
+				485022131C3A86EC00BD389E /* UITableView+FDIndexPathHeightCache.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -145,7 +166,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				485022161C3A86EC00BD389E /* UITableView+FDKeyedHeightCache.m in Sources */,
+				485022181C3A86EC00BD389E /* UITableView+FDTemplateLayoutCellDebug.m in Sources */,
 				E19608E11BAD54EB00BDCBBE /* UITableView+FDTemplateLayoutCell.m in Sources */,
+				485022141C3A86EC00BD389E /* UITableView+FDIndexPathHeightCache.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

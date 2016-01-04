@@ -11,22 +11,27 @@
 #import "FDFeedEntity.h"
 #import "FDFeedCell.h"
 
+typedef NS_ENUM(NSInteger, FDSimulatedCacheMode) {
+    FDSimulatedCacheModeNone = 0,
+    FDSimulatedCacheModeCacheByIndexPath,
+    FDSimulatedCacheModeCacheByKey
+};
+
 @interface FDFeedViewController () <UIActionSheetDelegate>
 @property (nonatomic, copy) NSArray *prototypeEntitiesFromJSON;
 @property (nonatomic, strong) NSMutableArray *feedEntitySections; // 2d array
-@property (nonatomic, assign) BOOL cellHeightCacheEnabled;
+@property (nonatomic, weak) IBOutlet UISegmentedControl *cacheModeSegmentControl;
 @end
 
 @implementation FDFeedViewController
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
-    
-    self.tableView.estimatedRowHeight = 200;
+   
     self.tableView.fd_debugLogEnabled = YES;
     
-    self.cellHeightCacheEnabled = YES;
+    // Cache by index path initial
+    self.cacheModeSegmentControl.selectedSegmentIndex = 1;
     
     [self buildTestDataThen:^{
         self.feedEntitySections = @[].mutableCopy;
@@ -35,8 +40,7 @@
     }];
 }
 
-- (void)buildTestDataThen:(void (^)(void))then
-{
+- (void)buildTestDataThen:(void (^)(void))then {
     // Simulate an async request
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
@@ -62,25 +66,21 @@
 
 #pragma mark - UITableViewDataSource
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return self.feedEntitySections.count;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [self.feedEntitySections[section] count];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     FDFeedCell *cell = [tableView dequeueReusableCellWithIdentifier:@"FDFeedCell" forIndexPath:indexPath];
     [self configureCell:cell atIndexPath:indexPath];
     return cell;
 }
 
-- (void)configureCell:(FDFeedCell *)cell atIndexPath:(NSIndexPath *)indexPath
-{
+- (void)configureCell:(FDFeedCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     cell.fd_enforceFrameLayout = NO; // Enable to use "-sizeThatFits:"
     if (indexPath.row % 2 == 0) {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -92,21 +92,30 @@
 
 #pragma mark - UITableViewDelegate
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (self.cellHeightCacheEnabled) {
-        return [tableView fd_heightForCellWithIdentifier:@"FDFeedCell" cacheByIndexPath:indexPath configuration:^(FDFeedCell *cell) {
-            [self configureCell:cell atIndexPath:indexPath];
-        }];
-    } else {
-        return [tableView fd_heightForCellWithIdentifier:@"FDFeedCell" configuration:^(FDFeedCell *cell) {
-            [self configureCell:cell atIndexPath:indexPath];
-        }];
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    FDSimulatedCacheMode mode = self.cacheModeSegmentControl.selectedSegmentIndex;
+    switch (mode) {
+        case FDSimulatedCacheModeNone:
+            return [tableView fd_heightForCellWithIdentifier:@"FDFeedCell" configuration:^(FDFeedCell *cell) {
+                [self configureCell:cell atIndexPath:indexPath];
+            }];
+        case FDSimulatedCacheModeCacheByIndexPath:
+            return [tableView fd_heightForCellWithIdentifier:@"FDFeedCell" cacheByIndexPath:indexPath configuration:^(FDFeedCell *cell) {
+                [self configureCell:cell atIndexPath:indexPath];
+            }];
+        case FDSimulatedCacheModeCacheByKey: {
+            FDFeedEntity *entity = self.feedEntitySections[indexPath.section][indexPath.row];
+
+            return [tableView fd_heightForCellWithIdentifier:@"FDFeedCell" cacheByKey:entity.identifier configuration:^(FDFeedCell *cell) {
+                [self configureCell:cell atIndexPath:indexPath];
+            }];
+        };
+        default:
+            break;
     }
 }
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         NSMutableArray *mutableEntities = self.feedEntitySections[indexPath.section];
         [mutableEntities removeObjectAtIndex:indexPath.row];
@@ -116,8 +125,7 @@
 
 #pragma mark - Actions
 
-- (IBAction)refreshControlAction:(UIRefreshControl *)sender
-{
+- (IBAction)refreshControlAction:(UIRefreshControl *)sender {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.feedEntitySections removeAllObjects];
         [self.feedEntitySections addObject:self.prototypeEntitiesFromJSON.mutableCopy];
@@ -126,13 +134,7 @@
     });
 }
 
-- (IBAction)leftSwitchAction:(UISwitch *)sender
-{
-    self.cellHeightCacheEnabled = sender.isOn;
-}
-
-- (IBAction)rightNavigationItemAction:(id)sender
-{
+- (IBAction)rightNavigationItemAction:(id)sender {
     [[[UIActionSheet alloc]
       initWithTitle:@"Actions"
       delegate:self
@@ -145,8 +147,7 @@
      showInView:self.view];
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     SEL selectors[] = {
         @selector(insertRow),
         @selector(insertSection),
@@ -159,31 +160,28 @@
     }
 }
 
-- (FDFeedEntity *)randomEntity
-{
+- (FDFeedEntity *)randomEntity {
     NSUInteger randomNumber = arc4random_uniform((int32_t)self.prototypeEntitiesFromJSON.count);
     FDFeedEntity *randomEntity = self.prototypeEntitiesFromJSON[randomNumber];
     return randomEntity;
 }
 
-- (void)insertRow
-{
+- (void)insertRow {
     if (self.feedEntitySections.count == 0) {
-        self.feedEntitySections[0] = @[].mutableCopy;
+        [self insertSection];
+    } else {
+        [self.feedEntitySections[0] insertObject:self.randomEntity atIndex:0];
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+        [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
-    [self.feedEntitySections[0] insertObject:self.randomEntity atIndex:0];
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-    [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
-- (void)insertSection
-{
+- (void)insertSection {
     [self.feedEntitySections insertObject:@[self.randomEntity].mutableCopy atIndex:0];
     [self.tableView insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
-- (void)deleteSection
-{
+- (void)deleteSection {
     if (self.feedEntitySections.count > 0) {
         [self.feedEntitySections removeObjectAtIndex:0];
         [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];

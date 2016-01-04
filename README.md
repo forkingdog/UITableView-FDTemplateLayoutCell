@@ -25,30 +25,27 @@ If you have a **self-satisfied** cell, then all you have to do is:
 
 ## Height Caching API
 
-Since iOS8, `-tableView:heightForRowAtIndexPath:` will be called more times than we expect, we can feel these extra calculations when scrolling. So we provide another API with caches:   
+Since iOS8, `-tableView:heightForRowAtIndexPath:` will be called more times than we expect, we can feel these extra calculations when scrolling. So we provide another API with cache by index path:   
 
 ``` objc
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return [tableView fd_heightForCellWithIdentifier:@"identifer" cacheByIndexPath:indexPath configuration:^(id cell) {
         // configurations
     }];
 }
 ```
 
-### Auto cache invalidation
+Or, if your entity has an unique identifier, use cache by key API:
 
-Extra calculations will be saved if a height at an index path has been cached, besides, **NO NEED** to worry about invalidating cached heights when data source changes, it will be done **automatically** when you call "-reloadData" or any method that triggers UITableView's reloading.
-
-## Precache
-
-Pre-cache is an advanced function which helps to cache the rest of offscreen UITableViewCells automatically, just in **"idle"** time. It helps to improve scroll performance, because no extra height calculating will be used when scrolls. It's enabled by default if you use "fd_heightForCellWithIdentifier:cacheByIndexPath:configuation:" API.
-
-## About estimatedRowHeight
-`estimatedRowHeight` helps to delay all cells' height calculation from load time to scroll time. Feel free to set it or not when you're using FDTemplateLayoutCell. If you use "cacheByIndexPath" API, setting this estimatedRowHeight property is a better practice for imporve load time, and it **DOES NO LONGER** affect scroll performance because of "precache".
 ``` objc
-self.tableView.estimatedRowHeight = 200;
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	Entity *entity = self.entities[indexPath.row];
+    return [tableView fd_heightForCellWithIdentifier:@"identifer" cacheByKey:entity.uid configuration:^(id cell) {
+        // configurations
+    }];
+}
 ```
+
 ## Frame layout mode
 
 `FDTemplateLayoutCell` offers 2 modes for asking cell's height.  
@@ -64,8 +61,7 @@ cell.fd_enforceFrameLayout = YES;
 And if you're using frame layout mode, you must override `-sizeThatFits:` in your customized cell and return content view's height (separator excluded)
 
 ```
-- (CGSize)sizeThatFits:(CGSize)size
-{
+- (CGSize)sizeThatFits:(CGSize)size {
     return CGSizeMake(size.width, A+B+C+D+E+....);
 }
 ```
@@ -105,7 +101,7 @@ A bad one :( - missing right and bottom
 A good one :)  
 ![self-satisfied](https://github.com/forkingdog/UITableView-FDTemplateLayoutCell/blob/master/Sceenshots/screenshot1.png)   
 
-## Note
+## Notes
 
 A template layout cell is created by `-dequeueReusableCellWithIdentifier:` method, it means that you MUST have registered this cell reuse identifier by one of:  
 
@@ -119,7 +115,7 @@ A template layout cell is created by `-dequeueReusableCellWithIdentifier:` metho
 
 ## Installation
 
-Latest version: **1.3**
+Latest version: **1.4.beta**
 
 ```
 pod search UITableView+FDTemplateLayoutCell 
@@ -133,6 +129,9 @@ pod setup
 ## Release Notes
 
 We recommend to use the latest release in cocoapods.
+
+- 1.4  
+Refactor, add "cacheByKey" mode, bug fixed
 
 - 1.3  
 Frame layout mode, handle cell's accessory view/type
