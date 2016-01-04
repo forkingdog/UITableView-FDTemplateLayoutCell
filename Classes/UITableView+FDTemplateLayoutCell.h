@@ -27,6 +27,12 @@
 
 @interface UITableView (FDTemplateLayoutCell)
 
+/// Access to internal template layout cell for given reuse identifier.
+/// Generally, you don't need to know these template layout cells.
+/// @param identifier Reuse identifier for cell which must be registered.
+///
+- (__kindof UITableViewCell *)fd_templateCellForReuseIdentifier:(NSString *)identifier;
+
 /// Returns height of cell of type specifed by a reuse identifier and configured
 /// by the configuration block.
 ///

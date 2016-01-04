@@ -24,8 +24,8 @@
 #import <objc/runtime.h>
 
 @interface FDKeyedHeightCache ()
-@property (nonatomic, strong) NSMutableDictionary *mutableHeightsByKeyForPortrait;
-@property (nonatomic, strong) NSMutableDictionary *mutableHeightsByKeyForLandscape;
+@property (nonatomic, strong) NSMutableDictionary<id<NSCopying>, NSNumber *> *mutableHeightsByKeyForPortrait;
+@property (nonatomic, strong) NSMutableDictionary<id<NSCopying>, NSNumber *> *mutableHeightsByKeyForLandscape;
 @end
 
 @implementation FDKeyedHeightCache
@@ -39,7 +39,7 @@
     return self;
 }
 
-- (NSMutableDictionary *)mutableHeightsByKeyForCurrentOrientation {
+- (NSMutableDictionary<id<NSCopying>, NSNumber *> *)mutableHeightsByKeyForCurrentOrientation {
     return UIDeviceOrientationIsPortrait([UIDevice currentDevice].orientation) ? self.mutableHeightsByKeyForPortrait: self.mutableHeightsByKeyForLandscape;
 }
 
