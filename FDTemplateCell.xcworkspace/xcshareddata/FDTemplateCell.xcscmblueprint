@@ -13,7 +13,7 @@
     "45232C3CDBDF9DB333979E103A0429BCEB54D2EF" : "UITableView-FDTemplateLayoutCell"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "FDTemplateCell",
-  "DVTSourceControlWorkspaceBlueprintVersion" : 203,
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
   "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "FDTemplateCell.xcworkspace",
   "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
     {
