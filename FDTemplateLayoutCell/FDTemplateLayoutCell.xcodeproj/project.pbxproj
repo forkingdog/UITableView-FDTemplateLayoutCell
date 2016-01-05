@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		485022131C3A86EC00BD389E /* UITableView+FDIndexPathHeightCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 4850220D1C3A86EC00BD389E /* UITableView+FDIndexPathHeightCache.h */; };
+		485022131C3A86EC00BD389E /* UITableView+FDIndexPathHeightCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 4850220D1C3A86EC00BD389E /* UITableView+FDIndexPathHeightCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		485022141C3A86EC00BD389E /* UITableView+FDIndexPathHeightCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 4850220E1C3A86EC00BD389E /* UITableView+FDIndexPathHeightCache.m */; };
-		485022151C3A86EC00BD389E /* UITableView+FDKeyedHeightCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 4850220F1C3A86EC00BD389E /* UITableView+FDKeyedHeightCache.h */; };
+		485022151C3A86EC00BD389E /* UITableView+FDKeyedHeightCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 4850220F1C3A86EC00BD389E /* UITableView+FDKeyedHeightCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		485022161C3A86EC00BD389E /* UITableView+FDKeyedHeightCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 485022101C3A86EC00BD389E /* UITableView+FDKeyedHeightCache.m */; };
-		485022171C3A86EC00BD389E /* UITableView+FDTemplateLayoutCellDebug.h in Headers */ = {isa = PBXBuildFile; fileRef = 485022111C3A86EC00BD389E /* UITableView+FDTemplateLayoutCellDebug.h */; };
+		485022171C3A86EC00BD389E /* UITableView+FDTemplateLayoutCellDebug.h in Headers */ = {isa = PBXBuildFile; fileRef = 485022111C3A86EC00BD389E /* UITableView+FDTemplateLayoutCellDebug.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		485022181C3A86EC00BD389E /* UITableView+FDTemplateLayoutCellDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 485022121C3A86EC00BD389E /* UITableView+FDTemplateLayoutCellDebug.m */; };
 		E19608D11BAD53AF00BDCBBE /* FDTemplateLayoutCell.h in Headers */ = {isa = PBXBuildFile; fileRef = E19608D01BAD53AF00BDCBBE /* FDTemplateLayoutCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E19608E01BAD54EB00BDCBBE /* UITableView+FDTemplateLayoutCell.h in Headers */ = {isa = PBXBuildFile; fileRef = E19608DE1BAD54EB00BDCBBE /* UITableView+FDTemplateLayoutCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
