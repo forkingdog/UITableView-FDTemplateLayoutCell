@@ -105,9 +105,10 @@
         }
     }
     
-    // Add separator's height, using a private property in UITableViewCell.
-    CGFloat separatorHeight = [[templateLayoutCell valueForKey:@"_separatorHeight"] doubleValue];
-    fittingSize.height += separatorHeight;
+    // Add 1px extra space for separator line if needed, simulating default UITableViewCell.
+    if (self.separatorStyle != UITableViewCellSeparatorStyleNone) {
+        fittingSize.height += 1.0 / [UIScreen mainScreen].scale;
+    }
     
     if (templateLayoutCell.fd_enforceFrameLayout) {
         [self fd_debugLog:[NSString stringWithFormat:@"calculate using frame layout - %@", @(fittingSize.height)]];
