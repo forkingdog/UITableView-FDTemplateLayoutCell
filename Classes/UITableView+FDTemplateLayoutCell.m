@@ -79,6 +79,10 @@
         };
         contentViewWidth -= systemAccessoryWidths[templateLayoutCell.accessoryType];
     }
+    // If the tableView has section index titles, the content width is smaller
+    if([self.dataSource respondsToSelector:@selector(sectionIndexTitlesForTableView:)] && [self.dataSource sectionIndexTitlesForTableView:self].count >0){
+        contentViewWidth -= 15;
+    }
     
     CGSize fittingSize = CGSizeZero;
 
