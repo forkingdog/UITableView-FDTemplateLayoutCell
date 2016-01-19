@@ -105,9 +105,22 @@
         }
     }
     
-    // Add 1px extra space for separator line if needed, simulating default UITableViewCell.
-    if (self.separatorStyle != UITableViewCellSeparatorStyleNone) {
-        fittingSize.height += 1.0 / [UIScreen mainScreen].scale;
+    // iOS 7.0 not support separator height
+    // Add separator's height, using a private property in UITableViewCell.
+    static float sSystemVersion = 0;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sSystemVersion = [UIDevice currentDevice].systemVersion.floatValue;
+    });
+    
+    if(sSystemVersion >= 7.1){
+        CGFloat separatorHeight = [[templateLayoutCell valueForKey:@"_separatorHeight"] doubleValue];
+        fittingSize.height += separatorHeight;
+    }else{
+        // Add 1px extra space for separator line if needed, simulating default UITableViewCell.
+        if (self.separatorStyle != UITableViewCellSeparatorStyleNone) {
+            fittingSize.height += 1.0 / [UIScreen mainScreen].scale;
+        }
     }
     
     if (templateLayoutCell.fd_enforceFrameLayout) {
