@@ -127,7 +127,7 @@
     
     UITableViewCell *templateLayoutCell = [self fd_templateCellForReuseIdentifier:identifier];
     
-    // Manually calls to ensure consistent behavior with actual cells (that are displayed on screen).
+    // Manually calls to ensure consistent behavior with actual cells. (that are displayed on screen)
     [templateLayoutCell prepareForReuse];
     
     // Customize and provide content for our template cell.
