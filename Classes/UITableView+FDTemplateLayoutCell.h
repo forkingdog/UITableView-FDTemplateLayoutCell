@@ -72,6 +72,18 @@
 
 @end
 
+@interface UITableView (FDTemplateLayoutHeaderFooterView)
+
+/// Returns header or footer view's height that registered in table view with reuse identifier.
+///
+/// Use it after calling "-[UITableView registerNib/Class:forHeaderFooterViewReuseIdentifier]",
+/// same with "-fd_heightForCellWithIdentifier:configuration:", it will call "-sizeThatFits:" for
+/// subclass of UITableViewHeaderFooterView which is not using Auto Layout.
+///
+- (CGFloat)fd_heightForHeaderFooterViewWithIdentifier:(NSString *)identifier configuration:(void (^)(id headerFooterView))configuration;
+
+@end
+
 @interface UITableViewCell (FDTemplateLayoutCell)
 
 /// Indicate this is a template layout cell for calculation only.
