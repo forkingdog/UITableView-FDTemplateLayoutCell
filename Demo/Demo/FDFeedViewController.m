@@ -75,7 +75,7 @@ typedef NS_ENUM(NSInteger, FDSimulatedCacheMode) {
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    FDFeedCell *cell = [tableView dequeueReusableCellWithIdentifier:@"FDFeedCell" forIndexPath:indexPath];
+    FDFeedCell *cell = [tableView dequeueReusableCellWithIdentifier:@"FDFeedCell"];
     [self configureCell:cell atIndexPath:indexPath];
     return cell;
 }

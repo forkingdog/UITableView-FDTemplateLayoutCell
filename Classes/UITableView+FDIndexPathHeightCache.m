@@ -133,7 +133,7 @@ typedef NSMutableArray<NSMutableArray<NSNumber *> *> FDIndexPathHeightsBySection
 // We just forward primary call, in crash report, top most method in stack maybe FD's,
 // but it's really not our bug, you should check whether your table view's data source and
 // displaying cells are not matched when reloading.
-static void __FD_TEMPLATE_LAYOUT_CELL_PRIMARY_CALL_IF_CRASH_NOT_OUR_BUG__(void(^callout)(void)) {
+static void __FD_TEMPLATE_LAYOUT_CELL_PRIMARY_CALL_IF_CRASH_NOT_OUR_BUG__(void (^callout)(void)) {
     callout();
 }
 #define FDPrimaryCall(...) do {__FD_TEMPLATE_LAYOUT_CELL_PRIMARY_CALL_IF_CRASH_NOT_OUR_BUG__(^{__VA_ARGS__});} while(0)
