@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   # ――― Platform Specifics ――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   s.platform = :ios, "6.0"
   # ――― Source Location ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
-  s.source = { :git => "https://github.com/forkingdog/UITableView-FDTemplateLayoutCell.git", :tag => "1.5.beta" }
+  s.source = { :git => "https://github.com/rollingstoneW/UITableView-FDTemplateLayoutCell.git", :tag => "1.5.beta" }
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   s.source_files  = "Classes/*.{h,m}"
   # ――― Project Settings ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
