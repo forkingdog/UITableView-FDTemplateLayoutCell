@@ -116,6 +116,42 @@ typedef NSMutableArray<NSMutableArray<NSNumber *> *> FDIndexPathHeightsBySection
 
 @end
 
+static const char indexViewWidthKey = '\0';
+    
+@implementation UITableView (FDTableViewIndexWidth)
+
+- (CGFloat)indexViewWidth {
+    if (self.dataSource && [self.dataSource respondsToSelector:@selector(sectionIndexTitlesForTableView:)]) {
+        NSNumber *cachedWidth = objc_getAssociatedObject(self, &indexViewWidthKey);
+        if (!cachedWidth) {
+            NSArray *indexTitles = [self.dataSource sectionIndexTitlesForTableView:self];
+            CGFloat longestLength = 0;
+            for (NSString *title in indexTitles) {
+                CGFloat length = [title sizeWithAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:11]}].width;
+                if (length > longestLength) {
+                    longestLength = length;
+                }
+            }
+            if (longestLength < 15.f) {
+                longestLength = 15.f;
+            } else {
+                longestLength = longestLength + 4.f;
+            }
+            cachedWidth = @(longestLength);
+            objc_setAssociatedObject(self, &indexViewWidthKey, cachedWidth, OBJC_ASSOCIATION_COPY_NONATOMIC);
+        }
+        
+#if CGFLOAT_IS_DOUBLE
+        return cachedWidth.doubleValue;
+#else
+        return cachedWidth.floatValue;
+#endif
+    }
+    return 0;
+}
+
+@end
+
 @implementation UITableView (FDIndexPathHeightCache)
 
 - (FDIndexPathHeightCache *)fd_indexPathHeightCache {
@@ -148,6 +184,7 @@ static void __FD_TEMPLATE_LAYOUT_CELL_PRIMARY_CALL_IF_CRASH_NOT_OUR_BUG__(void (
     // All methods that trigger height cache's invalidation
     SEL selectors[] = {
         @selector(reloadData),
+        @selector(reloadSectionIndexTitles),
         @selector(insertSections:withRowAnimation:),
         @selector(deleteSections:withRowAnimation:),
         @selector(reloadSections:withRowAnimation:),
@@ -173,7 +210,13 @@ static void __FD_TEMPLATE_LAYOUT_CELL_PRIMARY_CALL_IF_CRASH_NOT_OUR_BUG__(void (
             [heightsBySection removeAllObjects];
         }];
     }
+    objc_setAssociatedObject(self, &indexViewWidthKey, nil, OBJC_ASSOCIATION_COPY_NONATOMIC);
     FDPrimaryCall([self fd_reloadData];);
+}
+
+- (void)fd_reloadSectionIndexTitles {
+    objc_setAssociatedObject(self, &indexViewWidthKey, nil, OBJC_ASSOCIATION_COPY_NONATOMIC);
+    FDPrimaryCall([self fd_reloadSectionIndexTitles];);
 }
 
 - (void)fd_insertSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation {

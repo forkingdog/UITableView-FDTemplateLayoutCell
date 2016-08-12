@@ -80,6 +80,10 @@ typedef NS_ENUM(NSInteger, FDSimulatedCacheMode) {
     return cell;
 }
 
+- (NSArray<NSString *> *)sectionIndexTitlesForTableView:(UITableView *)tableView {
+    return @[@"ad"];
+}
+
 - (void)configureCell:(FDFeedCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     cell.fd_enforceFrameLayout = NO; // Enable to use "-sizeThatFits:"
     if (indexPath.row % 2 == 0) {
@@ -143,7 +147,8 @@ typedef NS_ENUM(NSInteger, FDSimulatedCacheMode) {
       otherButtonTitles:
       @"Insert a row",
       @"Insert a section",
-      @"Delete a section", nil]
+      @"Delete a section",
+      @"Reload", nil]
      showInView:self.view];
 }
 
@@ -151,7 +156,8 @@ typedef NS_ENUM(NSInteger, FDSimulatedCacheMode) {
     SEL selectors[] = {
         @selector(insertRow),
         @selector(insertSection),
-        @selector(deleteSection)
+        @selector(deleteSection),
+        @selector(reloadData)
     };
 
     if (buttonIndex < sizeof(selectors) / sizeof(SEL)) {
@@ -186,6 +192,10 @@ typedef NS_ENUM(NSInteger, FDSimulatedCacheMode) {
         [self.feedEntitySections removeObjectAtIndex:0];
         [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
+}
+
+- (void)reloadData {
+    [self.tableView reloadData];
 }
 
 @end

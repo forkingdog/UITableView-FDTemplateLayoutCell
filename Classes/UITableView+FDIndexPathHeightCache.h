@@ -36,6 +36,12 @@
 
 @end
 
+@interface UITableView (FDTableViewIndexWidth)
+
+- (CGFloat)indexViewWidth;
+
+@end
+
 @interface UITableView (FDIndexPathHeightCache)
 /// Height cache by index path. Generally, you don't need to use it directly.
 @property (nonatomic, strong, readonly) FDIndexPathHeightCache *fd_indexPathHeightCache;
