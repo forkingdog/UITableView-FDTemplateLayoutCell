@@ -202,7 +202,20 @@
 }
 
 - (CGFloat)fd_heightForHeaderFooterViewWithIdentifier:(NSString *)identifier configuration:(void (^)(id))configuration {
+    if (!identifier) {
+        return 0;
+    }
+    
+    
     UITableViewHeaderFooterView *templateHeaderFooterView = [self fd_templateHeaderFooterViewForReuseIdentifier:identifier];
+    
+    
+    [templateHeaderFooterView prepareForReuse];
+    
+    if (configuration) {
+        configuration(templateHeaderFooterView);
+    }
+    
     
     NSLayoutConstraint *widthFenceConstraint = [NSLayoutConstraint constraintWithItem:templateHeaderFooterView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:CGRectGetWidth(self.frame)];
     [templateHeaderFooterView addConstraint:widthFenceConstraint];
