@@ -23,6 +23,9 @@
 #import "UITableView+FDTemplateLayoutCell.h"
 #import <objc/runtime.h>
 
+
+#pragma mark - Cell
+
 @implementation UITableView (FDTemplateLayoutCell)
 
 - (CGFloat)fd_systemFittingHeightForConfiguratedCell:(UITableViewCell *)cell {
@@ -57,6 +60,7 @@
         // Add a hard width constraint to make dynamic content views (like labels) expand vertically instead
         // of growing horizontally, in a flow-layout manner.
         NSLayoutConstraint *widthFenceConstraint = [NSLayoutConstraint constraintWithItem:cell.contentView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:contentViewWidth];
+        widthFenceConstraint.priority = UILayoutPriorityDefaultHigh;
         [cell.contentView addConstraint:widthFenceConstraint];
         
         // Auto layout engine does its math
@@ -175,45 +179,25 @@
     return height;
 }
 
-@end
 
-@implementation UITableView (FDTemplateLayoutHeaderFooterView)
-
-- (__kindof UITableViewHeaderFooterView *)fd_templateHeaderFooterViewForReuseIdentifier:(NSString *)identifier {
-    NSAssert(identifier.length > 0, @"Expect a valid identifier - %@", identifier);
+// Static Cell  - by Star.
+- (CGFloat)fd_heightForCellWithStaticCell:(UITableViewCell *)staticCell configuration:(void (^)(id cell))configuration {
     
-    NSMutableDictionary<NSString *, UITableViewHeaderFooterView *> *templateHeaderFooterViews = objc_getAssociatedObject(self, _cmd);
-    if (!templateHeaderFooterViews) {
-        templateHeaderFooterViews = @{}.mutableCopy;
-        objc_setAssociatedObject(self, _cmd, templateHeaderFooterViews, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    if (!staticCell) {
+        return 0;
     }
     
-    UITableViewHeaderFooterView *templateHeaderFooterView = templateHeaderFooterViews[identifier];
+    UITableViewCell *templateLayoutCell = staticCell;
     
-    if (!templateHeaderFooterView) {
-        templateHeaderFooterView = [self dequeueReusableHeaderFooterViewWithIdentifier:identifier];
-        NSAssert(templateHeaderFooterView != nil, @"HeaderFooterView must be registered to table view for identifier - %@", identifier);
-        templateHeaderFooterView.contentView.translatesAutoresizingMaskIntoConstraints = NO;
-        templateHeaderFooterViews[identifier] = templateHeaderFooterView;
-        [self fd_debugLog:[NSString stringWithFormat:@"layout header footer view created - %@", identifier]];
+    // Manually calls to ensure consistent behavior with actual cells. (that are displayed on screen)
+    [templateLayoutCell prepareForReuse];
+    
+    // Customize and provide content for our template cell.
+    if (configuration) {
+        configuration(templateLayoutCell);
     }
     
-    return templateHeaderFooterView;
-}
-
-- (CGFloat)fd_heightForHeaderFooterViewWithIdentifier:(NSString *)identifier configuration:(void (^)(id))configuration {
-    UITableViewHeaderFooterView *templateHeaderFooterView = [self fd_templateHeaderFooterViewForReuseIdentifier:identifier];
-    
-    NSLayoutConstraint *widthFenceConstraint = [NSLayoutConstraint constraintWithItem:templateHeaderFooterView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:CGRectGetWidth(self.frame)];
-    [templateHeaderFooterView addConstraint:widthFenceConstraint];
-    CGFloat fittingHeight = [templateHeaderFooterView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
-    [templateHeaderFooterView removeConstraint:widthFenceConstraint];
-    
-    if (fittingHeight == 0) {
-        fittingHeight = [templateHeaderFooterView sizeThatFits:CGSizeMake(CGRectGetWidth(self.frame), 0)].height;
-    }
-    
-    return fittingHeight;
+    return [self fd_systemFittingHeightForConfiguratedCell:templateLayoutCell];
 }
 
 @end
@@ -237,3 +221,115 @@
 }
 
 @end
+
+
+
+
+#pragma mark - HeaderFooterView
+
+@implementation UITableViewHeaderFooterView (FDTemplateLayoutHeaderFooterView)
+
+- (BOOL)fd_isTemplateLayoutHeaderFooterView {
+    return [objc_getAssociatedObject(self, _cmd) boolValue];
+}
+
+- (void)setFd_isTemplateLayoutHeaderFooterView:(BOOL)fd_isTemplateLayoutHeaderFooterView {
+    objc_setAssociatedObject(
+                             self,
+                             @selector(fd_isTemplateLayoutCell),
+                             @(fd_isTemplateLayoutHeaderFooterView),
+                             OBJC_ASSOCIATION_RETAIN
+                             );
+}
+
+- (BOOL)fd_enforceFrameLayout {
+    return [objc_getAssociatedObject(self, _cmd) boolValue];
+}
+
+- (void)setFd_enforceFrameLayout:(BOOL)enforceFrameLayout {
+    objc_setAssociatedObject(self, @selector(fd_enforceFrameLayout), @(enforceFrameLayout), OBJC_ASSOCIATION_RETAIN);
+}
+
+@end
+
+@implementation UITableView (FDTemplateLayoutHeaderFooterView)
+
+- (CGFloat)fd_systemFittingHeightForConfiguratedHeaderFooterView:(UITableViewHeaderFooterView *)headerFooterView {
+    CGFloat contentViewWidth = CGRectGetWidth(self.frame);
+    
+    
+    CGFloat fittingHeight = 0;
+    
+    if (!headerFooterView.fd_enforceFrameLayout && contentViewWidth > 0) {
+        // Add a hard width constraint to make dynamic content views (like labels) expand vertically instead
+        // of growing horizontally, in a flow-layout manner.
+        NSLayoutConstraint *widthFenceConstraint = [NSLayoutConstraint constraintWithItem:headerFooterView.contentView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:contentViewWidth];
+        widthFenceConstraint.priority = UILayoutPriorityDefaultHigh;
+        [headerFooterView.contentView addConstraint:widthFenceConstraint];
+        
+        // Auto layout engine does its math
+        fittingHeight = [headerFooterView.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
+        [headerFooterView.contentView removeConstraint:widthFenceConstraint];
+        
+        [self fd_debugLog:[NSString stringWithFormat:@"calculate using system fitting size (AutoLayout) - %@", @(fittingHeight)]];
+    }
+    
+    if (fittingHeight == 0) {
+#if DEBUG
+        // Warn if using AutoLayout but get zero height.
+        if (headerFooterView.contentView.constraints.count > 0) {
+            if (!objc_getAssociatedObject(self, _cmd)) {
+                NSLog(@"[FDTemplateLayoutCell] Warning once only: Cannot get a proper cell height (now 0) from '- systemFittingSize:'(AutoLayout). You should check how constraints are built in cell, making it into 'self-sizing' cell.");
+                objc_setAssociatedObject(self, _cmd, @YES, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+            }
+        }
+#endif
+        // Try '- sizeThatFits:' for frame layout.
+        // Note: fitting height should not include separator view.
+        fittingHeight = [headerFooterView sizeThatFits:CGSizeMake(contentViewWidth, 0)].height;
+        
+        [self fd_debugLog:[NSString stringWithFormat:@"calculate using sizeThatFits - %@", @(fittingHeight)]];
+    }
+    
+    if (fittingHeight == 0) {
+        fittingHeight = 44;
+    }
+    
+    return fittingHeight;
+}
+
+- (__kindof UITableViewHeaderFooterView *)fd_templateHeaderFooterViewForReuseIdentifier:(NSString *)identifier {
+    
+    NSAssert(identifier.length > 0, @"Expect a valid identifier - %@", identifier);
+    
+    NSMutableDictionary<NSString *, UITableViewHeaderFooterView *> *templateHeaderFooterViews = objc_getAssociatedObject(self, _cmd);
+    if (!templateHeaderFooterViews) {
+        templateHeaderFooterViews = @{}.mutableCopy;
+        objc_setAssociatedObject(self, _cmd, templateHeaderFooterViews, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    }
+    
+    UITableViewHeaderFooterView *templateHeaderFooterView = templateHeaderFooterViews[identifier];
+    
+    if (!templateHeaderFooterView) {
+        templateHeaderFooterView = [self dequeueReusableHeaderFooterViewWithIdentifier:identifier];
+        NSAssert(templateHeaderFooterView != nil, @"HeaderFooterView must be registered to table view for identifier - %@", identifier);
+        templateHeaderFooterView.contentView.translatesAutoresizingMaskIntoConstraints = NO;
+        templateHeaderFooterView.fd_isTemplateLayoutHeaderFooterView = true;
+        templateHeaderFooterViews[identifier] = templateHeaderFooterView;
+        [self fd_debugLog:[NSString stringWithFormat:@"layout header footer view created - %@", identifier]];
+    }
+    
+    return templateHeaderFooterView;
+}
+
+- (CGFloat)fd_heightForHeaderFooterViewWithIdentifier:(NSString *)identifier configuration:(void (^)(id))configuration {
+    UITableViewHeaderFooterView *templateHeaderFooterView = [self fd_templateHeaderFooterViewForReuseIdentifier:identifier];
+    if (configuration) {
+        configuration(templateHeaderFooterView);
+    }
+    return [self fd_systemFittingHeightForConfiguratedHeaderFooterView:templateHeaderFooterView];
+}
+
+@end
+
+
