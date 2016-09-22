@@ -25,6 +25,9 @@
 #import "UITableView+FDIndexPathHeightCache.h"
 #import "UITableView+FDTemplateLayoutCellDebug.h"
 
+
+#pragma mark - Cell
+
 @interface UITableView (FDTemplateLayoutCell)
 
 /// Access to internal template layout cell for given reuse identifier.
@@ -70,18 +73,17 @@
 ///
 - (CGFloat)fd_heightForCellWithIdentifier:(NSString *)identifier cacheByKey:(id<NSCopying>)key configuration:(void (^)(id cell))configuration;
 
-@end
 
-@interface UITableView (FDTemplateLayoutHeaderFooterView)
-
-/// Returns header or footer view's height that registered in table view with reuse identifier.
-///
-/// Use it after calling "-[UITableView registerNib/Class:forHeaderFooterViewReuseIdentifier]",
-/// same with "-fd_heightForCellWithIdentifier:configuration:", it will call "-sizeThatFits:" for
-/// subclass of UITableViewHeaderFooterView which is not using Auto Layout.
-///
-- (CGFloat)fd_heightForHeaderFooterViewWithIdentifier:(NSString *)identifier configuration:(void (^)(id headerFooterView))configuration;
-
+/**
+ 
+ configure a undequere tableViewCell
+ 
+ @param staticCell    It's create by [[UITableView alloc] init];
+ @param configuration It's could be NULL
+ 
+ @return Static cell height
+ */
+- (CGFloat)fd_heightForCellWithStaticCell:(UITableViewCell *)staticCell configuration:(void (^)(id cell))configuration;
 @end
 
 @interface UITableViewCell (FDTemplateLayoutCell)
@@ -103,6 +105,29 @@
 /// Use this property only when you want to manually control this template layout cell's height
 /// calculation mode, default to NO.
 ///
+@property (nonatomic, assign) BOOL fd_enforceFrameLayout;
+
+@end
+
+
+#pragma mark - HeaderFooterView
+
+@interface UITableView (FDTemplateLayoutHeaderFooterView)
+
+/// Returns header or footer view's height that registered in table view with reuse identifier.
+///
+/// Use it after calling "-[UITableView registerNib/Class:forHeaderFooterViewReuseIdentifier]",
+/// same with "-fd_heightForCellWithIdentifier:configuration:", it will call "-sizeThatFits:" for
+/// subclass of UITableViewHeaderFooterView which is not using Auto Layout.
+///
+- (CGFloat)fd_heightForHeaderFooterViewWithIdentifier:(NSString *)identifier configuration:(void (^)(id headerFooterView))configuration;
+
+@end
+
+@interface UITableViewHeaderFooterView (FDTemplateLayoutHeaderFooterView)
+
+@property (nonatomic, assign) BOOL fd_isTemplateLayoutHeaderFooterView;
+
 @property (nonatomic, assign) BOOL fd_enforceFrameLayout;
 
 @end
