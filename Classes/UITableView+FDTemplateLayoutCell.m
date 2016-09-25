@@ -206,7 +206,7 @@
     [templateHeaderFooterView prepareForReuse];
 
     /** 数据源 */
-    configuration(templateHeaderFooterView);
+    !configuration ?: configuration(templateHeaderFooterView);
 
     CGFloat contentViewWidth = CGRectGetWidth(self.frame);
 
