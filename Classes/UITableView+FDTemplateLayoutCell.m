@@ -54,14 +54,27 @@
     CGFloat fittingHeight = 0;
     
     if (!cell.fd_enforceFrameLayout && contentViewWidth > 0) {
+        // At iOS 10.2 ? invoke intrinsicContentSize, the system create some constraints
+        [cell.contentView intrinsicContentSize];
+        __block NSLayoutConstraint *widthFenceConstraint = nil;
+        [cell.contentView.constraints enumerateObjectsUsingBlock:^(__kindof NSLayoutConstraint * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if (obj.firstAttribute == NSLayoutAttributeWidth) {
+                widthFenceConstraint = obj;
+            }
+        }];
         // Add a hard width constraint to make dynamic content views (like labels) expand vertically instead
         // of growing horizontally, in a flow-layout manner.
-        NSLayoutConstraint *widthFenceConstraint = [NSLayoutConstraint constraintWithItem:cell.contentView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:contentViewWidth];
-        [cell.contentView addConstraint:widthFenceConstraint];
+        if (!widthFenceConstraint) {
+            widthFenceConstraint = [NSLayoutConstraint constraintWithItem:cell.contentView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:contentViewWidth];
+            widthFenceConstraint.identifier = @"FDTemplateLayoutCell-UITableViewCell-ContentView-Layout-Width";
+            [cell.contentView addConstraint:widthFenceConstraint];
+        }
         
         // Auto layout engine does its math
         fittingHeight = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
-        [cell.contentView removeConstraint:widthFenceConstraint];
+        if ([widthFenceConstraint.identifier isEqualToString:@"FDTemplateLayoutCell-UITableViewCell-ContentView-Layout-Width" ]) {
+            [cell.contentView removeConstraint:widthFenceConstraint];
+        }
         
         [self fd_debugLog:[NSString stringWithFormat:@"calculate using system fitting size (AutoLayout) - %@", @(fittingHeight)]];
     }
