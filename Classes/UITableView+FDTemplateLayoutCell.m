@@ -54,15 +54,29 @@
     CGFloat fittingHeight = 0;
     
     if (!cell.fd_enforceFrameLayout && contentViewWidth > 0) {
+        
+        __block NSLayoutConstraint *cellContentViewEncapsulatedLayoutWidthConstraint = nil;
+        static BOOL isActiveAtCellContentViewEncapsulatedLayoutWidthConstraint = NO;
+        
         // At iOS 10.2 ? invoke intrinsicContentSize, the system create some constraints
         [cell.contentView intrinsicContentSize];
         __block NSLayoutConstraint *widthFenceConstraint = nil;
         [cell.contentView.constraints enumerateObjectsUsingBlock:^(__kindof NSLayoutConstraint * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            if (obj.firstAttribute == NSLayoutAttributeWidth) {
+            if ([obj.identifier isEqualToString:@"UIView-Encapsulated-Layout-Width"]) {
+                cellContentViewEncapsulatedLayoutWidthConstraint = obj;
+                *stop = YES;
+            }else if (obj.firstAttribute == NSLayoutAttributeWidth) {
                 widthFenceConstraint = obj;
                 *stop = YES;
             }
+            
         }];
+        
+        if (cellContentViewEncapsulatedLayoutWidthConstraint) {
+            isActiveAtCellContentViewEncapsulatedLayoutWidthConstraint = cellContentViewEncapsulatedLayoutWidthConstraint.active;
+            cellContentViewEncapsulatedLayoutWidthConstraint.active = NO;
+        }
+        
         // Add a hard width constraint to make dynamic content views (like labels) expand vertically instead
         // of growing horizontally, in a flow-layout manner.
         if (!widthFenceConstraint) {
@@ -75,6 +89,10 @@
         fittingHeight = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
         if ([widthFenceConstraint.identifier isEqualToString:@"FDTemplateLayoutCell-UITableViewCell-ContentView-Layout-Width" ]) {
             [cell.contentView removeConstraint:widthFenceConstraint];
+        }
+        
+        if (cellContentViewEncapsulatedLayoutWidthConstraint) {
+            cellContentViewEncapsulatedLayoutWidthConstraint.active = isActiveAtCellContentViewEncapsulatedLayoutWidthConstraint;
         }
         
         [self fd_debugLog:[NSString stringWithFormat:@"calculate using system fitting size (AutoLayout) - %@", @(fittingHeight)]];
