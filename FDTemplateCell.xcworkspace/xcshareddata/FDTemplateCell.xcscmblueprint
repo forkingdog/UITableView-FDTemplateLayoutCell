@@ -10,7 +10,7 @@
   "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "6569ED7F-B9F6-4B04-BF61-CB6FDE03BD78",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
     "32d7d9b4-ffb1-4469-8922-27dbf3d99605++9332" : "svn\/iknow",
-    "45232C3CDBDF9DB333979E103A0429BCEB54D2EF" : "UITableView-FDTemplateLayoutCell"
+    "45232C3CDBDF9DB333979E103A0429BCEB54D2EF" : "UITableView-FDTemplateLayoutCell\/"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "FDTemplateCell",
   "DVTSourceControlWorkspaceBlueprintVersion" : 204,

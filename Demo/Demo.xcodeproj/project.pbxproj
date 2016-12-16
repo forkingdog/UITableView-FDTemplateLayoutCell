@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		485DB89B1BAFFF8900CEAE33 /* UITableView+FDKeyedHeightCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 485DB89A1BAFFF8900CEAE33 /* UITableView+FDKeyedHeightCache.m */; settings = {ASSET_TAGS = (); }; };
-		485DB89E1BB0004300CEAE33 /* UITableView+FDIndexPathHeightCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 485DB89D1BB0004300CEAE33 /* UITableView+FDIndexPathHeightCache.m */; settings = {ASSET_TAGS = (); }; };
+		485DB89B1BAFFF8900CEAE33 /* UITableView+FDKeyedHeightCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 485DB89A1BAFFF8900CEAE33 /* UITableView+FDKeyedHeightCache.m */; };
+		485DB89E1BB0004300CEAE33 /* UITableView+FDIndexPathHeightCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 485DB89D1BB0004300CEAE33 /* UITableView+FDIndexPathHeightCache.m */; };
 		488EECB71ADFEDC6004EAA71 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 488EECB61ADFEDC6004EAA71 /* main.m */; };
 		488EECBA1ADFEDC6004EAA71 /* FDAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 488EECB91ADFEDC6004EAA71 /* FDAppDelegate.m */; };
 		488EECC01ADFEDC6004EAA71 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 488EECBE1ADFEDC6004EAA71 /* Main.storyboard */; };
@@ -160,6 +160,7 @@
 				TargetAttributes = {
 					488EECB01ADFEDC6004EAA71 = {
 						CreatedOnToolsVersion = 6.3;
+						DevelopmentTeam = N9D9Y52FAG;
 					};
 				};
 			};
@@ -318,6 +319,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = N9D9Y52FAG;
 				INFOPLIST_FILE = Demo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -329,6 +331,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = N9D9Y52FAG;
 				INFOPLIST_FILE = Demo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
