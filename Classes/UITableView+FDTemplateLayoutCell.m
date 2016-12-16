@@ -60,6 +60,7 @@
         [cell.contentView.constraints enumerateObjectsUsingBlock:^(__kindof NSLayoutConstraint * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             if (obj.firstAttribute == NSLayoutAttributeWidth) {
                 widthFenceConstraint = obj;
+                *stop = YES;
             }
         }];
         // Add a hard width constraint to make dynamic content views (like labels) expand vertically instead
