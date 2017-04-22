@@ -57,11 +57,38 @@
         // Add a hard width constraint to make dynamic content views (like labels) expand vertically instead
         // of growing horizontally, in a flow-layout manner.
         NSLayoutConstraint *widthFenceConstraint = [NSLayoutConstraint constraintWithItem:cell.contentView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:contentViewWidth];
-        [cell.contentView addConstraint:widthFenceConstraint];
+
+        // [bug fix] after iOS 10.3, Auto Layout engine will add an additional 0 width constraint onto cell's content view, to avoid that, we add constraints to content view's left, right, top and bottom.
+        static BOOL isSystemVersionEqualOrGreaterThen10_3 = NO;
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            isSystemVersionEqualOrGreaterThen10_3 = UIDevice.currentDevice.systemVersion.floatValue >= 10.3;
+        });
         
+        NSArray<NSLayoutConstraint *> *edgeConstraints;
+        if (isSystemVersionEqualOrGreaterThen10_3) {
+            // To avoid confilicts, make width constraint softer than required (1000)
+            widthFenceConstraint.priority = UILayoutPriorityRequired - 1;
+            
+            // Build edge constraints
+            NSLayoutConstraint *leftConstraint = [NSLayoutConstraint constraintWithItem:cell.contentView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:cell attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0];
+            NSLayoutConstraint *rightConstraint = [NSLayoutConstraint constraintWithItem:cell.contentView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:cell attribute:NSLayoutAttributeRight multiplier:1.0 constant:0];
+            NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:cell.contentView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:cell attribute:NSLayoutAttributeTop multiplier:1.0 constant:0];
+            NSLayoutConstraint *bottomConstraint = [NSLayoutConstraint constraintWithItem:cell.contentView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:cell attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0];
+            edgeConstraints = @[leftConstraint, rightConstraint, topConstraint, bottomConstraint];
+            [cell addConstraints:edgeConstraints];
+        }
+        
+        [cell.contentView addConstraint:widthFenceConstraint];
+
         // Auto layout engine does its math
         fittingHeight = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
+        
+        // Clean-ups
         [cell.contentView removeConstraint:widthFenceConstraint];
+        if (isSystemVersionEqualOrGreaterThen10_3) {
+            [cell removeConstraints:edgeConstraints];
+        }
         
         [self fd_debugLog:[NSString stringWithFormat:@"calculate using system fitting size (AutoLayout) - %@", @(fittingHeight)]];
     }
