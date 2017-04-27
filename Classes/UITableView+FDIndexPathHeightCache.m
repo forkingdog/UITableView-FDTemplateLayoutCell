@@ -121,7 +121,6 @@ typedef NSMutableArray<NSMutableArray<NSNumber *> *> FDIndexPathHeightsBySection
 - (FDIndexPathHeightCache *)fd_indexPathHeightCache {
     FDIndexPathHeightCache *cache = objc_getAssociatedObject(self, _cmd);
     if (!cache) {
-        [self methodSignatureForSelector:nil];
         cache = [FDIndexPathHeightCache new];
         objc_setAssociatedObject(self, _cmd, cache, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
