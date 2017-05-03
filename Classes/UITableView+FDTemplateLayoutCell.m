@@ -66,7 +66,7 @@
         });
         
         NSArray<NSLayoutConstraint *> *edgeConstraints;
-        if (isSystemVersionEqualOrGreaterThen10_3) {
+        if (isSystemVersionEqualOrGreaterThen10_2) {
             // To avoid confilicts, make width constraint softer than required (1000)
             widthFenceConstraint.priority = UILayoutPriorityRequired - 1;
             
