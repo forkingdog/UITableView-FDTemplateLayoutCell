@@ -59,10 +59,10 @@
         NSLayoutConstraint *widthFenceConstraint = [NSLayoutConstraint constraintWithItem:cell.contentView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:contentViewWidth];
 
         // [bug fix] after iOS 10.3, Auto Layout engine will add an additional 0 width constraint onto cell's content view, to avoid that, we add constraints to content view's left, right, top and bottom.
-        static BOOL isSystemVersionEqualOrGreaterThen10_3 = NO;
+        static BOOL isSystemVersionEqualOrGreaterThen10_2 = NO;
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
-            isSystemVersionEqualOrGreaterThen10_3 = UIDevice.currentDevice.systemVersion.floatValue >= 10.3;
+            isSystemVersionEqualOrGreaterThen10_2 = [UIDevice.currentDevice.systemVersion compare:@"10.2" options:NSNumericSearch] != NSOrderedAscending;
         });
         
         NSArray<NSLayoutConstraint *> *edgeConstraints;
@@ -86,7 +86,7 @@
         
         // Clean-ups
         [cell.contentView removeConstraint:widthFenceConstraint];
-        if (isSystemVersionEqualOrGreaterThen10_3) {
+        if (isSystemVersionEqualOrGreaterThen10_2) {
             [cell removeConstraints:edgeConstraints];
         }
         
