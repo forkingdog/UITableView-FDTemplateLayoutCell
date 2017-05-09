@@ -28,10 +28,15 @@
 - (CGFloat)fd_systemFittingHeightForConfiguratedCell:(UITableViewCell *)cell {
     CGFloat contentViewWidth = CGRectGetWidth(self.frame);
     
+    CGRect cellBounds = cell.bounds;
+    cellBounds.size.width = contentViewWidth;
+    cell.bounds = cellBounds;
+    
+    CGFloat accessroyWidth = 0;
     // If a cell has accessory view or system accessory type, its content view's width is smaller
     // than cell's by some fixed values.
     if (cell.accessoryView) {
-        contentViewWidth -= 16 + CGRectGetWidth(cell.accessoryView.frame);
+        accessroyWidth = 16 + CGRectGetWidth(cell.accessoryView.frame);
     } else {
         static const CGFloat systemAccessoryWidths[] = {
             [UITableViewCellAccessoryNone] = 0,
@@ -40,8 +45,10 @@
             [UITableViewCellAccessoryCheckmark] = 40,
             [UITableViewCellAccessoryDetailButton] = 48
         };
-        contentViewWidth -= systemAccessoryWidths[cell.accessoryType];
+        accessroyWidth = systemAccessoryWidths[cell.accessoryType];
     }
+    contentViewWidth -= accessroyWidth;
+
     
     // If not using auto layout, you have to override "-sizeThatFits:" to provide a fitting size by yourself.
     // This is the same height calculation passes used in iOS8 self-sizing cell's implementation.
@@ -72,7 +79,7 @@
             
             // Build edge constraints
             NSLayoutConstraint *leftConstraint = [NSLayoutConstraint constraintWithItem:cell.contentView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:cell attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0];
-            NSLayoutConstraint *rightConstraint = [NSLayoutConstraint constraintWithItem:cell.contentView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:cell attribute:NSLayoutAttributeRight multiplier:1.0 constant:0];
+            NSLayoutConstraint *rightConstraint = [NSLayoutConstraint constraintWithItem:cell.contentView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:cell attribute:NSLayoutAttributeRight multiplier:1.0 constant:accessroyWidth];
             NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:cell.contentView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:cell attribute:NSLayoutAttributeTop multiplier:1.0 constant:0];
             NSLayoutConstraint *bottomConstraint = [NSLayoutConstraint constraintWithItem:cell.contentView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:cell attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0];
             edgeConstraints = @[leftConstraint, rightConstraint, topConstraint, bottomConstraint];
