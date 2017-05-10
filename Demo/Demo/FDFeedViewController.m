@@ -18,9 +18,13 @@ typedef NS_ENUM(NSInteger, FDSimulatedCacheMode) {
 };
 
 @interface FDFeedViewController () <UIActionSheetDelegate>
+
 @property (nonatomic, copy) NSArray *prototypeEntitiesFromJSON;
 @property (nonatomic, strong) NSMutableArray *feedEntitySections; // 2d array
+@property (nonatomic, strong) NSMutableArray *sectionTitles;
 @property (nonatomic, weak) IBOutlet UISegmentedControl *cacheModeSegmentControl;
+@property (weak, nonatomic) IBOutlet UISwitch *sectionTitleSwitch;
+
 @end
 
 @implementation FDFeedViewController
@@ -29,12 +33,16 @@ typedef NS_ENUM(NSInteger, FDSimulatedCacheMode) {
     [super viewDidLoad];
    
     self.tableView.fd_debugLogEnabled = YES;
+    self.tableView.sectionIndexBackgroundColor = [UIColor colorWithRed:245/255. green:245/255. blue:245/255. alpha:1.];
+    self.tableView.sectionIndexColor = [UIColor colorWithRed:0. green:0. blue:108/255. alpha:1.];
     
     // Cache by index path initial
     self.cacheModeSegmentControl.selectedSegmentIndex = 1;
     
     [self buildTestDataThen:^{
         self.feedEntitySections = @[].mutableCopy;
+        self.sectionTitles = @[].mutableCopy;
+        [self.sectionTitles addObject:[self demoSectionTitle]];
         [self.feedEntitySections addObject:self.prototypeEntitiesFromJSON.mutableCopy];
         [self.tableView reloadData];
     }];
@@ -64,6 +72,15 @@ typedef NS_ENUM(NSInteger, FDSimulatedCacheMode) {
     });
 }
 
+static NSArray <NSString *>*titles;
+- (NSString *)demoSectionTitle {
+    if (!titles) {
+        titles = @[@"A",@"BB",@"CCC",@"DDDDD",@"EEE",@"FF",@"G",@"H",@"I",@"J",@"K",@"L",@"M",@"N",@"O",@"P",@"Q"];
+    }
+    NSInteger index = self.feedEntitySections.count%titles.count;
+    return titles[index];
+}
+
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -72,6 +89,10 @@ typedef NS_ENUM(NSInteger, FDSimulatedCacheMode) {
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [self.feedEntitySections[section] count];
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    return self.sectionTitles[section];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -88,6 +109,10 @@ typedef NS_ENUM(NSInteger, FDSimulatedCacheMode) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     }
     cell.entity = self.feedEntitySections[indexPath.section][indexPath.row];
+}
+
+- (NSArray <NSString *>*)sectionIndexTitlesForTableView:(UITableView *)tableView {
+    return self.sectionTitleSwitch.on ? self.sectionTitles : nil;
 }
 
 #pragma mark - UITableViewDelegate
@@ -115,6 +140,10 @@ typedef NS_ENUM(NSInteger, FDSimulatedCacheMode) {
     }
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 20.;
+}
+
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         NSMutableArray *mutableEntities = self.feedEntitySections[indexPath.section];
@@ -128,6 +157,8 @@ typedef NS_ENUM(NSInteger, FDSimulatedCacheMode) {
 - (IBAction)refreshControlAction:(UIRefreshControl *)sender {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.feedEntitySections removeAllObjects];
+        [self.sectionTitles removeAllObjects];
+        [self.sectionTitles addObject:[self demoSectionTitle]];
         [self.feedEntitySections addObject:self.prototypeEntitiesFromJSON.mutableCopy];
         [self.tableView reloadData];
         [sender endRefreshing];
@@ -147,6 +178,10 @@ typedef NS_ENUM(NSInteger, FDSimulatedCacheMode) {
      showInView:self.view];
 }
 
+- (IBAction)sectionTitleSwitchChange:(UISwitch *)sender {
+    [self.tableView reloadData];
+}
+
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     SEL selectors[] = {
         @selector(insertRow),
@@ -159,6 +194,8 @@ typedef NS_ENUM(NSInteger, FDSimulatedCacheMode) {
         imp(self, selectors[buttonIndex]);
     }
 }
+
+#pragma mark - TableView Editing
 
 - (FDFeedEntity *)randomEntity {
     NSUInteger randomNumber = arc4random_uniform((int32_t)self.prototypeEntitiesFromJSON.count);
@@ -177,12 +214,14 @@ typedef NS_ENUM(NSInteger, FDSimulatedCacheMode) {
 }
 
 - (void)insertSection {
+    [self.sectionTitles insertObject:[self demoSectionTitle] atIndex:0];
     [self.feedEntitySections insertObject:@[self.randomEntity].mutableCopy atIndex:0];
     [self.tableView insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 - (void)deleteSection {
     if (self.feedEntitySections.count > 0) {
+        [self.sectionTitles removeObjectAtIndex:0];
         [self.feedEntitySections removeObjectAtIndex:0];
         [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
