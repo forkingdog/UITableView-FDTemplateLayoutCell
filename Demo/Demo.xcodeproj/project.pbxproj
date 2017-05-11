@@ -7,8 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+<<<<<<< HEAD
 		485DB89B1BAFFF8900CEAE33 /* UITableView+FDKeyedHeightCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 485DB89A1BAFFF8900CEAE33 /* UITableView+FDKeyedHeightCache.m */; };
 		485DB89E1BB0004300CEAE33 /* UITableView+FDIndexPathHeightCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 485DB89D1BB0004300CEAE33 /* UITableView+FDIndexPathHeightCache.m */; };
+=======
+		485DB89B1BAFFF8900CEAE33 /* UITableView+FDKeyedHeightCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 485DB89A1BAFFF8900CEAE33 /* UITableView+FDKeyedHeightCache.m */; settings = {ASSET_TAGS = (); }; };
+		485DB89E1BB0004300CEAE33 /* UITableView+FDIndexPathHeightCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 485DB89D1BB0004300CEAE33 /* UITableView+FDIndexPathHeightCache.m */; settings = {ASSET_TAGS = (); }; };
+>>>>>>> bob/master
 		488EECB71ADFEDC6004EAA71 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 488EECB61ADFEDC6004EAA71 /* main.m */; };
 		488EECBA1ADFEDC6004EAA71 /* FDAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 488EECB91ADFEDC6004EAA71 /* FDAppDelegate.m */; };
 		488EECC01ADFEDC6004EAA71 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 488EECBE1ADFEDC6004EAA71 /* Main.storyboard */; };
@@ -17,6 +22,10 @@
 		488EECE01ADFF7A5004EAA71 /* FDFeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 488EECDF1ADFF7A5004EAA71 /* FDFeedViewController.m */; };
 		488EECE31ADFF884004EAA71 /* FDFeedEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 488EECE21ADFF884004EAA71 /* FDFeedEntity.m */; };
 		48954A261B5102E200EFD15D /* UITableView+FDTemplateLayoutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48954A1F1B5102E200EFD15D /* UITableView+FDTemplateLayoutCell.m */; };
+<<<<<<< HEAD
+=======
+		48954A271B5102E200EFD15D /* UITableView+FDTemplateLayoutCellDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 48954A211B5102E200EFD15D /* UITableView+FDTemplateLayoutCellDebug.m */; };
+>>>>>>> bob/master
 		4897E5DD1ADFFBBD00E87B5F /* data.json in Resources */ = {isa = PBXBuildFile; fileRef = 4897E5DC1ADFFBBD00E87B5F /* data.json */; };
 		4897E5E01AE090B900E87B5F /* FDFeedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4897E5DF1AE090B900E87B5F /* FDFeedCell.m */; };
 /* End PBXBuildFile section */
@@ -40,6 +49,11 @@
 		488EECE21ADFF884004EAA71 /* FDFeedEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDFeedEntity.m; sourceTree = "<group>"; };
 		48954A1E1B5102E200EFD15D /* UITableView+FDTemplateLayoutCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+FDTemplateLayoutCell.h"; sourceTree = "<group>"; };
 		48954A1F1B5102E200EFD15D /* UITableView+FDTemplateLayoutCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+FDTemplateLayoutCell.m"; sourceTree = "<group>"; };
+<<<<<<< HEAD
+=======
+		48954A201B5102E200EFD15D /* UITableView+FDTemplateLayoutCellDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+FDTemplateLayoutCellDebug.h"; sourceTree = "<group>"; };
+		48954A211B5102E200EFD15D /* UITableView+FDTemplateLayoutCellDebug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+FDTemplateLayoutCellDebug.m"; sourceTree = "<group>"; };
+>>>>>>> bob/master
 		4897E5DC1ADFFBBD00E87B5F /* data.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = data.json; sourceTree = "<group>"; };
 		4897E5DE1AE090B900E87B5F /* FDFeedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDFeedCell.h; sourceTree = "<group>"; };
 		4897E5DF1AE090B900E87B5F /* FDFeedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDFeedCell.m; sourceTree = "<group>"; };
@@ -119,6 +133,11 @@
 				485DB89A1BAFFF8900CEAE33 /* UITableView+FDKeyedHeightCache.m */,
 				485DB89C1BB0004300CEAE33 /* UITableView+FDIndexPathHeightCache.h */,
 				485DB89D1BB0004300CEAE33 /* UITableView+FDIndexPathHeightCache.m */,
+<<<<<<< HEAD
+=======
+				48954A201B5102E200EFD15D /* UITableView+FDTemplateLayoutCellDebug.h */,
+				48954A211B5102E200EFD15D /* UITableView+FDTemplateLayoutCellDebug.m */,
+>>>>>>> bob/master
 			);
 			name = Classes;
 			path = ../../Classes;
@@ -197,6 +216,10 @@
 			files = (
 				488EECBA1ADFEDC6004EAA71 /* FDAppDelegate.m in Sources */,
 				48954A261B5102E200EFD15D /* UITableView+FDTemplateLayoutCell.m in Sources */,
+<<<<<<< HEAD
+=======
+				48954A271B5102E200EFD15D /* UITableView+FDTemplateLayoutCellDebug.m in Sources */,
+>>>>>>> bob/master
 				488EECE01ADFF7A5004EAA71 /* FDFeedViewController.m in Sources */,
 				4897E5E01AE090B900E87B5F /* FDFeedCell.m in Sources */,
 				488EECB71ADFEDC6004EAA71 /* main.m in Sources */,
