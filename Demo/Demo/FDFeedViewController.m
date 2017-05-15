@@ -188,4 +188,8 @@ typedef NS_ENUM(NSInteger, FDSimulatedCacheMode) {
     }
 }
 
+- (NSArray<NSString *> *)sectionIndexTitlesForTableView:(UITableView *)tableView {
+    return @[@"A"];
+}
+
 @end
