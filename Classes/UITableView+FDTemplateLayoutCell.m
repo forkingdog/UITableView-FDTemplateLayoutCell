@@ -169,7 +169,65 @@
         configuration(templateLayoutCell);
     }
     
-    return [self fd_systemFittingHeightForConfiguratedCell:templateLayoutCell];
+    if ([UIDevice currentDevice].systemVersion.floatValue >= 10.3f) {
+        
+        return [self fd_systemFittingHeightForConfiguratedCell:templateLayoutCell];
+    }
+    
+    CGFloat contentViewWidth = CGRectGetWidth(self.frame);
+    
+    // If a cell has accessory view or system accessory type, its content view's width is smaller
+    // than cell's by some fixed values.
+    if (templateLayoutCell.accessoryView) {
+        contentViewWidth -= 16 + CGRectGetWidth(templateLayoutCell.accessoryView.frame);
+    } else {
+        static const CGFloat systemAccessoryWidths[] = {
+            [UITableViewCellAccessoryNone] = 0,
+            [UITableViewCellAccessoryDisclosureIndicator] = 34,
+            [UITableViewCellAccessoryDetailDisclosureButton] = 68,
+            [UITableViewCellAccessoryCheckmark] = 40,
+            [UITableViewCellAccessoryDetailButton] = 48
+        };
+        contentViewWidth -= systemAccessoryWidths[templateLayoutCell.accessoryType];
+    }
+    
+    CGSize fittingSize = CGSizeZero;
+    
+    if (templateLayoutCell.fd_enforceFrameLayout) {
+        // If not using auto layout, you have to override "-sizeThatFits:" to provide a fitting size by yourself.
+        // This is the same method used in iOS8 self-sizing cell's implementation.
+        // Note: fitting height should not include separator view.
+        SEL selector = @selector(sizeThatFits:);
+        BOOL inherited = ![templateLayoutCell isMemberOfClass:UITableViewCell.class];
+        BOOL overrided = [templateLayoutCell.class instanceMethodForSelector:selector] != [UITableViewCell instanceMethodForSelector:selector];
+        if (inherited && !overrided) {
+            NSAssert(NO, @"Customized cell must override '-sizeThatFits:' method if not using auto layout.");
+        }
+        fittingSize = [templateLayoutCell sizeThatFits:CGSizeMake(contentViewWidth, 0)];
+    } else {
+        // Add a hard width constraint to make dynamic content views (like labels) expand vertically instead
+        // of growing horizontally, in a flow-layout manner.
+        if (contentViewWidth > 0) {
+            NSLayoutConstraint *widthFenceConstraint = [NSLayoutConstraint constraintWithItem:templateLayoutCell.contentView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:contentViewWidth];
+            [templateLayoutCell.contentView addConstraint:widthFenceConstraint];
+            // Auto layout engine does its math
+            fittingSize = [templateLayoutCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+            [templateLayoutCell.contentView removeConstraint:widthFenceConstraint];
+        }
+    }
+    
+    // Add 1px extra space for separator line if needed, simulating default UITableViewCell.
+    if (self.separatorStyle != UITableViewCellSeparatorStyleNone) {
+        fittingSize.height += 1.0 / [UIScreen mainScreen].scale;
+    }
+    
+    if (templateLayoutCell.fd_enforceFrameLayout) {
+        [self fd_debugLog:[NSString stringWithFormat:@"calculate using frame layout - %@", @(fittingSize.height)]];
+    } else {
+        [self fd_debugLog:[NSString stringWithFormat:@"calculate using auto layout - %@", @(fittingSize.height)]];
+    }
+    
+    return fittingSize.height;
 }
 
 - (CGFloat)fd_heightForCellWithIdentifier:(NSString *)identifier cacheByIndexPath:(NSIndexPath *)indexPath configuration:(void (^)(id cell))configuration {
