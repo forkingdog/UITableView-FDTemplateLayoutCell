@@ -69,7 +69,7 @@
         static BOOL isSystemVersionEqualOrGreaterThen10_2 = NO;
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
-            isSystemVersionEqualOrGreaterThen10_2 = [UIDevice.currentDevice.systemVersion compare:@"10.2" options:NSNumericSearch] != NSOrderedAscending;
+            isSystemVersionEqualOrGreaterThen10_2 = ([UIDevice.currentDevice.systemVersion compare:@"10.2" options:NSNumericSearch] != NSOrderedAscending && [UIDevice.currentDevice.systemVersion compare:@"11" options:NSNumericSearch] != NSOrderedDescending);
         });
         
         NSArray<NSLayoutConstraint *> *edgeConstraints;
