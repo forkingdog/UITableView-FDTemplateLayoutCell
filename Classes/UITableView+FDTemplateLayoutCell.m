@@ -72,20 +72,21 @@
     
     CGFloat fittingHeight = 0;
     
+    static BOOL isSystemVersionEqualOrGreaterThan10_2 = NO;
+
     if (!cell.fd_enforceFrameLayout && contentViewWidth > 0) {
         // Add a hard width constraint to make dynamic content views (like labels) expand vertically instead
         // of growing horizontally, in a flow-layout manner.
         NSLayoutConstraint *widthFenceConstraint = [NSLayoutConstraint constraintWithItem:cell.contentView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:contentViewWidth];
 
         // [bug fix] after iOS 10.3, Auto Layout engine will add an additional 0 width constraint onto cell's content view, to avoid that, we add constraints to content view's left, right, top and bottom.
-        static BOOL isSystemVersionEqualOrGreaterThen10_2 = NO;
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
-            isSystemVersionEqualOrGreaterThen10_2 = [UIDevice.currentDevice.systemVersion compare:@"10.2" options:NSNumericSearch] != NSOrderedAscending;
+            isSystemVersionEqualOrGreaterThan10_2 = [UIDevice.currentDevice.systemVersion compare:@"10.2" options:NSNumericSearch] != NSOrderedAscending;
         });
-        
+
         NSArray<NSLayoutConstraint *> *edgeConstraints;
-        if (isSystemVersionEqualOrGreaterThen10_2) {
+        if (isSystemVersionEqualOrGreaterThan10_2) {
             // To avoid confilicts, make width constraint softer than required (1000)
             widthFenceConstraint.priority = UILayoutPriorityRequired - 1;
             
@@ -105,7 +106,7 @@
         
         // Clean-ups
         [cell.contentView removeConstraint:widthFenceConstraint];
-        if (isSystemVersionEqualOrGreaterThen10_2) {
+        if (isSystemVersionEqualOrGreaterThan10_2) {
             [cell removeConstraints:edgeConstraints];
         }
         
@@ -115,7 +116,9 @@
     if (fittingHeight == 0) {
 #if DEBUG
         // Warn if using AutoLayout but get zero height.
-        if (cell.contentView.constraints.count > 0) {
+        // The contentView always gets 4 initial constraints in iOS 10.3.
+        NSUInteger initialConstraintCount = isSystemVersionEqualOrGreaterThan10_2 ? 4 : 0;
+        if (!cell.fd_enforceFrameLayout && cell.contentView.constraints.count > initialConstraintCount) {
             if (!objc_getAssociatedObject(self, _cmd)) {
                 NSLog(@"[FDTemplateLayoutCell] Warning once only: Cannot get a proper cell height (now 0) from '- systemFittingSize:'(AutoLayout). You should check how constraints are built in cell, making it into 'self-sizing' cell.");
                 objc_setAssociatedObject(self, _cmd, @YES, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
