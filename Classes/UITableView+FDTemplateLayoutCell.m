@@ -79,7 +79,7 @@
             [cell addConstraints:edgeConstraints];
         }
         
-        [cell.contentView addConstraint:widthFenceConstraint];
+//        [cell.contentView addConstraint:widthFenceConstraint];
 
         // Auto layout engine does its math
 //        fittingHeight = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
