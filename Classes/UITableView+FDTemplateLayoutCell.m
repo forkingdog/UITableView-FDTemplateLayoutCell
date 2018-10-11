@@ -54,7 +54,7 @@ __PRETTY_FUNCTION__,## __VA_ARGS__)
     } else {
         static const CGFloat systemAccessoryWidths[] = {
             [UITableViewCellAccessoryNone] = 0,
-            [UITableViewCellAccessoryDisclosureIndicator] = 34,
+            [UITableViewCellAccessoryDisclosureIndicator] = 38,
             [UITableViewCellAccessoryDetailDisclosureButton] = 68,
             [UITableViewCellAccessoryCheckmark] = 40,
             [UITableViewCellAccessoryDetailButton] = 48
@@ -62,7 +62,7 @@ __PRETTY_FUNCTION__,## __VA_ARGS__)
         accessroyWidth = systemAccessoryWidths[cell.accessoryType];
     }
     contentViewWidth -= accessroyWidth;
-
+    
     
     // If not using auto layout, you have to override "-sizeThatFits:" to provide a fitting size by yourself.
     // This is the same height calculation passes used in iOS8 self-sizing cell's implementation.
@@ -78,7 +78,7 @@ __PRETTY_FUNCTION__,## __VA_ARGS__)
         // Add a hard width constraint to make dynamic content views (like labels) expand vertically instead
         // of growing horizontally, in a flow-layout manner.
         NSLayoutConstraint *widthFenceConstraint = [NSLayoutConstraint constraintWithItem:cell.contentView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:contentViewWidth];
-
+        
         // [bug fix] after iOS 10.3, Auto Layout engine will add an additional 0 width constraint onto cell's content view, to avoid that, we add constraints to content view's left, right, top and bottom.
         static BOOL isSystemVersionEqualOrGreaterThen10_2 = NO;
         static dispatch_once_t onceToken;
@@ -93,15 +93,20 @@ __PRETTY_FUNCTION__,## __VA_ARGS__)
             
             // Build edge constraints
             NSLayoutConstraint *leftConstraint = [NSLayoutConstraint constraintWithItem:cell.contentView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:cell attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0];
+            leftConstraint.priority = UILayoutPriorityRequired - 1;
+            
             NSLayoutConstraint *rightConstraint = [NSLayoutConstraint constraintWithItem:cell.contentView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:cell attribute:NSLayoutAttributeRight multiplier:1.0 constant:accessroyWidth];
+            rightConstraint.priority = UILayoutPriorityRequired - 1;
             NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:cell.contentView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:cell attribute:NSLayoutAttributeTop multiplier:1.0 constant:0];
+            topConstraint.priority = UILayoutPriorityRequired - 1;
             NSLayoutConstraint *bottomConstraint = [NSLayoutConstraint constraintWithItem:cell.contentView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:cell attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0];
+            bottomConstraint.priority = UILayoutPriorityRequired - 1;
             edgeConstraints = @[leftConstraint, rightConstraint, topConstraint, bottomConstraint];
             [cell addConstraints:edgeConstraints];
         }
         
         [cell.contentView addConstraint:widthFenceConstraint];
-
+        
         // Auto layout engine does its math
         fittingHeight = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
         
@@ -111,7 +116,7 @@ __PRETTY_FUNCTION__,## __VA_ARGS__)
             [cell removeConstraints:edgeConstraints];
         }
         
-//        DLog(@"%@", [NSString stringWithFormat:@"calculate using system fitting size (AutoLayout) - %@", @(fittingHeight)]);
+        //        DLog(@"%@", [NSString stringWithFormat:@"calculate using system fitting size (AutoLayout) - %@", @(fittingHeight)]);
     }
     
     if (fittingHeight == 0) {
@@ -162,7 +167,10 @@ __PRETTY_FUNCTION__,## __VA_ARGS__)
         templateCell.fd_isTemplateLayoutCell = YES;
         templateCell.contentView.translatesAutoresizingMaskIntoConstraints = NO;
         templateCellsByIdentifiers[identifier] = templateCell;
-//        DLog(@"%@", [NSString stringWithFormat:@"layout cell created - %@", identifier]);
+        //        DLog(@"%@", [NSString stringWithFormat:@"layout cell created - %@", identifier]);
+        
+        // !!!: make width normal: 320 -> 375
+        [self fd_systemFittingHeightForConfiguratedCell:templateCell];
     }
     
     return templateCell;
@@ -193,13 +201,13 @@ __PRETTY_FUNCTION__,## __VA_ARGS__)
     
     // Hit cache
     if ([self.fd_indexPathHeightCache existsHeightAtIndexPath:indexPath]) {
-//        DLog(@"%@", [NSString stringWithFormat:@"hit cache by index path[%@:%@] - %@", @(indexPath.section), @(indexPath.row), @([self.fd_indexPathHeightCache heightForIndexPath:indexPath])]);
+        //        DLog(@"%@", [NSString stringWithFormat:@"hit cache by index path[%@:%@] - %@", @(indexPath.section), @(indexPath.row), @([self.fd_indexPathHeightCache heightForIndexPath:indexPath])]);
         return [self.fd_indexPathHeightCache heightForIndexPath:indexPath];
     }
     
     CGFloat height = [self fd_heightForCellWithIdentifier:identifier configuration:configuration];
     [self.fd_indexPathHeightCache cacheHeight:height byIndexPath:indexPath];
-//    DLog(@"%@",[NSString stringWithFormat: @"cached by index path[%@:%@] - %@", @(indexPath.section), @(indexPath.row), @(height)]);
+    //    DLog(@"%@",[NSString stringWithFormat: @"cached by index path[%@:%@] - %@", @(indexPath.section), @(indexPath.row), @(height)]);
     
     return height;
 }
@@ -251,8 +259,12 @@ __PRETTY_FUNCTION__,## __VA_ARGS__)
 
 - (CGFloat)fd_heightForHeaderFooterViewWithIdentifier:(NSString *)identifier configuration:(void (^)(id))configuration {
     UITableViewHeaderFooterView *templateHeaderFooterView = [self fd_templateHeaderFooterViewForReuseIdentifier:identifier];
+    if (nil != configuration) {
+        configuration(templateHeaderFooterView);
+    }
     
     NSLayoutConstraint *widthFenceConstraint = [NSLayoutConstraint constraintWithItem:templateHeaderFooterView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:CGRectGetWidth(self.frame)];
+    widthFenceConstraint.priority = UILayoutPriorityRequired - 1;
     [templateHeaderFooterView addConstraint:widthFenceConstraint];
     CGFloat fittingHeight = [templateHeaderFooterView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
     [templateHeaderFooterView removeConstraint:widthFenceConstraint];
