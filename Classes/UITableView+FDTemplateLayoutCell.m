@@ -174,7 +174,10 @@ __PRETTY_FUNCTION__,## __VA_ARGS__)
         templateCell = [self dequeueReusableCellWithIdentifier:identifier];
         NSAssert(templateCell != nil, @"Cell must be registered to table view for identifier - %@", identifier);
         templateCell.fd_isTemplateLayoutCell = YES;
-        templateCell.contentView.translatesAutoresizingMaskIntoConstraints = NO;
+        NSString *version = [UIDevice currentDevice].systemVersion;
+        if (version.doubleValue < 11.0){
+            templateCell.contentView.translatesAutoresizingMaskIntoConstraints = NO;
+        }
         templateCellsByIdentifiers[identifier] = templateCell;
         //        DLog(@"%@", [NSString stringWithFormat:@"layout cell created - %@", identifier]);
         
