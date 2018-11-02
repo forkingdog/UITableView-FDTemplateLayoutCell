@@ -115,7 +115,11 @@ A template layout cell is created by `-dequeueReusableCellWithIdentifier:` metho
 
 ## Installation
 
+<<<<<<< HEAD
+Latest version: **1.4.beta**
+=======
 Latest version: **1.6**
+>>>>>>> bob/master
 
 ```
 pod search UITableView+FDTemplateLayoutCell 
@@ -130,9 +134,12 @@ pod setup
 
 We recommend to use the latest release in cocoapods.
 
+<<<<<<< HEAD
+=======
 - 1.6
 fix bug in iOS 10
 
+>>>>>>> bob/master
 - 1.4  
 Refactor, add "cacheByKey" mode, bug fixed
 

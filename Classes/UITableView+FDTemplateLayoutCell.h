@@ -23,9 +23,12 @@
 #import <UIKit/UIKit.h>
 #import "UITableView+FDKeyedHeightCache.h"
 #import "UITableView+FDIndexPathHeightCache.h"
-#import "UITableView+FDTemplateLayoutCellDebug.h"
+
 
 @interface UITableView (FDTemplateLayoutCell)
+
+
+- (CGFloat)fd_systemFittingHeightForConfiguratedCell:(UITableViewCell *)cell;
 
 /// Access to internal template layout cell for given reuse identifier.
 /// Generally, you don't need to know these template layout cells.

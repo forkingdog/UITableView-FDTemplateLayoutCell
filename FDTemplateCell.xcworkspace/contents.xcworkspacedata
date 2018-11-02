@@ -1,9 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Workspace
    version = "1.0">
+<<<<<<< HEAD
+   <Group
+      location = "group:Classes"
+      name = "Classes">
+      <FileRef
+         location = "group:UITableView+FDTemplateLayoutCell.h">
+      </FileRef>
+      <FileRef
+         location = "group:UITableView+FDTemplateLayoutCell.m">
+      </FileRef>
+      <FileRef
+         location = "group:UITableView+FDKeyedHeightCache.h">
+      </FileRef>
+      <FileRef
+         location = "group:UITableView+FDKeyedHeightCache.m">
+      </FileRef>
+      <FileRef
+         location = "group:UITableView+FDIndexPathHeightCache.h">
+      </FileRef>
+      <FileRef
+         location = "group:UITableView+FDIndexPathHeightCache.m">
+      </FileRef>
+   </Group>
+=======
    <FileRef
       location = "group:FDTemplateLayoutCell/FDTemplateLayoutCell.xcodeproj">
    </FileRef>
+>>>>>>> bob/master
    <FileRef
       location = "group:Demo/Demo.xcodeproj">
    </FileRef>

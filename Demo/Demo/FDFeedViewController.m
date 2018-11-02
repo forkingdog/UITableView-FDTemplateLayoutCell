@@ -27,8 +27,11 @@ typedef NS_ENUM(NSInteger, FDSimulatedCacheMode) {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+<<<<<<< HEAD
+=======
    
     self.tableView.fd_debugLogEnabled = YES;
+>>>>>>> bob/master
     
     // Cache by index path initial
     self.cacheModeSegmentControl.selectedSegmentIndex = 1;
@@ -75,7 +78,11 @@ typedef NS_ENUM(NSInteger, FDSimulatedCacheMode) {
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+<<<<<<< HEAD
+    FDFeedCell *cell = [tableView dequeueReusableCellWithIdentifier:@"FDFeedCell" forIndexPath:indexPath];
+=======
     FDFeedCell *cell = [tableView dequeueReusableCellWithIdentifier:@"FDFeedCell"];
+>>>>>>> bob/master
     [self configureCell:cell atIndexPath:indexPath];
     return cell;
 }
